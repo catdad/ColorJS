@@ -42,7 +42,11 @@
 	
 	/* converters */
 	Color.prototype.HEX = function(set){
-		if (set) 
+		//create new color
+		if (set){
+			this.RGBA = ColorLib.fromHEX(set).RGBA;
+			return this;
+		}
 		
 		var hex = "";
 		
@@ -56,7 +60,12 @@
 		return hex;
 	}
 	
-	Color.prototype.HSV = function(){
+	Color.prototype.HSV = function(set){
+		if (set){
+			this.RGBA = ColorLib.fromHSV(set).RGBA;
+			return this;
+		}
+	
 		var R = ( this.RGBA.r / 255 ); //RGB from 0 to 255
 		var G = ( this.RGBA.g / 255 );
 		var B = ( this.RGBA.b / 255 );
@@ -91,7 +100,12 @@
 		return {h: H, s: S, v: V};
 	}
 	
-	Color.prototype.HSL = function(){
+	Color.prototype.HSL = function(set){
+		if (set){
+			this.RGBA = ColorLib.fromHSL(set).RGBA;
+			return this;
+		}
+		
 		var var_R = ( this.RGBA.r / 255 ); //RGB from 0 to 255
 		var var_G = ( this.RGBA.g / 255 );
 		var var_B = ( this.RGBA.b / 255 );
@@ -129,7 +143,12 @@
 		return {h:H,s:S,l:L};
 	}
 	
-	Color.prototype.CMYK = function(){
+	Color.prototype.CMYK = function(set){
+		if (set){
+			this.RGBA = ColorLib.fromCMYK(set).RGBA;
+			return this;
+		}
+		
 		var C = 1 - ( this.RGBA.r / 255 );
 		var M = 1 - ( this.RGBA.g / 255 );
 		var Y = 1 - ( this.RGBA.b / 255 );
@@ -180,7 +199,7 @@
 		return new Color(rgba);
 	}
 	
-	//simple creator
+	//simple creator -- RGB[A] or HEX
 	var ColorLib = function(val){
 		return creator(val);
 	}
@@ -189,15 +208,25 @@
 	ColorLib.fromRGB = creator;
 	ColorLib.fromRGBA = creator;
 	
-	ColorLib.fromCMYK = function(C, M, Y, K){
-		C = ( C * ( 1 - K ) + K );
-		M = ( M * ( 1 - K ) + K );
-		Y = ( Y * ( 1 - K ) + K );
+	// [c,m,y,k] or {c,m,y,k}
+	ColorLib.fromCMYK = function(val){
+		var CMYK = {};
+		if (val instanceof Array){
+			CMYK.c = val[0];
+			CMYK.m = val[1];
+			CMYK.y = val[2];
+			CMYK.k = val[3];
+		}
+		else CMYK = val;
+		
+		CMYK.c = ( CMYK.c * ( 1 - CMYK.k ) + CMYK.k );
+		CMYK.m = ( CMYK.m * ( 1 - CMYK.k ) + CMYK.k );
+		CMYK.y = ( CMYK.y * ( 1 - CMYK.k ) + CMYK.k );
 		
 		var rgb = {};
-		rgb.r = ( 1 - C ) * 255;
-		rgb.g = ( 1 - M ) * 255;
-		rgb.b = ( 1 - Y ) * 255;
+		rgb.r = Math.round(( 1 - CMYK.c ) * 255);
+		rgb.g = Math.round(( 1 - CMYK.m ) * 255);
+		rgb.b = Math.round(( 1 - CMYK.y ) * 255);
 		
 		return creator(rgb);
 	}
@@ -210,7 +239,16 @@
 		return creator({r:r, g:g, b:b, a:a});
 	}
 	
-	ColorLib.fromHSV = function(h,s,v){
+	// RGB from [h,s,v] or {h,s,v}
+	ColorLib.fromHSV = function(val){
+		var h, s, v;
+		if (val instanceof Array){
+			h = val[0]; s = val[1]; v = val[2];
+		}
+		else{
+			h = val.h; s = val.s; v = val.v;
+		}
+		
 		var rgb = {};
 		
 		if ( s === 0 ) //HSV from 0 to 1
@@ -243,7 +281,16 @@
 		return creator(rgb);
 	}
 	
-	ColorLib.fromHSL = function(H, S, L){
+	//RGB from [h,s,l] or {h,s,l}
+	ColorLib.fromHSL = function(val){
+		var H, S, L;
+		if (val instanceof Array){
+			H = val[0]; S = val[1]; L = val[2];
+		}
+		else{
+			H = val.h; S = val.s; L = val.l;
+		}
+		
 		//Function Hue_2_RGB
 		var hueToRGB = function( v1, v2, vH ){
 		   if ( vH < 0 ) vH += 1;
@@ -287,18 +334,16 @@
 	/* lib helpers */
 	ColorLib.min = function(arr){
 		var m = arr[0];
-		for (var i in arr){
+		for (var i = 0; i < arr.length; i++){
 			if (arr[i] < m) m = arr[i];
 		}
-		
 		return m;
 	}
 	ColorLib.max = function(arr){
 		var m = arr[0];
-		for (var i in arr){
+		for (var i = 0; i < arr.length; i++){
 			if (arr[i] > m) m = arr[i];
 		}
-		
 		return m;
 	}
 	
