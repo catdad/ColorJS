@@ -130,7 +130,28 @@
 	}
 	
 	Color.prototype.CMYK = function(){
-	
+		var C = 1 - ( this.RGBA.r / 255 );
+		var M = 1 - ( this.RGBA.g / 255 );
+		var Y = 1 - ( this.RGBA.b / 255 );
+		
+		var K = 1; //temp
+
+		if ( C < K ) K = C;
+		if ( M < K ) K = M;
+		if ( Y < K ) K = Y;
+		
+		if ( K === 1 ) { //Black
+		   C = 0;
+		   M = 0;
+		   Y = 0;
+		}
+		else {
+		   C = ( C - K ) / ( 1 - K );
+		   M = ( M - K ) / ( 1 - K );
+		   Y = ( Y - K ) / ( 1 - K );
+		}
+		
+		return {c:C,m:M,y:Y,k:K};
 	}
 	
 	/* operations */
@@ -168,8 +189,17 @@
 	ColorLib.fromRGB = creator;
 	ColorLib.fromRGBA = creator;
 	
-	ColorLib.fromCMYK = function(val){
-		//TODO: CMYK creator
+	ColorLib.fromCMYK = function(C, M, Y, K){
+		C = ( C * ( 1 - K ) + K );
+		M = ( M * ( 1 - K ) + K );
+		Y = ( Y * ( 1 - K ) + K );
+		
+		var rgb = {};
+		rgb.r = ( 1 - C ) * 255;
+		rgb.g = ( 1 - M ) * 255;
+		rgb.b = ( 1 - Y ) * 255;
+		
+		return creator(rgb);
 	}
 	
 	ColorLib.fromArray = function(val){
