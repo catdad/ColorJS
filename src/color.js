@@ -173,6 +173,29 @@
 		return {c:C,m:M,y:Y,k:K};
 	}
 	
+	Color.prototype.removeAlpha = function(bg){
+		var a = this.RGBA.a;
+		
+		if (!bg) bg = {r: 255, g: 255, b: 255}; //set to white if no background
+		
+		console.log(a);
+		console.log(bg);
+		
+		var calc = function(bgC, C){ return Math.round( (1 - a) * bgC + a * C ); }
+		
+		this.RGBA.r = calc(bg.r, this.RGBA.r);
+        this.RGBA.g = calc(bg.g, this.RGBA.g);
+        this.RGBA.b = calc(bg.b, this.RGBA.b);
+		this.RGBA.a = 1;
+		
+		return this;
+	}
+	
+	Color.prototype.setAlpha = function(alpha){
+		this.RGBA.a = alpha;
+		return this;
+	}
+	
 	/* operations */
 	Color.prototype.lighter = function(percent){
 	
