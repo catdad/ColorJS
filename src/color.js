@@ -60,6 +60,15 @@
 		return hex;
 	}
 	
+	Color.prototype.CSS = function(set){
+		if (set){
+			this.RGBA = ColorLib.fromHEX(set).RGBA;
+			return this;
+		}
+		
+		return "#" + this.HEX();
+	}
+	
 	Color.prototype.HSV = function(set){
 		if (set){
 			this.RGBA = ColorLib.fromHSV(set).RGBA;
