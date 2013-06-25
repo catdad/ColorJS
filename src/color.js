@@ -41,6 +41,21 @@
 	}
 	
 	/* converters */
+	Color.prototype.RGB = function(set){
+		//create new color
+		if (set){
+			this.RGBA = ColorLib.fromRGB(set).RGBA;
+			return this;
+		}
+		
+		var newRGB = {}
+		newRGB.r = this.RGBA.r;
+		newRGB.g = this.RGBA.g;
+		newRGB.b = this.RGBA.b;
+		
+		return newRGB;
+	}
+	
 	Color.prototype.HEX = function(set){
 		//create new color
 		if (set){
@@ -392,6 +407,11 @@
 		   rgb["b"] = Math.round(var_b * 255);
 		}
 		
+		//round values
+		rgb.r = Math.round(rgb.r);
+		rgb.g = Math.round(rgb.g);
+		rgb.b = Math.round(rgb.b);
+		
 		return creator(rgb);
 	}
 	
@@ -439,6 +459,7 @@
 		   B = 255 * hueToRGB( var_1, var_2, H - ( 1 / 3 ) )
 		}
 		
+		//round values
 		var rgb = {
 			r: Math.round(R),
 			g: Math.round(G),
