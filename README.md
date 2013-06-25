@@ -50,7 +50,7 @@ The convert functions can also be used to set the color of an existing `Color` o
 
 ##Color scheme calculator
 
-You can use this library to calculate color various color harmonies. _Note: These values are mathematical suggestions, and may need to be adjusted slightly to make a more pleasant color combination or remain in the same color gamut._
+You can use this library to calculate color various color harmonies.
 
     //HUE +/- 30 degrees
     color.analog(); //[original, plus, minus]
@@ -61,9 +61,15 @@ You can use this library to calculate color various color harmonies. _Note: Thes
     //HUE +/- 150 degrees
     color.split(); //[original, plus, minus]
     
-    // HUE + 180 degrees
+    //HUE + 180 degrees
     color.complement(); //[original, complement]
+
+_Note: These values are mathematical suggestions, and may need to be adjusted slightly to make a more pleasant color combination or remain in the same color gamut._
 
 ##Note
 
 All colors are stored as RGBA values. Some rounding needs to occur for this, especially for HSL and HSV values. This will result in colors being ever so slightly different. If this is unacceptable, please look elsewhere.
+
+##License
+
+This project is licensed under a [Creative Commons Attribution 3.0 License](http://creativecommons.org/licenses/by/3.0/). Please use, adapt, and modify this project to your heart's content. Link back to this page wherever you can.
