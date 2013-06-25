@@ -107,7 +107,7 @@
 		}
 		
 		//convert H decimal to degrees
-		H = H * 360; // 0 <= H <= 360
+		H = Math.round(H * 360); // 0 <= H <= 360
 		
 		return {h: H, s: S, v: V};
 	}
@@ -153,7 +153,7 @@
 		}
 
 		//convert H decimal to degrees
-		H = H * 360; // 0 <= H <= 360
+		H = Math.round(H * 360); // 0 <= H <= 360
 		
 		return {h:H,s:S,l:L};
 	}
