@@ -107,7 +107,7 @@
 		}
 		
 		//convert H decimal to degrees
-		H = H * 360;
+		H = H * 360; // 0 <= H <= 360
 		
 		return {h: H, s: S, v: V};
 	}
@@ -147,11 +147,14 @@
 			if      (var_R === var_Max) H = del_B - del_G;
 			else if (var_G === var_Max) H = (1/3) + del_R - del_B;
 			else if (var_B === var_Max) H = (2/3) + del_G - del_R;
-
+			
 			if (H < 0) H += 1;
 			if (H > 1) H -= 1;
 		}
 
+		//convert H decimal to degrees
+		H = H * 360; // 0 <= H <= 360
+		
 		return {h:H,s:S,l:L};
 	}
 	
@@ -349,8 +352,8 @@
 			h = val.h; s = val.s; v = val.v;
 		}
 		
-		//convert H degrees to decimal
-		h = h/360;
+		//convert H degrees to decimal for calculation
+		h = h/360; // 0 <= H <= 1
 		
 		var rgb = {};
 		
@@ -393,6 +396,9 @@
 		else{
 			H = val.h; S = val.s; L = val.l;
 		}
+		
+		//convert H degrees to decimal for calculation
+		H = H/360; // 0 <= H <= 1
 		
 		//Function Hue_2_RGB
 		var hueToRGB = function( v1, v2, vH ){
