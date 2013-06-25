@@ -466,5 +466,5 @@
 	
 	//attach to global scope
 	//TODO: test for Node, Require, etc.
-	global.c = ColorLib;
+	global.Color = ColorLib;
 })(this);
