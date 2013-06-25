@@ -106,6 +106,9 @@
 		   if ( H > 1 ) H -= 1;
 		}
 		
+		//convert H decimal to degrees
+		H = H * 360;
+		
 		return {h: H, s: S, v: V};
 	}
 	
@@ -216,7 +219,75 @@
 	
 	/* color schemes */
 	Color.prototype.triad = function(color){
-		return ["color 1", "color 2", "color 3"];
+		//H +/- 120 degrees
+		
+		//H +/- 150 degrees
+		var hsv = this.HSV();
+		
+		var plus = {}, minus = {};
+		plus.h = ColorLib.circleMotion(hsv.h, 120);
+		minus.h = ColorLib.circleMotion(hsv.h, -120);
+		
+		plus.s = hsv.s;
+		plus.v = hsv.v;
+		
+		minus.s = hsv.s;
+		minus.v = hsv.v;
+		
+		return [this, ColorLib.fromHSV(plus), ColorLib.fromHSV(minus)];
+	}
+	
+	Color.prototype.split = function(color){
+		//H +/- 150 degrees
+		var hsv = this.HSV();
+		
+		var plus = {}, minus = {};
+		plus.h = ColorLib.circleMotion(hsv.h, 150);
+		minus.h = ColorLib.circleMotion(hsv.h, -150);
+		
+		plus.s = hsv.s;
+		plus.v = hsv.v;
+		
+		minus.s = hsv.s;
+		minus.v = hsv.v;
+		
+		return [this, ColorLib.fromHSV(plus), ColorLib.fromHSV(minus)];
+	}
+	
+	Color.prototype.analog = function(color){
+		//H +/- 30 degrees
+		//H +/- 150 degrees
+		var hsv = this.HSV();
+		
+		var plus = {}, minus = {};
+		plus.h = ColorLib.circleMotion(hsv.h, 30);
+		minus.h = ColorLib.circleMotion(hsv.h, -30);
+		
+		plus.s = hsv.s;
+		plus.v = hsv.v;
+		
+		minus.s = hsv.s;
+		minus.v = hsv.v;
+		
+		return [this, ColorLib.fromHSV(plus), ColorLib.fromHSV(minus)];
+	}
+	
+	Color.prototype.complement = function(color){
+		//H + 180 degrees
+		//H +/- 150 degrees
+		var hsv = this.HSV();
+		
+		var plus = {};
+		plus.h = ColorLib.circleMotion(hsv.h, 180);
+		
+		plus.s = hsv.s;
+		plus.v = hsv.v;
+		
+		return [this, ColorLib.fromHSV(plus)];
+	}
+	
+	Color.prototype.monochrome = function(color, count){
+		//TODO: return as many colors as asked
 	}
 	
 	//creator function -- check types
@@ -281,6 +352,9 @@
 			h = val.h; s = val.s; v = val.v;
 		}
 		
+		//convert H degrees to decimal
+		h = h/360;
+		
 		var rgb = {};
 		
 		if ( s === 0 ) //HSV from 0 to 1
@@ -307,7 +381,7 @@
 
 		   rgb["r"] = Math.round(var_r * 255); //RGB results from 0 to 255
 		   rgb["g"] = Math.round(var_g * 255);
-		   rgb["b"] = Math.round(var_b * 255); 
+		   rgb["b"] = Math.round(var_b * 255);
 		}
 		
 		return creator(rgb);
@@ -377,6 +451,14 @@
 			if (arr[i] > m) m = arr[i];
 		}
 		return m;
+	}
+	ColorLib.circleMotion = function(from, offset){
+		from = from + offset;
+		
+		while (from < 0) from = from + 360;
+		while (from > 360) from = from - 360;
+		
+		return from;
 	}
 	
 	//attach to global scope
