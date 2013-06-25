@@ -109,6 +109,10 @@
 		//convert H decimal to degrees
 		H = Math.round(H * 360); // 0 <= H <= 360
 		
+		//round values (.xx)
+		S = Number(S.toFixed(2));
+		V = Number(V.toFixed(2));
+		
 		return {h: H, s: S, v: V};
 	}
 	
@@ -154,6 +158,10 @@
 
 		//convert H decimal to degrees
 		H = Math.round(H * 360); // 0 <= H <= 360
+		
+		//round values (.xx)
+		S = Number(S.toFixed(2));
+		L = Number(L.toFixed(2));
 		
 		return {h:H,s:S,l:L};
 	}
