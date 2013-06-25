@@ -87,23 +87,23 @@
 
 		if ( del_Max == 0 ) //This is a gray, no chroma...
 		{
-		   H = 0; //HSV results from 0 to 1
-		   S = 0;
+			H = 0; //HSV results from 0 to 1
+			S = 0;
 		}
 		else //Chromatic data...
 		{
-		   S = del_Max / var_Max;
+			S = del_Max / var_Max;
 
-		   var del_R = ( ( ( var_Max - R ) / 6 ) + ( del_Max / 2 ) ) / del_Max;
-		   var del_G = ( ( ( var_Max - G ) / 6 ) + ( del_Max / 2 ) ) / del_Max;
-		   var del_B = ( ( ( var_Max - B ) / 6 ) + ( del_Max / 2 ) ) / del_Max;
+			var del_R = ( ( ( var_Max - R ) / 6 ) + ( del_Max / 2 ) ) / del_Max;
+			var del_G = ( ( ( var_Max - G ) / 6 ) + ( del_Max / 2 ) ) / del_Max;
+			var del_B = ( ( ( var_Max - B ) / 6 ) + ( del_Max / 2 ) ) / del_Max;
 
-		   if      ( R == var_Max ) H = del_B - del_G;
-		   else if ( G == var_Max ) H = ( 1 / 3 ) + del_R - del_B;
-		   else if ( B == var_Max ) H = ( 2 / 3 ) + del_G - del_R;
+			if      ( R == var_Max ) H = del_B - del_G;
+			else if ( G == var_Max ) H = ( 1 / 3 ) + del_R - del_B;
+			else if ( B == var_Max ) H = ( 2 / 3 ) + del_G - del_R;
 
-		   if ( H < 0 ) H += 1;
-		   if ( H > 1 ) H -= 1;
+			if ( H < 0 ) H += 1;
+			if ( H > 1 ) H -= 1;
 		}
 		
 		//convert H decimal to degrees
@@ -118,9 +118,9 @@
 			return this;
 		}
 		
-		var var_R = ( this.RGBA.r / 255 ); //RGB from 0 to 255
-		var var_G = ( this.RGBA.g / 255 );
-		var var_B = ( this.RGBA.b / 255 );
+		var var_R = (this.RGBA.r/255); //RGB from 0 to 255
+		var var_G = (this.RGBA.g/255);
+		var var_B = (this.RGBA.b/255);
 
 		var var_Min = ColorLib.min( [var_R, var_G, var_B] ); //Min. value of RGB
 		var var_Max = ColorLib.max( [var_R, var_G, var_B] ); //Max. value of RGB
@@ -128,28 +128,28 @@
 		
 		var H, S, L;
 		
-		L = ( var_Max + var_Min ) / 2;
+		L = (var_Max + var_Min) / 2;
 
-		if ( del_Max === 0 ) //This is a gray, no chroma...
+		if (del_Max === 0) //This is a gray, no chroma...
 		{
-		   H = 0; //HSL results from 0 to 1
-		   S = 0;
+			H = 0; //HSL results from 0 to 1
+			S = 0;
 		}
 		else //Chromatic data...
 		{
-		   if ( L < 0.5 ) S = del_Max / ( var_Max + var_Min );
-		   else           S = del_Max / ( 2 - var_Max - var_Min );
+			if (L < 0.5) S = del_Max / (var_Max + var_Min);
+			else         S = del_Max / (2 - var_Max - var_Min);
 
-		   var del_R = ( ( ( var_Max - var_R ) / 6 ) + ( del_Max / 2 ) ) / del_Max;
-		   var del_G = ( ( ( var_Max - var_G ) / 6 ) + ( del_Max / 2 ) ) / del_Max;
-		   var del_B = ( ( ( var_Max - var_B ) / 6 ) + ( del_Max / 2 ) ) / del_Max;
+			var del_R = (((var_Max - var_R) / 6) + (del_Max / 2)) / del_Max;
+			var del_G = (((var_Max - var_G) / 6) + (del_Max / 2)) / del_Max;
+			var del_B = (((var_Max - var_B) / 6) + (del_Max / 2)) / del_Max;
 
-		   if      ( var_R === var_Max ) H = del_B - del_G;
-		   else if ( var_G === var_Max ) H = ( 1 / 3 ) + del_R - del_B;
-		   else if ( var_B === var_Max ) H = ( 2 / 3 ) + del_G - del_R;
+			if      (var_R === var_Max) H = del_B - del_G;
+			else if (var_G === var_Max) H = (1/3) + del_R - del_B;
+			else if (var_B === var_Max) H = (2/3) + del_G - del_R;
 
-		   if ( H < 0 ) H += 1;
-		   if ( H > 1 ) H -= 1;
+			if (H < 0) H += 1;
+			if (H > 1) H -= 1;
 		}
 
 		return {h:H,s:S,l:L};
@@ -161,25 +161,25 @@
 			return this;
 		}
 		
-		var C = 1 - ( this.RGBA.r / 255 );
-		var M = 1 - ( this.RGBA.g / 255 );
-		var Y = 1 - ( this.RGBA.b / 255 );
+		var C = 1 - (this.RGBA.r / 255);
+		var M = 1 - (this.RGBA.g / 255);
+		var Y = 1 - (this.RGBA.b / 255);
 		
 		var K = 1; //temp
 
-		if ( C < K ) K = C;
-		if ( M < K ) K = M;
-		if ( Y < K ) K = Y;
+		if (C < K) K = C;
+		if (M < K) K = M;
+		if (Y < K) K = Y;
 		
-		if ( K === 1 ) { //Black
-		   C = 0;
-		   M = 0;
-		   Y = 0;
+		if (K === 1) { //Black
+			C = 0;
+			M = 0;
+			Y = 0;
 		}
 		else {
-		   C = ( C - K ) / ( 1 - K );
-		   M = ( M - K ) / ( 1 - K );
-		   Y = ( Y - K ) / ( 1 - K );
+			C = (C - K) / (1 - K);
+			M = (M - K) / (1 - K);
+			Y = (Y - K) / (1 - K);
 		}
 		
 		return {c:C,m:M,y:Y,k:K};
@@ -221,7 +221,6 @@
 	Color.prototype.triad = function(color){
 		//H +/- 120 degrees
 		
-		//H +/- 150 degrees
 		var hsv = this.HSV();
 		
 		var plus = {}, minus = {};
@@ -256,7 +255,6 @@
 	
 	Color.prototype.analog = function(color){
 		//H +/- 30 degrees
-		//H +/- 150 degrees
 		var hsv = this.HSV();
 		
 		var plus = {}, minus = {};
@@ -274,7 +272,6 @@
 	
 	Color.prototype.complement = function(color){
 		//H + 180 degrees
-		//H +/- 150 degrees
 		var hsv = this.HSV();
 		
 		var plus = {};
