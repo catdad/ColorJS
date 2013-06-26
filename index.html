@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<style>
+	html, body{
+		margin: 0;
+		padding: 0;
+		background-color: #e5e5e5;
+		color: #777;
+		font-family: sans-serif;
+		font-size: .9em;
+		text-align: center;
+		overflow-x: hidden;
+	}
+	
+	#logo{
+		font-size: 6em;
+		font-weight: bold;
+	}
+	
+	#nav{
+		margin: 20px auto;
+		text-align: center;
+	}
+	#nav button{
+		margin: 5px;
+		background-color: white;
+		border: 1px solid #aaa;
+		padding: 3px 4px;
+		font-size: 1.2em;
+		cursor: pointer;
+	}
+	#nav button.active{
+		background-color: #aaa;
+		color: white;
+	}
+	
+	#results{
+		text-align: center;
+		margin: 0 0 20px;
+	}
+	
+	#footer{
+		position: fixed;
+		bottom: 0;
+		width: 100%;
+		font-size: .85em;
+		padding: 2px 0;
+		background-color: #e5e5e5;
+		box-shadow: 0 0 5px 2px #e5e5e5;
+	}
+	
+	#info{
+		text-align: left;
+		text-transform: uppercase;
+	}
+	
+	.color, .block{
+		position: relative;
+		margin: 20px;
+	}
+	
+	.color{
+		width: 200px;
+		height: 200px;
+		
+		border: 3px solid white;
+		border-radius: 150px;
+	}
+	
+	.block{
+		width: 240px;
+		height: 220px;
+	}
+	
+	.color .info{
+		color: white;
+		position: relative;
+		top: 5.2em; 
+		text-transform: uppercase;
+		text-shadow: 0 0 10px rgba(0,0,0,1), 0 0 10px rgba(0,0,0,.5);
+	}
+	
+	.inline { display: inline-block !important; vertical-align: top; }
+	
+	.label{
+		text-transform: capitalize;
+		font-variant: small-caps;
+		font-style: italic;
+		font-size: 1.2em;
+	}
+	
+	#picker { width: 200px; height: 200px }
+    #slide { width: 20px; height: 200px }
+	
+	#fork{
+		position: absolute;
+		top: 50px;
+		right: -50px;
+		
+		background-color: #F6C304;
+		padding: 5px 45px;
+		
+		-ms-transform:rotate(45deg);
+		-moz-transform:rotate(45deg);
+		-webkit-transform:rotate(45deg);
+		transform: rotate(45deg);
+		
+		border: 2px dotted white;
+		box-shadow: 0 0 0 3px #F6C304, 0 0px 20px -3px rgba(0,0,0,.5);
+		text-shadow: 0 0 5px rgba(0,0,0,.5);
+	}
+	#fork a{
+		color: white;
+		text-decoration: none; 
+		font-size: 1em;
+		font-weight: bold;
+	}
+	
+	#note{
+		display: block;
+		padding: 5px;
+		text-align: left;
+		font-weight: bold;
+		background-color: #F8EEA5;
+		border-bottom: 1px solid #F6C304;
+	}
+	#note div{ width: 66em; margin: 0 auto;}
+</style>
+
+</head>
+
+<body>
+	<div id="fork"><a href="https://github.com/catdad/ColorJS">Fork me on GitHub</a></div>
+	
+	<div id="note">
+		<div>
+		This project (and documentation) is still a work in progress. 
+		If you have any suggestions, please submit them on the GitHub page. 
+		Once the project features have been finalized, this message will be remoted.
+		</div>
+	</div>
+	
+	<div id="hero">
+		<div id="logo">ColorJS</div>
+		<div id=""></div>
+	</div>
+	
+	<div id="colorPicker" class="inline block cp-normal">
+		<div id="picker" class="inline"></div>
+		<div id="slide" class="inline"></div>    
+	</div>
+	<div id="main" class="inline color">&nbsp;</div>
+	<div id="info" class="inline block">Info</div>
+
+	<div id="nav">
+		<button onclick="calc('analog')">Analog</button>
+		<button onclick="calc('triad')">Triad</button>
+		<button onclick="calc('split')">Split</button>
+		<button onclick="calc('complement')">Complement</button>
+	</div>
+	
+	<div id="results"></div>
+	
+	<div id="footer">
+		ColorJS is created and maintained by <a href="https://github.com/catdad">catdad</a>. 
+		Find it on <a href="https://github.com/catdad/ColorJS">GitHub</a>.
+	</div>
+
+	<script type="text/javascript" src="misc/colorpicker.min.js"></script>
+	<script type="text/javascript" src="src/color.js"></script>
+	<script>
+		var main = Color("ff0000");
+		
+		function O(id){ return document.getElementById(id); }
+		function str(obj){
+			if (typeof obj === "string") return "<b>" + obj + "</b>";
+			var arr = [];
+			for (i in obj){ arr.push(i + ": " + obj[i]); }
+			return "<b>" + arr.join(', ') + "</b>";
+		}
+		function info(color, trim){
+			var code = "<div class='info'>";
+			if (trim){
+				code += "<div>" + str(color.CSS()) + "</div>";
+				code += "<div>" + str(color.RGB()) + "</div>";
+				code += "<div>" + str(color.HSV()) + "</div>";
+				code += "<div>" + str(color.HSL()) + "</div>";
+			}
+			else{
+				code = "<p>Info:</p>";
+				code += "<div>HEX: " + str(color.CSS()) + "</div>";
+				code += "<div>RGBA: " + str(color.RGB()) + "</div>";
+				code += "<div>HSV: " + str(color.HSV()) + "</div>";
+				code += "<div>HSL: " + str(color.HSL()) + "</div>";
+			}
+			code += "</div>";
+			return code;
+		}
+		function swatch(color){
+			var div = document.createElement("div");
+			div.className = "inline color";
+			div.style.backgroundColor = color.CSS();
+			
+			div.innerHTML = info(color, true);
+			return div;
+		}
+		function calc(method){ 
+			var res = main[method]();
+			var html = O("results");
+			html.innerHTML = "<div class='label'>" + method + "</div>";
+			
+			for (var i in res){
+				html.appendChild( swatch(res[i]) );
+			}
+		}
+		function change(color){
+			main = color;
+			O('main').style.backgroundColor = color.CSS();
+			O("info").innerHTML = info(color);
+			
+			O("results").innerHTML = "";
+		}
+		
+		change(main);
+		
+		var cp = ColorPicker( O('slide'), O('picker'),
+		function(hex, hsv, rgb) {
+			console.log(hex);
+			console.log(hsv);
+			console.log(rgb);
+			change(Color(rgb));
+		});
+		cp.setRgb( main.RGBA );
+	</script>
+</body>
+</html>
