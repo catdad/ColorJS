@@ -244,22 +244,21 @@
 	}
 	
 	/* color schemes */
-	Color.prototype.hueShift = function(hue){
-		// H +/- `hue`
-		
+	Color.prototype.hueShift = function(degrees){
+		// H +/- degrees
+		return [this, this.hueShiftSingle(degrees), this.hueShiftSingle(degrees * -1)];
+	}
+	
+	Color.prototype.hueShiftSingle = function(degrees){
 		var hsv = this.HSV();
 		
-		var plus = {}, minus = {};
-		plus.h = ColorLib.circleMotion(hsv.h, hue);
-		minus.h = ColorLib.circleMotion(hsv.h, (hue*-1));
+		var shift = {};
+		shift.h = ColorLib.circleMotion(hsv.h, degrees);
 		
-		plus.s = hsv.s;
-		plus.v = hsv.v;
+		shift.s = hsv.s;
+		shift.v = hsv.v;
 		
-		minus.s = hsv.s;
-		minus.v = hsv.v;
-		
-		return [this, ColorLib.fromHSV(plus), ColorLib.fromHSV(minus)];
+		return shift;
 	}
 	
 	Color.prototype.triad = function(color){
