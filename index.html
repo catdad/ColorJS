@@ -218,15 +218,23 @@
 		function calc(method, shift){ 
 			var res = main[method](shift);
 			var html = O("results");
-			html.innerHTML = "<div class='label'>" + 
-							 method + ((shift) ? " " + shift + " degrees":"") + 
-							 "</div>";
+			
+			var title = method;
+			if (method === "hueShift") title = method + " " + shift + " degrees";
+			else if (method === "contrasts") title = shift + " contrast" + ((shift > 1) ? "s":"");
+			
+			html.innerHTML = "<div class='label'>" + title + "</div>";
 			
 			for (var i in res){
 				html.appendChild( swatch(res[i]) );
 			}
 			
-			if (method !== "hueShift") O("hueShift").value = "";
+			if (method !== "hueShift" && method !== "contrasts") {
+				O("hueShift").value = "";
+				O("contrasts").value = "";
+			}
+			else if (method === "contrasts") O("hueShift").value = "";
+			else if (method === "hueShift") O("contrasts").value = "";
 		}
 		//change main color
 		function change(color){
@@ -237,6 +245,7 @@
 			//color scheme resets
 			O("results").innerHTML = "";
 			O("hueShift").value = "";
+			O("contrasts").value = "";
 		}
 		
 		O("hueShift").onchange = function(){ calc('hueShift', this.value) }
