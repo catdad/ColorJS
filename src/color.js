@@ -282,6 +282,22 @@
 		return [this, this.hueShiftSingle(180)];
 	}
 	
+	Color.prototype.contrasts = function(count){
+		//return complement if 1
+		if (count === 1) return this.complement();
+		
+		//calculate `count` number of equidistant colors
+		var degrees = 360 / count;
+		
+		var colors = [];
+		
+		for(var i = 0; i < count; i++){
+			colors.push( this.hueShiftSingle(degrees * i));
+		}
+		
+		return colors;
+	}
+	
 	Color.prototype.monochrome = function(color, count){
 		//TODO: return as many colors as asked
 	}
