@@ -5,6 +5,8 @@ convert and calculate colors in JavaScript
 
 **This library (and doc) is still a work in progress. Please bear with me, and feel free to make suggestions.**
 
+Check out the live demo [here](http://catdad.github.io/ColorJS).
+
 ##Create
 
 Simple create methods
