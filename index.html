@@ -23,7 +23,7 @@
 		margin: 10px auto 15px;
 		text-align: center;
 	}
-	#nav button{
+	#nav button, #nav input#hueShift{
 		margin: 0 5px;
 		background-color: white;
 		border: 1px solid #aaa;
@@ -35,6 +35,8 @@
 		background-color: #aaa;
 		color: white;
 	}
+	
+	#nav input#hueShift{ width: 60px; cursor: inherit; }
 	
 	#results{
 		text-align: center;
@@ -159,6 +161,7 @@
 		<button onclick="calc('triad')">Triad</button>
 		<button onclick="calc('split')">Split</button>
 		<button onclick="calc('complement')">Complement</button>
+		Hue Shift <input id="hueShift" type="number" min="0" max="360" />
 	</div>
 	
 	<div id="results"></div>
@@ -181,6 +184,8 @@
 			for (i in obj){ arr.push(i + ": " + obj[i]); }
 			return "<b>" + arr.join(', ') + "</b>";
 		}
+		
+		//view color info
 		function info(color, trim){
 			var code = "<div class='info'>";
 			if (trim){
@@ -199,6 +204,7 @@
 			code += "</div>";
 			return code;
 		}
+		//view for swatch
 		function swatch(color){
 			var div = document.createElement("div");
 			div.className = "inline color";
@@ -207,15 +213,19 @@
 			div.innerHTML = info(color, true);
 			return div;
 		}
-		function calc(method){ 
-			var res = main[method]();
+		//calculate color scheme
+		function calc(method, shift){ 
+			var res = main[method](shift);
 			var html = O("results");
-			html.innerHTML = "<div class='label'>" + method + "</div>";
+			html.innerHTML = "<div class='label'>" + 
+							 method + ((shift) ? " " + shift + " degrees":"") + 
+							 "</div>";
 			
 			for (var i in res){
 				html.appendChild( swatch(res[i]) );
 			}
 		}
+		//change main color
 		function change(color){
 			main = color;
 			O('main').style.backgroundColor = color.CSS();
@@ -224,13 +234,19 @@
 			O("results").innerHTML = "";
 		}
 		
+		O("hueShift").onchange = function(){
+			calc('hueShift', this.value);
+		}
+		
+		//color init
 		change(main);
 		
+		//color picker init
 		var cp = ColorPicker( O('slide'), O('picker'),
 		function(hex, hsv, rgb) {
-			console.log(hex);
-			console.log(hsv);
-			console.log(rgb);
+			//console.log(hex);
+			//console.log(hsv);
+			//console.log(rgb);
 			change(Color(rgb));
 		});
 		cp.setRgb( main.RGBA );
