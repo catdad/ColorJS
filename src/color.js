@@ -244,12 +244,8 @@
 	}
 	
 	/* color schemes */
-	Color.prototype.hueShift = function(degrees){
-		// H +/- degrees
-		return [this, this.hueShiftSingle(degrees), this.hueShiftSingle(degrees * -1)];
-	}
-	
 	Color.prototype.hueShiftSingle = function(degrees){
+		// H + degrees
 		var hsv = this.HSV();
 		
 		var shift = {};
@@ -258,7 +254,12 @@
 		shift.s = hsv.s;
 		shift.v = hsv.v;
 		
-		return shift;
+		return new ColorLib.fromHSV(shift);
+	}
+	
+	Color.prototype.hueShift = function(degrees){
+		// H +/- degrees
+		return [this, this.hueShiftSingle(degrees), this.hueShiftSingle(degrees * -1)];
 	}
 	
 	Color.prototype.triad = function(color){
@@ -278,15 +279,7 @@
 	
 	Color.prototype.complement = function(color){
 		//H + 180 degrees
-		var hsv = this.HSV();
-		
-		var plus = {};
-		plus.h = ColorLib.circleMotion(hsv.h, 180);
-		
-		plus.s = hsv.s;
-		plus.v = hsv.v;
-		
-		return [this, ColorLib.fromHSV(plus)];
+		return [this, this.hueShiftSingle(180)];
 	}
 	
 	Color.prototype.monochrome = function(color, count){
