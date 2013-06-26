@@ -244,6 +244,24 @@
 	}
 	
 	/* color schemes */
+	Color.prototype.hueShift = function(hue){
+		// H +/- `hue`
+		
+		var hsv = this.HSV();
+		
+		var plus = {}, minus = {};
+		plus.h = ColorLib.circleMotion(hsv.h, hue);
+		minus.h = ColorLib.circleMotion(hsv.h, (hue*-1));
+		
+		plus.s = hsv.s;
+		plus.v = hsv.v;
+		
+		minus.s = hsv.s;
+		minus.v = hsv.v;
+		
+		return [this, ColorLib.fromHSV(plus), ColorLib.fromHSV(minus)];
+	}
+	
 	Color.prototype.triad = function(color){
 		//H +/- 120 degrees
 		
