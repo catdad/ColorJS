@@ -36,7 +36,7 @@
 		color: white;
 	}
 	
-	#nav input#hueShift{ width: 60px; cursor: inherit; }
+	#nav input#hueShift{ width: 5em; cursor: inherit; }
 	
 	#results{
 		text-align: center;
@@ -161,7 +161,7 @@
 		<button onclick="calc('triad')">Triad</button>
 		<button onclick="calc('split')">Split</button>
 		<button onclick="calc('complement')">Complement</button>
-		Hue Shift <input id="hueShift" type="number" min="0" max="360" />
+		Hue Shift <input id="hueShift" type="number" min="0" max="360" placeholder="degrees" />
 	</div>
 	
 	<div id="results"></div>
@@ -224,6 +224,8 @@
 			for (var i in res){
 				html.appendChild( swatch(res[i]) );
 			}
+			
+			if (method !== "hueShift") O("hueShift").value = "";
 		}
 		//change main color
 		function change(color){
@@ -231,12 +233,13 @@
 			O('main').style.backgroundColor = color.CSS();
 			O("info").innerHTML = info(color);
 			
+			//color scheme resets
 			O("results").innerHTML = "";
+			O("hueShift").value = "";
 		}
 		
-		O("hueShift").onchange = function(){
-			calc('hueShift', this.value);
-		}
+		O("hueShift").onchange = function(){ calc('hueShift', this.value) }
+		O("hueShift").oninput = function(){ calc('hueShift', this.value) }
 		
 		//color init
 		change(main);
