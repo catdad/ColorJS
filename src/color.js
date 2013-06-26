@@ -264,54 +264,17 @@
 	
 	Color.prototype.triad = function(color){
 		//H +/- 120 degrees
-		
-		var hsv = this.HSV();
-		
-		var plus = {}, minus = {};
-		plus.h = ColorLib.circleMotion(hsv.h, 120);
-		minus.h = ColorLib.circleMotion(hsv.h, -120);
-		
-		plus.s = hsv.s;
-		plus.v = hsv.v;
-		
-		minus.s = hsv.s;
-		minus.v = hsv.v;
-		
-		return [this, ColorLib.fromHSV(plus), ColorLib.fromHSV(minus)];
+		return this.hueShift(120);
 	}
 	
 	Color.prototype.split = function(color){
 		//H +/- 150 degrees
-		var hsv = this.HSV();
-		
-		var plus = {}, minus = {};
-		plus.h = ColorLib.circleMotion(hsv.h, 150);
-		minus.h = ColorLib.circleMotion(hsv.h, -150);
-		
-		plus.s = hsv.s;
-		plus.v = hsv.v;
-		
-		minus.s = hsv.s;
-		minus.v = hsv.v;
-		
-		return [this, ColorLib.fromHSV(plus), ColorLib.fromHSV(minus)];
+		return this.hueShift(150);
 	}
 	
 	Color.prototype.analog = function(color){
 		//H +/- 30 degrees
-		var hsv = this.HSV();
-		
-		var plus = {}, minus = {};
-		plus.h = ColorLib.circleMotion(hsv.h, 30);
-		minus.h = ColorLib.circleMotion(hsv.h, -30);
-		
-		plus.s = hsv.s;
-		plus.v = hsv.v;
-		
-		minus.s = hsv.s;
-		minus.v = hsv.v;
-		
-		return [this, ColorLib.fromHSV(plus), ColorLib.fromHSV(minus)];
+		return this.hueShift(30);
 	}
 	
 	Color.prototype.complement = function(color){
