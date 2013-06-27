@@ -67,7 +67,12 @@ You can use this library to calculate color various named color harmonies.
 
 _Note: These values are mathematical suggestions, and may need to be adjusted slightly to make a more pleasant color combination or remain in the same color gamut._
 
-You can also calculate any generic (unnamed) color scheme using the hue shifter function.
+The tetratic/quadratic color scheme is a special case, in that it takes an offset parameter in degrees. This offset it used to calculate the color scheme rectangle. The default is 40 degrees, which was a subjective choice.
+
+    var offset = 30;
+    color.quadrat(offset); //[original, color1, color2, color3]
+
+Calculate any generic (unnamed) three color scheme using the hue shifter function:
 
     //HUE +/- degrees
     color.hueShift(degrees); //[original, plus, minus]
@@ -99,7 +104,7 @@ All colors are stored as RGBA values. Some rounding needs to occur for this, esp
 
 ##Thanks
 
-Special thanks to my art school girlfriend, who answered all of my incessant questions about color theory.
+Special thanks to my art school girlfriend, who answered all of my incessant questions about color theory. If you would like to read up on it as well, try this article: [Color Theory, The Color Wheel And Color Schemes](http://www.vanseodesign.com/web-design/color-theory/)
 
 ##License
 
