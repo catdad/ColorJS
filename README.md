@@ -1,11 +1,11 @@
 ColorJS
 =======
 
-convert and calculate colors in JavaScript
+So you want to convert and calculate colors in JavaScript? You've come to the right place.
+
+[Click here for the live demo here](http://catdad.github.io/ColorJS).
 
 **This library (and doc) is still a work in progress. Please bear with me, and feel free to make suggestions. As a disclaimer, I may break things for the time being, until the code matures a bit more. If you use it, and later choose to update your library, please read the up-to-date doc.**
-
-Check out the live demo [here](http://catdad.github.io/ColorJS).
 
 ##Create
 
@@ -28,21 +28,20 @@ Under advanced methods, there are also options to create colors from `CMYK`, `HS
     Color.fromHSV({h: 0, s: 1, v: 1})
     Color.fromHSL({h: 0, s: 1, l: 0.5});
   
-##Convert
+##Getters and Setters
 
 Once you have created a color, you can convert it to any format you would like, as such:
 
     var color = Color("#ff0000");
   
-    color.CMYK(); //{c: 0, m: 1, y: 1, k: 0}
-    color.HSV(); //{h: 0, s: 1, v: 1}
-    color.HSL(); //{h: 0, s: 1, l: 0.5}
     color.HEX(); //"ff0000"
     color.CSS(); //"#ff0000"
-  
-##Setters
-
-The convert functions can also be used to set the color of an existing `Color` object by passing the appropriate value.
+    color.RGB(); //{r: 255, g: 0, b: 0}
+    color.HSV(); //{h: 0, s: 1, v: 1}
+    color.HSL(); //{h: 0, s: 1, l: 0.5}
+    color.CMYK(); //{c: 0, m: 1, y: 1, k: 0}
+    
+The same functions can be used to set the color of an existing `Color` object by passing the appropriate value.
 
     var color = Color("ff0000");
     color.CMYK(); //{c: 0, m: 1, y: 1, k: 0}
