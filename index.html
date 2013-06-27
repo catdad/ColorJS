@@ -138,7 +138,8 @@
 		<button onclick="calc('split')">Split</button>
 		<button onclick="calc('complement')">Complement</button>
 		Hue Shift<input id="hueShift" type="number" min="0" max="360" placeholder="degrees" />
-		Contrasts<input id="contrasts" type="number" min="0" max="5" placeholder="count" />
+		Contrasts<input id="contrasts" type="number" min="0" max="10" placeholder="count" />
+		Monochrome<input id="monochrome" type="number" min="0" max="10" placeholder="count" />
 	</div>
 	
 	<div id="results"></div>
@@ -191,13 +192,12 @@
 			return div;
 		}
 		//calculate color scheme
-		function calc(method, shift){ 
-			var res = main[method](shift);
+		function calc(method, n){ 
+			var res = main[method](n);
 			var html = O("results");
 			
 			var title = method;
-			if (method === "hueShift") title = method + " " + shift + " degrees";
-			else if (method === "contrasts") title = shift + " contrast" + ((shift > 1) ? "s":"");
+			if (method === "hueShift") title = method + " " + n + " degrees";
 			
 			html.innerHTML = "<div class='label'>" + title + "</div>";
 			
@@ -205,12 +205,14 @@
 				html.appendChild( swatch(res[i]) );
 			}
 			
-			if (method !== "hueShift" && method !== "contrasts") {
+			if (!n){
 				O("hueShift").value = "";
 				O("contrasts").value = "";
+				O("monochrome").value = "";
 			}
-			else if (method === "contrasts") O("hueShift").value = "";
-			else if (method === "hueShift") O("contrasts").value = "";
+			else if (method === "hueShift"){
+			
+			}
 		}
 		//change main color
 		function change(color){
@@ -229,6 +231,9 @@
 		
 		O("contrasts").onchange = function(){ calc('contrasts', this.value) }
 		O("contrasts").oninput = function(){ calc('contrasts', this.value) }
+		
+		O("monochrome").onchange = function(){ calc('monochrome', this.value) }
+		O("monochrome").oninput = function(){ calc('monochrome', this.value) }
 		
 		//color init
 		change(main);

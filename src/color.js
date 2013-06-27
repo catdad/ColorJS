@@ -266,8 +266,26 @@
 		return colors;
 	}
 	
-	Color.prototype.monochrome = function(color, count){
-		//TODO: return as many colors as asked
+	//return Lightness spectrum -- no black or white
+	Color.prototype.monochrome = function(count){
+		//do not return white (adds another color)
+		var n = 1/++count;
+		
+		var colors = [];
+		var hsv = this.HSL();
+		
+		// do not return black
+		//var i = 1;
+		
+		for (var i = 1; i < count; i++){
+			colors.push(new ColorLib.fromHSL({
+				h: hsv.h,
+				s: hsv.s,
+				l: n*i
+			}));
+		}
+		
+		return colors;
 	}
 	
 	//creator function -- check types
