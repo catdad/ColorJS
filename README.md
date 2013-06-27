@@ -68,6 +68,23 @@ You can use this library to calculate color various color harmonies.
 
 _Note: These values are mathematical suggestions, and may need to be adjusted slightly to make a more pleasant color combination or remain in the same color gamut._
 
+You can also calculate any generic (unnamed) color scheme using the hue shifter function.
+
+    //HUE +/- degrees
+    color.hueShift(degrees); //[original, plus, minus]
+    
+There is also a more generic hue shifter, which returns only one value.
+
+    //HUE + degrees
+    color.hueShiftSingle(degrees); //newColor
+
+You can also perform hue shifts based on how many colors you need, which will calculate colors at equal invervals.
+
+    var count = 5;
+    color.contrasts(count); //[original, color1, color2, color3, color4];
+    
+_Note: This function obviously has a limit of usefulness, as too many colors will result colors being too close to one another. This is a mathematical limitation, and there isn't much I can do about it. If you need more colors, try calculating this from two (or seven) colors from a different color gamut to get more contrasting colors._
+
 ##Note
 
 All colors are stored as RGBA values. Some rounding needs to occur for this, especially for HSL and HSV values. This will result in colors being ever so slightly different. If this is unacceptable, please look elsewhere.
