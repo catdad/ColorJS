@@ -3,7 +3,7 @@ ColorJS
 
 convert and calculate colors in JavaScript
 
-**This library (and doc) is still a work in progress. Please bear with me, and feel free to make suggestions.**
+**This library (and doc) is still a work in progress. Please bear with me, and feel free to make suggestions. As a disclaimer, I may break things for the time being, until the code matures a bit more. If you use it, and later choose to update your library, please read the up-to-date doc.**
 
 Check out the live demo [here](http://catdad.github.io/ColorJS).
 
@@ -52,7 +52,7 @@ The convert functions can also be used to set the color of an existing `Color` o
 
 ##Color scheme calculator
 
-You can use this library to calculate color various color harmonies.
+You can use this library to calculate color various named color harmonies.
 
     //HUE +/- 30 degrees
     color.analog(); //[original, plus, minus]
@@ -73,21 +73,34 @@ You can also calculate any generic (unnamed) color scheme using the hue shifter 
     //HUE +/- degrees
     color.hueShift(degrees); //[original, plus, minus]
     
-There is also a more generic hue shifter, which returns only one value.
+More generic hue shifter, which returns only one value:
 
     //HUE + degrees
     color.hueShiftSingle(degrees); //newColor
 
-You can also perform hue shifts based on how many colors you need, which will calculate colors at equal invervals.
+Hue shifts based on how many colors you need, which will calculate colors at equal invervals:
 
     var count = 5;
     color.contrasts(count); //[original, color1, color2, color3, color4];
     
+_Note: This name will likely change, as it is not very intuitive._
+
 _Note: This function obviously has a limit of usefulness, as too many colors will result colors being too close to one another. This is a mathematical limitation, and there isn't much I can do about it. If you need more colors, try calculating this from two (or seven) colors from a different color gamut to get more contrasting colors._
+
+Monochromatic calculations, based on the number of colors you need:
+
+    var count = 3;
+    color.monochrome(count); //[color1, color2, color3]
+    
+_Note: This function does not return pure black or white. Add those on your own if you need to. Also, it does not necessarily return the original color. It will only be returned with an odd number of colors, as the middle color._
 
 ##Note
 
 All colors are stored as RGBA values. Some rounding needs to occur for this, especially for HSL and HSV values. This will result in colors being ever so slightly different. If this is unacceptable, please look elsewhere.
+
+##Thanks
+
+Special thanks to my art school girlfriend, who answered all of my incessant questions about color theory.
 
 ##License
 
