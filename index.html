@@ -147,7 +147,7 @@
 		<button onclick="calc('triad')">Triad</button>
 		<button onclick="calc('split')">Split</button>
 		<button onclick="calc('complement')">Complement</button>
-		Quadrat<input id="quadrat" type="number" min="-120" max="120" step="10" placeholder="degrees" />
+		Quadrat<input id="quadrat" type="number" min="-180" max="180" step="10" placeholder="degrees" />
 		<br/><br/>
 		Hue Shift<input id="hueShift" type="number" min="0" max="360" placeholder="degrees" />
 		Contrasts<input id="contrasts" type="number" min="0" max="10" placeholder="count" />
@@ -238,16 +238,9 @@
 			O("contrasts").value = "";
 		}
 		
-		//O("hueShift").onchange = function(){ calc('hueShift', this.value) }
 		O("hueShift").oninput = function(){ calc('hueShift', this.value) }
-		
-		//O("contrasts").onchange = function(){ calc('contrasts', this.value) }
 		O("contrasts").oninput = function(){ calc('contrasts', this.value) }
-		
-		//O("monochrome").onchange = function(){ calc('monochrome', this.value) }
 		O("monochrome").oninput = function(){ calc('monochrome', this.value) }
-		
-		//O("quadrat").onchange = function(){ calc('quadrat', this.value) }
 		O("quadrat").oninput = function(){ calc('quadrat', this.value) }
 		
 		//color init
