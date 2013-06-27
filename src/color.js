@@ -250,6 +250,20 @@
 		return [this, this.hueShiftSingle(180)];
 	}
 	
+	Color.prototype.quadrat = function(shift){
+		var x = Number(shift);
+		var y = 180 - x;
+		
+		var colors = [];
+		
+		colors.push(this);
+		colors.push(this.hueShiftSingle(x));
+		colors.push(this.hueShiftSingle(x + y));
+		colors.push(this.hueShiftSingle(x + y + x));
+		
+		return colors;
+	}
+	
 	Color.prototype.contrasts = function(count){
 		//return complement if 1
 		if (count === 1) return this.complement();
