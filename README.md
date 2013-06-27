@@ -91,4 +91,4 @@ All colors are stored as RGBA values. Some rounding needs to occur for this, esp
 
 ##License
 
-This project is licensed under a [Creative Commons Attribution 3.0 License](http://creativecommons.org/licenses/by/3.0/). Please use, adapt, and modify this project to your heart's content. Link back to this page wherever you can.
+This project is licensed under the MIT X11 License. Please use, adapt, and modify this project to your heart's content. Link back to this page wherever you can.
