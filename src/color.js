@@ -283,7 +283,7 @@
 		return new Color(rgba);
 	}
 	
-	//simple creator -- RGB[A] or HEX
+	// simple creator -- RGB[A] or HEX
 	var ColorLib = function(val){
 		//checl for null
 		if (!val) return null;
@@ -292,7 +292,7 @@
 		else return creator(val);
 	}
 	
-	//xxxxxx, xxx, #xxx, or #xxxxxx
+	// xxxxxx, xxx, #xxx, or #xxxxxx
 	ColorLib.fromHEX = function(val){
 		val = String(val).replace(/[^0-9a-f]/gi, "");
 		if (val.length < 6) {
@@ -310,7 +310,7 @@
 		return creator({r:r,g:g,b:b,a:1});
 	}
 	
-	//create from RGB or RGBA objects
+	// create from RGB or RGBA objects
 	ColorLib.fromRGBA = creator;
 	ColorLib.fromRGB = creator;
 	
