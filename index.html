@@ -191,6 +191,13 @@
 			div.innerHTML = info(color, true);
 			return div;
 		}
+		//reset unused number input methods
+		function resetInputs(method){
+			var all = ["hueShift", "contrasts", "monochrome"];
+			for (var i in all){
+				if (all[i] !== method) O(all[i]).value = "";
+			}
+		}
 		//calculate color scheme
 		function calc(method, n){ 
 			var res = main[method](n);
@@ -205,14 +212,7 @@
 				html.appendChild( swatch(res[i]) );
 			}
 			
-			if (!n){
-				O("hueShift").value = "";
-				O("contrasts").value = "";
-				O("monochrome").value = "";
-			}
-			else if (method === "hueShift"){
-			
-			}
+			resetInputs(method);
 		}
 		//change main color
 		function change(color){
