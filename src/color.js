@@ -251,7 +251,7 @@
 	}
 	
 	Color.prototype.quadrat = function(shift){
-		var x = Number(shift);
+		var x = Number(shift) || 40;
 		var y = 180 - x;
 		
 		var colors = [];
