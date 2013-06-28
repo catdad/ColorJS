@@ -208,18 +208,6 @@
 		
 	}
 	
-	//experimental lighter color calculator using alpha chanel
-	//similar to one-way monochrome
-	Color.prototype.lighterAlpha = function(count){
-		return ColorLib.alphaShift(this, count, ColorLib('fff').RGBA);
-	}
-	
-	//experimental darker color calculator using alpha chanel
-	//similar to one-way monochrome
-	Color.prototype.darkerAlpha = function(count){
-		return ColorLib.alphaShift(this, count, ColorLib('000').RGBA);
-	}
-	
 	/* color schemes */
 	Color.prototype.hueShiftSingle = function(degrees){
 		// H + degrees
@@ -310,6 +298,16 @@
 		}
 		
 		return colors;
+	}
+	
+	//experimental lighter color calculator using alpha chanel
+	Color.prototype.monochromeLight = function(count){
+		return ColorLib.alphaShift(this, count, ColorLib('fff').RGBA);
+	}
+	
+	//experimental darker color calculator using alpha chanel
+	Color.prototype.monochromeDark = function(count){
+		return ColorLib.alphaShift(this, count, ColorLib('000').RGBA);
 	}
 	
 	//creator function -- check types
