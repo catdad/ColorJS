@@ -184,9 +184,6 @@
 		
 		if (!bg) bg = {r: 255, g: 255, b: 255}; //set to white if no background
 		
-		console.log(a);
-		console.log(bg);
-		
 		var calc = function(bgC, C){ return Math.round( (1 - a) * bgC + a * C ); }
 		
 		this.RGBA.r = calc(bg.r, this.RGBA.r);
@@ -227,6 +224,7 @@
 	
 	Color.prototype.hueShift = function(degrees){
 		// H +/- degrees
+		degrees = Number(degrees);
 		return [this, this.hueShiftSingle(degrees), this.hueShiftSingle(degrees * -1)];
 	}
 	
@@ -497,7 +495,7 @@
 		return m;
 	}
 	ColorLib.circleMotion = function(from, offset){
-		from = from + offset;
+		from = Number(from) + Number(offset);
 		
 		while (from < 0) from = from + 360;
 		while (from > 360) from = from - 360;
