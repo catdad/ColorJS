@@ -38,6 +38,14 @@
 					<span>Scale</span>
 					<input id="monochrome" type="number" min="0" max="10" placeholder="count" />
 				</div>
+				<div class="input">
+					<span>Lighter</span>
+					<input id="monochromeLight" type="number" min="0" max="10" placeholder="count" />
+				</div>
+				<div class="input">
+					<span>Darker</span>
+					<input id="monochromeDark" type="number" min="0" max="10" placeholder="count" />
+				</div>
 			</div>
 			
 			<div class="section"><div class="title">Multi-Color Schemes</div>
@@ -96,7 +104,19 @@
 	<script type="text/javascript" src="misc/colorpicker.min.js"></script>
 	<script type="text/javascript" src="src/color.js"></script>
 	<script>
-		var main = Color("ff0000");
+		var configMethods = ["hueShift", "contrasts", "monochrome", "quadrat", "monochromeLight", "monochromeDark"];
+		var activeMethod = {active:false};
+		
+		var main;
+		
+		//get HEX out of hash
+		(function(){
+			var hash = window.location.hash.replace(/[^0-9a-f]/gi, "");
+			if (hash && (hash.length === 3 || hash.length === 6)) {
+				main = Color(hash);
+			}
+			else main = Color("ff0000");
+		})();
 		
 		function O(id){ return document.getElementById(id); }
 		function str(obj){
@@ -136,13 +156,15 @@
 		}
 		//reset unused number input methods
 		function resetInputs(method){
-			var all = ["hueShift", "contrasts", "monochrome", "quadrat"];
-			for (var i in all){
-				if (all[i] !== method) O(all[i]).value = "";
+			for (var i = 0; i < configMethods.length; i++){
+				if (configMethods[i] !== method) O(configMethods[i]).value = "";
 			}
 		}
 		//calculate color scheme
 		function calc(method, n){ 
+			//set active method
+			activeMethod = { name:method, n:n, active:true };
+			
 			var res = main[method](n);
 			var html = O("results");
 			
@@ -151,7 +173,8 @@
 			
 			html.innerHTML = "<div class='label'>" + title + "</div>";
 			
-			for (var i in res){
+			//add each color to DOM
+			for (var i = 0; i < res.length; i++){
 				html.appendChild( swatch(res[i]) );
 			}
 			
@@ -170,12 +193,17 @@
 			
 			//set hash
 			window.location.hash = color.HEX();
+			
+			//execute active method
+			if (activeMethod.active) calc(activeMethod.name, activeMethod.n);
 		}
 		
-		O("hueShift").oninput = function(){ calc('hueShift', this.value) }
-		O("contrasts").oninput = function(){ calc('contrasts', this.value) }
-		O("monochrome").oninput = function(){ calc('monochrome', this.value) }
-		O("quadrat").oninput = function(){ calc('quadrat', this.value) }
+		//set listeners
+		for (var i = 0; i < configMethods.length; i++){
+			O(configMethods[i]).oninput = function oninput(){
+				calc(this.id, this.value);
+			};
+		}
 		
 		//color init
 		change(main);
@@ -189,14 +217,6 @@
 			change(Color(rgb));
 		});
 		cp.setRgb( main.RGBA );
-		
-		//get HEX out of hash
-		(function(){
-			var hash = window.location.hash.replace(/[^0-9a-f]/gi, "");
-			if (hash && (hash.length === 3 || hash.length === 6)) {
-				change(Color(hash));
-			}
-		})();
 	</script>
 </body>
 </html>
