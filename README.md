@@ -96,7 +96,7 @@ Monochromatic calculations, based on the number of colors you need:
     var count = 3;
     color.monochrome(count); //[color1, color2, color3]
     
-_Note: This function does not return pure black or white. Add those on your own if you need to. Also, it does not necessarily return the original color. It will only be returned with an odd number of colors, as the middle color._
+_Note: This function does not return pure black or white. Add those on your own if you need to. Also, it does not necessarily return the original color._
 
 ##Note
 

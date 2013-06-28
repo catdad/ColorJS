@@ -214,15 +214,15 @@
 	/* color schemes */
 	Color.prototype.hueShiftSingle = function(degrees){
 		// H + degrees
-		var hsv = this.HSV();
+		var hsl = this.HSL();
 		
 		var shift = {};
-		shift.h = ColorLib.circleMotion(hsv.h, degrees);
+		shift.h = ColorLib.circleMotion(hsl.h, degrees);
 		
-		shift.s = hsv.s;
-		shift.v = hsv.v;
+		shift.s = hsl.s;
+		shift.l = hsl.l;
 		
-		return new ColorLib.fromHSV(shift);
+		return new ColorLib.fromHSL(shift);
 	}
 	
 	Color.prototype.hueShift = function(degrees){
