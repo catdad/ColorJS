@@ -96,7 +96,12 @@ Monochromatic calculations, based on the number of colors you need:
     var count = 3;
     color.monochrome(count); //[color1, color2, color3]
     
-_Note: This function does not return pure black or white. Add those on your own if you need to. Also, it does not necessarily return the original color._
+Calculate only lighter or darker monochrome colors:
+
+    color.monochromeLight(count); //[original, lighter1, lighter2]
+    color.monochromeDark(count); //[original, dark1, dark2]
+    
+_Note: The monochrome functions does not return pure black or white. Add those on your own if you need to. Also, `monochrome` does not necessarily return the original color, but rather colors of the same hue._
 
 ##Note
 
