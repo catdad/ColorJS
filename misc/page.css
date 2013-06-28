@@ -101,12 +101,13 @@ div#footer {
 }
 
 .color{
-	width: 200px;
-	height: 200px;
+	width: 160px;
+	height: 160px;
 	border: 3px solid white;
 	border-radius: 150px;
 	z-index: 5;
 }
+#main.color{ width: 200px; height: 200px; }
 
 .block{
 	width: 240px;
@@ -116,7 +117,7 @@ div#footer {
 .color .info{
 	color: white;
 	position: relative;
-	top: 5.2em; 
+	top: 3.2em; 
 	text-transform: uppercase;
 	text-shadow: 0 0 10px rgba(0,0,0,1), 0 0 10px rgba(0,0,0,.5);
 }
@@ -128,6 +129,7 @@ div#footer {
 	font-variant: small-caps;
 	font-style: italic;
 	font-size: 1.2em;
+	margin-bottom: 5px;
 }
 
 #picker { width: 200px; height: 200px }
