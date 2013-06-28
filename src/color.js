@@ -300,6 +300,16 @@
 		return colors;
 	}
 	
+	//experimental lighter color calculator using alpha chanel
+	Color.prototype.monochromeLight = function(count){
+		return ColorLib.alphaShift(this, count, ColorLib('fff').RGBA);
+	}
+	
+	//experimental darker color calculator using alpha chanel
+	Color.prototype.monochromeDark = function(count){
+		return ColorLib.alphaShift(this, count, ColorLib('000').RGBA);
+	}
+	
 	//creator function -- check types
 	var creator = function(val){
 		//check for valid color values (0 - 255)
@@ -501,6 +511,19 @@
 		while (from > 360) from = from - 360;
 		
 		return from;
+	}
+	//creates different colors based on alpha and background color
+	ColorLib.alphaShift = function alphaShift(color, count, background){
+		var n = 1/count;
+		
+		var colors = [];
+		
+		for (var i = count; i > 0; i--){
+			var col = new ColorLib.fromArray([color.RGBA.r, color.RGBA.g, color.RGBA.b, (n*i)]);
+			colors.push(col.removeAlpha( background ));
+		}
+		
+		return colors;
 	}
 	
 	//attach to global scope
