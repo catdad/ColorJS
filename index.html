@@ -10,156 +10,87 @@
 	Eden Clairicia, from The Noun Project
 	http://thenounproject.com/noun/paint-brush/#icon-No14813
 -->
-	
 
-<style>
-	html, body{
-		margin: 0;
-		padding: 0;
-		background-color: #e5e5e5;
-		color: #777;
-		font-family: sans-serif;
-		font-size: .9em;
-		text-align: center;
-		overflow-x: hidden;
-	}
-	
-	#logo{
-		font-size: 6em;
-		font-weight: bold;
-	}
-	
-	#nav{
-		margin: 10px auto 15px;
-		text-align: center;
-	}
-	#nav button, #nav input[type="number"]{
-		margin: 0 5px;
-		background-color: white;
-		border: 1px solid #aaa;
-		padding: 3px 4px;
-		font-size: 1.2em;
-		cursor: pointer;
-	}
-	#nav button.active{
-		background-color: #aaa;
-		color: white;
-	}
-	
-	#nav input[type="number"]{ width: 5em; cursor: inherit; }
-	
-	#results{
-		text-align: center;
-		margin: 0 0 20px;
-	}
-	
-	#footer{
-		position: fixed;
-		bottom: 0;
-		width: 100%;
-		font-size: .85em;
-		padding: 2px 0;
-		background-color: #e5e5e5;
-		box-shadow: 0 0 5px 2px #e5e5e5;
-	}
-	
-	#info{
-		text-align: left;
-		text-transform: uppercase;
-	}
-	
-	.color, .block{
-		position: relative;
-		margin: 10px;
-	}
-	
-	.color{
-		width: 200px;
-		height: 200px;
-		
-		border: 3px solid white;
-		border-radius: 150px;
-	}
-	
-	.block{
-		width: 240px;
-		height: 220px;
-	}
-	
-	.color .info{
-		color: white;
-		position: relative;
-		top: 5.2em; 
-		text-transform: uppercase;
-		text-shadow: 0 0 10px rgba(0,0,0,1), 0 0 10px rgba(0,0,0,.5);
-	}
-	
-	.inline { display: inline-block !important; vertical-align: top; }
-	
-	.label{
-		text-transform: capitalize;
-		font-variant: small-caps;
-		font-style: italic;
-		font-size: 1.2em;
-	}
-	
-	#picker { width: 200px; height: 200px }
-	#slide { width: 20px; height: 200px }
-	
-	#note{
-		display: block;
-		padding: 5px;
-		text-align: left;
-		font-weight: bold;
-		background-color: #F8EEA5;
-		border-bottom: 1px solid #F6C304;
-	}
-	#note div{ width: 66em; margin: 0 auto;}
-</style>
+<link rel="stylesheet" href="misc/page.css">
 
 </head>
 
 <body>
-	<a href='https://github.com/catdad/ColorJS' style='position:fixed;padding:5px 45px;width:123px;background-color:#F6C304;color:#fff;font-size:13px;font-family:sans-serif;text-decoration:none; font-weight:bold;-webkit-backface-visibility:hidden;border:2px dotted #fff;box-shadow:0 0 0 3px #F6C304,0 0 20px -3px rgba(0,0,0,.5);text-shadow:0 0 0 #fff,0 0 5px rgba(0,0,0,.3);top:50px;right:-50px;-ms-transform:rotate(45deg);-moz-transform:rotate(45deg);-webkit-transform:rotate(45deg);transform: rotate(45deg);'>Fork me on GitHub</a>
+	<a href='#' style='z-index:1;position:fixed;padding:5px 45px;width:123px;background-color:#F6C304;color:#fff;font-size:13px;font-family:sans-serif;text-decoration:none; font-weight:bold;-webkit-backface-visibility:hidden;border:2px dotted #fff;box-shadow:0 0 0 3px #F6C304,0 0 20px -3px rgba(0,0,0,.5);text-shadow:0 0 0 #fff,0 0 5px rgba(0,0,0,.3);bottom:50px;left:-50px;-ms-transform:rotate(45deg);-moz-transform:rotate(45deg);-webkit-transform:rotate(45deg);transform: rotate(45deg);'>Fork me on GitHub</a>
 	
-	<div id="note">
-		<div>
-		This project (and documentation) is still a work in progress. 
-		If you have any suggestions, please submit them on the GitHub page. 
-		Once the project features have been finalized, this message will be remoted.
+	<!--
+	<a href='https://github.com/catdad/ColorJS' style='z-index:1;position:absolute;padding:5px 45px;width:123px;background-color:#F6C304;color:#fff;font-size:13px;font-family:sans-serif;text-decoration:none; font-weight:bold;-webkit-backface-visibility:hidden;border:2px dotted #fff;box-shadow:0 0 0 3px #F6C304,0 0 20px -3px rgba(0,0,0,.5);text-shadow:0 0 0 #fff,0 0 5px rgba(0,0,0,.3);top:50px;right:-50px;-ms-transform:rotate(45deg);-moz-transform:rotate(45deg);-webkit-transform:rotate(45deg);transform: rotate(45deg);'>Fork me on GitHub</a>
+	-->
+	
+	<div id="container">
+		<div id="sidebar">
+			<div class="section">
+				&nbsp;
+			</div>
+			<div class="section"><div class="title">Quick Schemes</div>
+				<button onclick="calc('analog')">Analog</button>
+				<button onclick="calc('triad')">Triad</button>
+				<button onclick="calc('split')">Split</button>
+				<button onclick="calc('complement')">Complement</button>
+			</div>
+			<div class="section"><div class="title">Single Color Schemes</div>
+				<div class="input">
+					<span>Scale</span>
+					<input id="monochrome" type="number" min="0" max="10" placeholder="count" />
+				</div>
+			</div>
+			
+			<div class="section"><div class="title">Multi-Color Schemes</div>
+				<div class="input">
+					<span>Quadrat</span>
+					<input id="quadrat" type="number" min="-180" max="180" step="10" placeholder="degrees" />
+				</div>
+				<div class="input">
+					<span>Contrasts</span>
+					<input id="contrasts" type="number" min="0" max="10" placeholder="count" />
+				</div>
+				<div class="input">
+					<span>Hue Shift</span>
+					<input id="hueShift" type="number" min="0" max="360" placeholder="degrees" />
+				</div>
+			</div>
+			
 		</div>
-	</div>
 	
-	<div id="hero">
-		<div id="logo">ColorJS</div>
-		<div id=""></div>
-	</div>
-	
-	<div id="colorPicker" class="inline block cp-normal">
-		<div id="picker" class="inline"></div>
-		<div id="slide" class="inline"></div>    
-	</div>
-	<div id="main" class="inline color">&nbsp;</div>
-	<div id="info" class="inline block">Info</div>
+		<div id="note">
+			<div>
+			This project (and documentation) is still a work in progress. 
+			If you have any suggestions, please submit them on the GitHub page.
+			</div>
+		</div>
+		
+		<div id="content">
+			
+			<div id="hero">
+				<div id="logo">ColorJS</div>
+				<div id=""></div>
+				
+				<div id="colorPicker" class="inline block cp-normal">
+					<div id="picker" class="inline"></div>
+					<div id="slide" class="inline"></div>    
+				</div>
+				<div id="main" class="inline color">&nbsp;</div>
+				<div id="info" class="inline block">Info</div>
 
-	<div id="nav">
-		<button onclick="calc('analog')">Analog</button>
-		<button onclick="calc('triad')">Triad</button>
-		<button onclick="calc('split')">Split</button>
-		<button onclick="calc('complement')">Complement</button>
-		Quadrat<input id="quadrat" type="number" min="-180" max="180" step="10" placeholder="degrees" />
-		<br/><br/>
-		Hue Shift<input id="hueShift" type="number" min="0" max="360" placeholder="degrees" />
-		Contrasts<input id="contrasts" type="number" min="0" max="10" placeholder="count" />
-		Monochrome<input id="monochrome" type="number" min="0" max="10" placeholder="count" />
-	</div>
-	
-	<div id="results"></div>
-	
-	<div id="footer">
-		ColorJS is created and maintained by <a href="https://github.com/catdad">catdad</a>. 
-		Find it on <a href="https://github.com/catdad/ColorJS">GitHub</a>.
-	</div>
+			</div>
+			
+			<div id="results"></div>
+			
+		</div><!-- content -->
+
+		<div id="footer">
+			<div>
+			ColorJS is created and maintained by <a href="https://github.com/catdad">catdad</a>. 
+			Find it on <a href="https://github.com/catdad/ColorJS">GitHub</a>.
+			</div>
+		</div>
+		
+	</div><!-- container -->
 
 	<script type="text/javascript" src="misc/analytics.js"></script>
 	<script type="text/javascript" src="misc/colorpicker.min.js"></script>
@@ -236,6 +167,9 @@
 			O("results").innerHTML = "";
 			O("hueShift").value = "";
 			O("contrasts").value = "";
+			
+			//set hash
+			window.location.hash = color.HEX();
 		}
 		
 		O("hueShift").oninput = function(){ calc('hueShift', this.value) }
@@ -255,6 +189,14 @@
 			change(Color(rgb));
 		});
 		cp.setRgb( main.RGBA );
+		
+		//get HEX out of hash
+		(function(){
+			var hash = window.location.hash.replace(/[^0-9a-f]/gi, "");
+			if (hash && (hash.length === 3 || hash.length === 6)) {
+				change(Color(hash));
+			}
+		})();
 	</script>
 </body>
 </html>
