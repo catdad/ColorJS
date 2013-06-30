@@ -19,14 +19,17 @@ Advanced create methods
     Color.fromHEX("#ff0000");
     Color.fromRGB({r:255,g:0,b:0});
     Color.fromRGBA({r:255,g:0,b:0,a:.5});
+    Color.fromArray([255,0,0]);
   
-Under advanced methods, there are also options to create colors from `CMYK`, `HSV`, and `HSL`. Both of these take `Object` or `Array` values, as such:
+Under advanced methods, there are also options to create colors from `CMYK`, `HSV`, and `HSL`, using an `Object` or `Array` values. There is also a random color generator.
 
     Color.fromCMYK({c: 0, m: 1, y: 1, k: 0});
     Color.fromCMYK([0, 1, 1, 0]);
     
     Color.fromHSV({h: 0, s: 1, v: 1})
     Color.fromHSL({h: 0, s: 1, l: 0.5});
+    
+    Color.random();
   
 ##Getters and Setters
 
