@@ -1,7 +1,7 @@
 html, body{
 	margin:0;
 	padding:0;
-	height:100%; /* needed for container min-height */
+	-height:100%; /* needed for container min-height */
 	
 	background-color: #e5e5e5;
 	color: #555;
@@ -12,6 +12,14 @@ html, body{
 }
 
 /* layout */
+div#container {
+	position: relative; /* needed for footer positioning*/
+	margin: 0 auto; /* center, not in IE5 */	
+	height: auto !important; /* real browsers */
+	height: 100%; /* IE6: treaded as min-height*/
+	min-height: 100%; /* real browsers */
+}
+
 div#sidebar{
 	float: left;
 	position: fixed;
@@ -24,26 +32,22 @@ div#sidebar{
 	border-right: 1px solid #ccc;
 }
 
-div#container {
-	position: relative; /* needed for footer positioning*/
-	margin: 0 auto; /* center, not in IE5 */	
-	height: auto !important; /* real browsers */
-	height: 100%; /* IE6: treaded as min-height*/
-	min-height: 100%; /* real browsers */
-}
-
 div#content {
 	padding: 1em 1em 2em; /* bottom padding for footer */
 	margin-left: 20em; /* sidebar width */
 }
 
 div#footer {
-	position: absolute;
+	position: fixed;
 	bottom: 0; /* stick to bottom */
 	width: 100%;
 	font-size: .85em;
 	padding: 2px 0;
 	text-align: center;
+	
+	z-index: 10;
+	background-color: inherit;
+	box-shadow: 0 0 5px 2px #e5e5e5;
 }
 /* end layout */
 
@@ -129,7 +133,7 @@ div#footer {
 	font-variant: small-caps;
 	font-style: italic;
 	font-size: 1.2em;
-	margin-bottom: 5px;
+	margin: 8px 0 10px;
 }
 
 #picker { width: 200px; height: 200px }
