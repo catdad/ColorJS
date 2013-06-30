@@ -17,11 +17,7 @@
 </head>
 
 <body>
-	<a href='https://github.com/catdad/ColorJS' style='z-index:1;position:fixed;padding:5px 45px;width:123px;background-color:#F6C304;color:#fff;font-size:13px;font-family:sans-serif;text-decoration:none; font-weight:bold;-webkit-backface-visibility:hidden;border:2px dotted #fff;box-shadow:0 0 0 3px #F6C304,0 0 20px -3px rgba(0,0,0,.5);text-shadow:0 0 0 #fff,0 0 5px rgba(0,0,0,.3);bottom:50px;left:-50px;-ms-transform:rotate(45deg);-moz-transform:rotate(45deg);-webkit-transform:rotate(45deg);transform: rotate(45deg);'>Fork me on GitHub</a>
-	
-	<!--
 	<a href='https://github.com/catdad/ColorJS' style='z-index:1;position:absolute;padding:5px 45px;width:123px;background-color:#F6C304;color:#fff;font-size:13px;font-family:sans-serif;text-decoration:none; font-weight:bold;-webkit-backface-visibility:hidden;border:2px dotted #fff;box-shadow:0 0 0 3px #F6C304,0 0 20px -3px rgba(0,0,0,.5);text-shadow:0 0 0 #fff,0 0 5px rgba(0,0,0,.3);top:50px;right:-50px;-ms-transform:rotate(45deg);-moz-transform:rotate(45deg);-webkit-transform:rotate(45deg);transform: rotate(45deg);'>Fork me on GitHub</a>
-	-->
 	
 	<div id="container">
 		<div id="sidebar">
@@ -91,15 +87,15 @@
 			
 		</div><!-- content -->
 
-		<div id="footer">
-			<div>
-			ColorJS is created and maintained by <a href="https://github.com/catdad">catdad</a>. 
-			Find it on <a href="https://github.com/catdad/ColorJS">GitHub</a>.
-			</div>
-		</div>
-		
 	</div><!-- container -->
 
+	<div id="footer">
+		<div>
+			ColorJS is created and maintained by <a href="https://github.com/catdad">catdad</a>. 
+			Find it on <a href="https://github.com/catdad/ColorJS">GitHub</a>.
+		</div>
+	</div>
+	
 	<script type="text/javascript" src="misc/analytics.js"></script>
 	<script type="text/javascript" src="misc/colorpicker.min.js"></script>
 	<script type="text/javascript" src="src/color.js"></script>
@@ -109,16 +105,6 @@
 		
 		var main;
 		
-		//get HEX out of hash
-		(function(){
-			var hash = window.location.hash.replace(/[^0-9a-f]/gi, "");
-			if (hash && (hash.length === 3 || hash.length === 6)) {
-				main = Color(hash);
-			}
-			else main = Color("F6C304");
-			//else main = Color("ff0000");
-		})();
-		
 		function O(id){ return document.getElementById(id); }
 		function str(obj){
 			if (typeof obj === "string") return "<b>" + obj + "</b>";
@@ -127,6 +113,39 @@
 			return "<b>" + arr.join(', ') + "</b>";
 		}
 		
+		//load from hash
+		function loadHash(){
+			function inside(m){
+				for (var i = configMethods.length-1; i > -1; i--){
+					if (configMethods[i] === m) return true;
+				}
+				return false;
+			}
+			
+			//get hash variables
+			var hash = window.location.hash.split('/');
+			var color = hash[0].replace(/[^0-9a-f]/gi, "");
+			var method = hash[1], number = Number(hash[2]);
+			
+			if (color && (color.length === 3 || color.length === 6)) {
+				//set main color
+				main = Color(color);
+				
+				//set method variables
+				if (method) {
+					calc(method, number);
+					if (inside(method)) O(method).value = number;
+				};
+			}
+			//set to a default value
+			else main = Color("F6C304");
+		}
+		//set location hash
+		function setHash(){
+			window.location.hash = main.HEX() +
+				((activeMethod.name) ? '/' + activeMethod.name : "") +
+				((activeMethod.n) ? '/' + activeMethod.n : "");
+		}
 		//view color info
 		function info(color, trim){
 			var code = "<div class='info'>";
@@ -172,7 +191,7 @@
 			var title = method;
 			if (method === "hueShift") title = method + " " + n + " degrees";
 			
-			html.innerHTML = "<div class='label'>" + title + "</div>";
+			html.innerHTML = (n == 0) ? "" : "<div class='label'>" + title + "</div>";
 			
 			//add each color to DOM
 			for (var i = 0; i < res.length; i++){
@@ -180,6 +199,9 @@
 			}
 			
 			resetInputs(method);
+			
+			//set location hash
+			setHash();
 		}
 		//change main color
 		function change(color){
@@ -187,26 +209,25 @@
 			O('main').style.backgroundColor = color.CSS();
 			O("info").innerHTML = info(color);
 			
-			//color scheme resets
+			//color color swatches
 			O("results").innerHTML = "";
-			O("hueShift").value = "";
-			O("contrasts").value = "";
 			
 			//set hash
-			window.location.hash = color.HEX();
+			setHash();
 			
-			//execute active method
+			//execute active method if set
 			if (activeMethod.active) calc(activeMethod.name, activeMethod.n);
 		}
 		
 		//set listeners
 		for (var i = 0; i < configMethods.length; i++){
 			O(configMethods[i]).oninput = function oninput(){
-				calc(this.id, this.value);
+				calc(this.id, Number(this.value));
 			};
 		}
 		
 		//color init
+		loadHash();
 		change(main);
 		
 		//color picker init
