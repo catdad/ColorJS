@@ -30,7 +30,7 @@
 				<button onclick="calc('split')">Split</button>
 				<button onclick="calc('complement')">Complement</button>
 			</div>
-			<div class="section"><div class="title">Single Color Schemes</div>
+			<div class="section"><div class="title">Single-Color Schemes</div>
 				<div class="input">
 					<span>Scale</span>
 					<input id="monochrome" type="number" min="0" max="10" placeholder="count" />
@@ -51,12 +51,16 @@
 					<input id="quadrat" type="number" min="-180" max="180" step="10" placeholder="degrees" />
 				</div>
 				<div class="input">
+					<span>Hue Shift</span>
+					<input id="hueShift" type="number" min="0" max="360" placeholder="degrees" />
+				</div>
+				<div class="input">
 					<span>Contrasts</span>
 					<input id="contrasts" type="number" min="0" max="10" placeholder="count" />
 				</div>
 				<div class="input">
-					<span>Hue Shift</span>
-					<input id="hueShift" type="number" min="0" max="360" placeholder="degrees" />
+					<span>Diverging</span>
+					<input id="diverging" type="number" min="0" max="10" placeholder="count" />
 				</div>
 			</div>
 			
@@ -106,7 +110,7 @@
 	<script type="text/javascript" src="misc/colorpicker.min.js"></script>
 	<script type="text/javascript" src="src/color.js"></script>
 	<script>
-		var configMethods = ["hueShift", "contrasts", "monochrome", "quadrat", "monochromeLight", "monochromeDark"];
+		var configMethods = ["hueShift", "contrasts", "diverging", "monochrome", "quadrat", "monochromeLight", "monochromeDark"];
 		var activeMethod = {active:false};
 		
 		var main;
@@ -252,7 +256,6 @@
 		//color picker init
 		var cp = ColorPicker( O('slide'), O('picker'),
 		function(hex, hsv, rgb) {
-			console.log("picker change");
 			change(Color(rgb));
 		});
 		cp.setRgb( main.RGBA );
