@@ -79,8 +79,14 @@
 					<div id="slide" class="inline"></div>    
 				</div>
 				<div id="main" class="inline color">&nbsp;</div>
-				<div id="info" class="inline block">Info</div>
-
+				<div id="" class="inline block">
+					<div id="info"></div>
+					<div id="controls">
+						<input type="text" id="hex" placeholder="HEX" /><br/>
+						<button id="set">Set</button>
+						<button id="random">Random</button>
+					</div>
+				</div>
 			</div>
 			
 			<div id="results"></div>
@@ -215,6 +221,9 @@
 			//set hash
 			setHash();
 			
+			//set hex input
+			O("hex").value = color.HEX().toUpperCase();
+			
 			//execute active method if set
 			if (activeMethod.active) calc(activeMethod.name, activeMethod.n);
 		}
@@ -226,6 +235,16 @@
 			};
 		}
 		
+		//events for HEX controls
+		O("set").onclick = function(){
+			var val = O("hex").value;
+			if (cp) cp.setRgb( Color(val).RGBA );
+		}
+		O("random").onclick = function(){
+			//setting color changer will cause 'change()' to execute
+			if (cp) cp.setRgb( Color.random().RGBA )
+		}
+		
 		//color init
 		loadHash();
 		change(main);
@@ -233,9 +252,7 @@
 		//color picker init
 		var cp = ColorPicker( O('slide'), O('picker'),
 		function(hex, hsv, rgb) {
-			//console.log(hex);
-			//console.log(hsv);
-			//console.log(rgb);
+			console.log("picker change");
 			change(Color(rgb));
 		});
 		cp.setRgb( main.RGBA );
