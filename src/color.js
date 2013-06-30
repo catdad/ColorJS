@@ -310,6 +310,32 @@
 		return ColorLib.alphaShift(this, count, ColorLib('000').RGBA);
 	}
 	
+	//two colors, merging in the middle at white
+	Color.prototype.diverging = function(count){
+		var colors = this.complement();
+		
+		//even
+		if (count % 2 === 0){
+			var first = colors[0].monochromeLight(count/2);
+			var second = colors[1].monochromeLight(count/2).reverse();
+			return first.concat(second);
+		}
+		//odd
+		else{
+			var c = parseInt(count/2) + 1;
+			var first = colors[0].monochromeLight(c);
+			var second = colors[1].monochromeLight(c);
+			
+			//merge lightest colors together
+			first[c-1] = first[c-1].setAlpha(.5).removeAlpha(second[c-1].RGBA);
+			
+			//remove lightest color of 'second'
+			second.pop();
+			
+			return first.concat( second.reverse() );
+		}
+	}
+	
 	//creator function -- check types
 	var creator = function(val){
 		//check for valid color values (0 - 255)
