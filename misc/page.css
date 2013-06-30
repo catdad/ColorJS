@@ -68,17 +68,19 @@ div#footer {
 	text-align: right;
 }
 
-#sidebar button, #sidebar input[type="number"]{
+button, input{
 	margin: 5px;
 	background-color: white;
 	border: 1px solid #aaa;
 	padding: 3px 4px;
 	font-size: 1.2em;
 	cursor: pointer;
-	
 }
 
-#sidebar input[type="number"]{ width: 5em; cursor: inherit; }
+input[type="number"]{ width: 5em; cursor: inherit; }
+
+input#hex{ margin: 15px 0 5px; width: 12em; cursor: inherit; }
+button#set, button#random{ margin: 0; width: 6.2em;}
 
 #hero{ text-align: center; }
 
@@ -94,7 +96,7 @@ div#footer {
 	margin: 0 0 20px;
 }
 
-#info{
+#info, #controls{
 	text-align: left;
 	text-transform: uppercase;
 }
@@ -121,7 +123,7 @@ div#footer {
 .color .info{
 	color: white;
 	position: relative;
-	top: 3.2em; 
+	top: 3.4em; 
 	text-transform: uppercase;
 	text-shadow: 0 0 10px rgba(0,0,0,1), 0 0 10px rgba(0,0,0,.5);
 }

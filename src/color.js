@@ -489,6 +489,18 @@
 		return creator(rgb);
 	}
 	
+	//pseudo-random color
+	ColorLib.random = function(){
+		var r = function(){ return Math.floor(Math.random()*256) }
+		var rgb = {
+			r: r(),
+			g: r(),
+			b: r()
+		}
+		
+		return creator(rgb);
+	}
+	
 	/* lib helpers */
 	ColorLib.min = function(arr){
 		var m = arr[0];
