@@ -312,12 +312,12 @@
 	
 	//experimental lighter color calculator using alpha chanel
 	Color.prototype.monochromeLight = function(count){
-		return ColorLib.alphaShift(this, count, ColorLib('fff').RGBA);
+		return ColorLib.alphaShift(this, count, ColorLib('fff'));
 	}
 	
 	//experimental darker color calculator using alpha chanel
 	Color.prototype.monochromeDark = function(count){
-		return ColorLib.alphaShift(this, count, ColorLib('000').RGBA);
+		return ColorLib.alphaShift(this, count, ColorLib('000'));
 	}
 	
 	//two colors, merging in the middle at white
@@ -568,7 +568,7 @@
 		
 		for (var i = count; i > 0; i--){
 			var col = new ColorLib.fromArray([color.RGBA.r, color.RGBA.g, color.RGBA.b, (n*i)]);
-			colors.push(col.removeAlpha( background ));
+			colors.push(col.removeAlpha( background.RGBA ));
 		}
 		
 		return colors;
