@@ -312,12 +312,12 @@
 	
 	//experimental lighter color calculator using alpha chanel
 	Color.prototype.monochromeLight = function(count){
-		return ColorLib.alphaShift(this, count, ColorLib('fff').RGBA);
+		return ColorLib.alphaShift(this, count, ColorLib('fff'));
 	}
 	
 	//experimental darker color calculator using alpha chanel
 	Color.prototype.monochromeDark = function(count){
-		return ColorLib.alphaShift(this, count, ColorLib('000').RGBA);
+		return ColorLib.alphaShift(this, count, ColorLib('000'));
 	}
 	
 	//two colors, merging in the middle at white
@@ -337,7 +337,7 @@
 			var second = colors[1].monochromeLight(c);
 			
 			//merge lightest colors together, make gray 6% lighter
-			first[c-1] = first[c-1].setAlpha(.5).removeAlpha(second[c-1].RGBA).lighter(6);
+			ColorLib.mix(first[c-1], second[c-1]).lighter(6);
 			
 			//remove lightest color of 'second'
 			second.pop();
@@ -568,10 +568,16 @@
 		
 		for (var i = count; i > 0; i--){
 			var col = new ColorLib.fromArray([color.RGBA.r, color.RGBA.g, color.RGBA.b, (n*i)]);
-			colors.push(col.removeAlpha( background ));
+			colors.push(col.removeAlpha( background.RGBA ));
 		}
 		
 		return colors;
+	}
+	//mix two colors evenly
+	ColorLib.mix = function mix(color1, color2){
+		//do not change original colors
+		var newColor = ColorLib(color1.RGBA);
+		return newColor.setAlpha(.5).removeAlpha(color2.RGBA);
 	}
 	
 	//attach to global scope
