@@ -162,6 +162,7 @@
 			if (trim){
 				code += "<div>" + str(color.CSS()) + "</div>";
 				code += "<div>" + str(color.RGB()) + "</div>";
+				//code += "<div>" + str(color.CMYK()) + "</div>";
 				code += "<div>" + str(color.HSV()) + "</div>";
 				code += "<div>" + str(color.HSL()) + "</div>";
 			}
@@ -171,6 +172,7 @@
 				code += "<div>RGBA: " + str(color.RGB()) + "</div>";
 				code += "<div>HSV: " + str(color.HSV()) + "</div>";
 				code += "<div>HSL: " + str(color.HSL()) + "</div>";
+				code += "<div>CMYK: " + str(color.CMYK()) + "</div>";
 			}
 			code += "</div>";
 			return code;
