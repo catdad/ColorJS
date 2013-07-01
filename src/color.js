@@ -337,7 +337,7 @@
 			var second = colors[1].monochromeLight(c);
 			
 			//merge lightest colors together, make gray 6% lighter
-			first[c-1] = first[c-1].setAlpha(.5).removeAlpha(second[c-1].RGBA).lighter(6);
+			ColorLib.mix(first[c-1], second[c-1]).lighter(6);
 			
 			//remove lightest color of 'second'
 			second.pop();
@@ -572,6 +572,12 @@
 		}
 		
 		return colors;
+	}
+	//mix two colors evenly
+	ColorLib.mix = function mix(color1, color2){
+		//do not change original colors
+		var newColor = ColorLib(color1.RGBA);
+		return newColor.setAlpha(.5).removeAlpha(color2.RGBA);
 	}
 	
 	//attach to global scope
