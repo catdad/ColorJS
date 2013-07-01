@@ -176,7 +176,9 @@
 			Y = (Y - K) / (1 - K);
 		}
 		
-		return {c:C,m:M,y:Y,k:K};
+		var round = function(n){ return Number(n.toPrecision(2));}
+		
+		return {c:round(C),m:round(M),y:round(Y),k:round(K)};
 	}
 	
 	Color.prototype.removeAlpha = function(bg){
@@ -201,11 +203,19 @@
 	
 	/* operations */
 	Color.prototype.lighter = function(percent){
-	
+		var hsl = this.HSL();
+		hsl.l = hsl.l + (hsl.l * (percent / 100));
+		
+		if (hsl.l > 1) return ColorLib('fff');
+		else return ColorLib.fromHSL(hsl);
 	}
 	
 	Color.prototype.darker = function(percent){
+		var hsl = this.HSL();
+		hsl.l = hsl.l - (hsl.l * (percent / 100));
 		
+		if (hsl.l > 1) return ColorLib('000');
+		else return ColorLib.fromHSL(hsl);
 	}
 	
 	/* color schemes */
@@ -326,8 +336,8 @@
 			var first = colors[0].monochromeLight(c);
 			var second = colors[1].monochromeLight(c);
 			
-			//merge lightest colors together
-			first[c-1] = first[c-1].setAlpha(.5).removeAlpha(second[c-1].RGBA);
+			//merge lightest colors together, make gray 6% lighter
+			first[c-1] = first[c-1].setAlpha(.5).removeAlpha(second[c-1].RGBA).lighter(6);
 			
 			//remove lightest color of 'second'
 			second.pop();
