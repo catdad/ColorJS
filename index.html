@@ -12,18 +12,19 @@
 	http://thenounproject.com/noun/paint-brush/#icon-No14813
 -->
 
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"/>
+
 <link rel="stylesheet" href="misc/page.css">
 
 </head>
 
 <body>
-	<a href='https://github.com/catdad/ColorJS' style='z-index:1;position:absolute;padding:5px 45px;width:123px;background-color:#F6C304;color:#fff;font-size:13px;font-family:sans-serif;text-decoration:none; font-weight:bold;-webkit-backface-visibility:hidden;border:2px dotted #fff;box-shadow:0 0 0 3px #F6C304,0 0 20px -3px rgba(0,0,0,.5);text-shadow:0 0 0 #fff,0 0 5px rgba(0,0,0,.3);top:50px;right:-50px;-ms-transform:rotate(45deg);-moz-transform:rotate(45deg);-webkit-transform:rotate(45deg);transform: rotate(45deg);'>Fork me on GitHub</a>
+	<a href='https://github.com/catdad/ColorJS' class="ribbon" style='z-index:1;position:absolute;padding:5px 45px;width:123px;background-color:#F6C304;color:#fff;font-size:13px;font-family:sans-serif;text-decoration:none; font-weight:bold;-webkit-backface-visibility:hidden;border:2px dotted #fff;box-shadow:0 0 0 3px #F6C304,0 0 20px -3px rgba(0,0,0,.5);text-shadow:0 0 0 #fff,0 0 5px rgba(0,0,0,.3);top:50px;right:-50px;-ms-transform:rotate(45deg);-moz-transform:rotate(45deg);-webkit-transform:rotate(45deg);transform: rotate(45deg);'>Fork me on GitHub</a>
 	
-	<div id="container">
-		<div id="sidebar">
-			<div class="section">
-				&nbsp;
-			</div>
+	<div id="container" class="">
+		<div id="sidebar" class="closed">
+			<div id="tab"></div>
+			<div id="overlay"></div>
 			<div class="section"><div class="title">Quick Schemes</div>
 				<button onclick="calc('analog')">Analog</button>
 				<button onclick="calc('triad')">Triad</button>
@@ -63,7 +64,6 @@
 					<input id="diverging" type="number" min="3" max="10" placeholder="count" />
 				</div>
 			</div>
-			
 		</div>
 	
 		<div id="note">
@@ -73,7 +73,7 @@
 			</div>
 		</div>
 		
-		<div id="content">
+		<div id="content" class="push closed">
 			
 			<div id="hero">
 				<div id="logo">ColorJS<img src="misc/brush-gray.png" /></div>
@@ -96,7 +96,7 @@
 			<div id="results"></div>
 			
 		</div><!-- content -->
-
+		
 	</div><!-- container -->
 
 	<div id="footer">
@@ -117,10 +117,10 @@
 		
 		function O(id){ return document.getElementById(id); }
 		function str(obj){
-			if (typeof obj === "string") return "<b>" + obj + "</b>";
+			if (typeof obj === "string") return obj;
 			var arr = [];
 			for (i in obj){ arr.push(i + ": " + obj[i]); }
-			return "<b>" + arr.join(', ') + "</b>";
+			return arr.join(', ');
 		}
 		
 		//load from hash
@@ -157,7 +157,7 @@
 				((activeMethod.n) ? '/' + activeMethod.n : "");
 		}
 		//view color info
-		function info(color, trim){
+		function info(color, trim, mobile){
 			var code = "<div class='info'>";
 			if (trim){
 				code += "<div>" + str(color.CSS()) + "</div>";
@@ -167,7 +167,7 @@
 				code += "<div>" + str(color.HSL()) + "</div>";
 			}
 			else{
-				code = "<p>Info:</p>";
+				if (!mobile) code += "<p>Info:</p>";
 				code += "<div>HEX: " + str(color.CSS()) + "</div>";
 				code += "<div>RGB: " + str(color.RGB()) + "</div>";
 				code += "<div>HSV: " + str(color.HSV()) + "</div>";
@@ -218,7 +218,8 @@
 		//change main color
 		function change(color){
 			main = color;
-			O('main').style.backgroundColor = color.CSS();
+			O("main").style.backgroundColor = color.CSS();
+			O("main").innerHTML = info(color, true);
 			O("info").innerHTML = info(color);
 			
 			//color color swatches
@@ -261,6 +262,28 @@
 			change(Color(rgb));
 		});
 		cp.setRgb( main.RGBA );
+		
+		//experiments
+		function openMenu(){
+			var c = O("content");
+			c.classList.remove("closed");
+			c.classList.add("open");
+			O("sidebar").className = "open";
+		}
+		function closeMenu(){
+			var c = O("content");
+			c.classList.remove("open");
+			c.classList.add("closed");
+			O("sidebar").className = "closed";
+		}
+		
+		O("tab").onclick = function(){
+			if ( O("sidebar").classList.contains("closed") ) openMenu();
+			else closeMenu();
+		}
+		O("overlay").onclick = function(){
+			closeMenu();
+		}
 	</script>
 </body>
 </html>
