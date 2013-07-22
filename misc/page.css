@@ -5,9 +5,8 @@ html, body{
 	
 	background-color: #e5e5e5;
 	color: #555;
-	font-family: sans-serif;
+	font-family: Arial, sans-serif;
 	font-size: .9em;
-	-text-align: center;
 	overflow-x: hidden;
 }
 
@@ -16,15 +15,12 @@ div#container {
 	position: relative; /* needed for footer positioning*/
 	margin: 0 auto; /* center, not in IE5 */	
 	height: auto !important; /* real browsers */
-	height: 100%; /* IE6: treaded as min-height*/
+	height: 100%; /* IE6 treaded as min-height*/
 	min-height: 100%; /* real browsers */
 }
 
 div#sidebar{
-	float: left;
 	position: fixed;
-	overflow-y: auto;
-	overflow-x: hidden;
 	display: block;
 	width: 20em;
 	height: 100%;
@@ -33,7 +29,7 @@ div#sidebar{
 }
 
 div#content {
-	padding: 1em 1em 2em; /* bottom padding for footer */
+	padding: 1em 1em 1.5em; /* bottom padding for footer */
 	margin-left: 20em; /* sidebar width */
 }
 
@@ -47,7 +43,7 @@ div#footer {
 	
 	z-index: 10;
 	background-color: inherit;
-	box-shadow: 0 0 5px 2px #e5e5e5;
+	box-shadow: 0 0 4px 2px #e5e5e5;
 }
 /* end layout */
 
@@ -74,6 +70,7 @@ button, input{
 	border: 1px solid #aaa;
 	padding: 3px 4px;
 	font-size: 1.2em;
+	font-family: inherit;
 	cursor: pointer;
 }
 
@@ -120,13 +117,16 @@ button#set, button#random{ margin: 0; width: 6.2em;}
 	height: 220px;
 }
 
+#info .info{ font-weight: bold; }
 .color .info{
 	color: white;
+	font-weight: bold;
 	position: relative;
 	top: 3.4em; 
 	text-transform: uppercase;
 	text-shadow: 0 0 10px rgba(0,0,0,1), 0 0 10px rgba(0,0,0,.5);
 }
+#main .info{ top: 5.1em; }
 
 .inline { display: inline-block !important; vertical-align: top; }
 
@@ -138,8 +138,8 @@ button#set, button#random{ margin: 0; width: 6.2em;}
 	margin: 8px 0 10px;
 }
 
-#picker { width: 200px; height: 200px }
-#slide { width: 20px; height: 200px }
+#picker { width: 200px !important; height: 200px !important; }
+#slide { width: 20px !important; height: 200px !important; }
 
 #note{
 	position: relative;
@@ -152,3 +152,100 @@ button#set, button#random{ margin: 0; width: 6.2em;}
 	border-bottom: 1px solid #F6C304;
 }
 #note div{ width: 66em; margin: 0 auto;}
+
+#sidebar .section{ margin-top: 2.5em; } /* #note */
+#sidebar .section ~ .section{ margin-top: 8px; } /* #note */
+
+/* experiments */
+
+#main.color .info{ display: none; }
+
+@media all and (max-width: 680px){
+	#sidebar .section{ margin-top: 8px; } /* #note */
+	
+	/* configure push menu */
+	#content{ margin-left: 0 !important; }
+	#sidebar.closed{ left: -20em; }
+	#sidebar.open{ left: 0; }
+
+	.push{ overflow-x: hidden; position: relative; }
+	.push.closed{ left: 0; }
+	.push.open{ left: 20em; }
+	/*
+	-webkit-filter: brightness(70%) saturate(30%) blur(6px); 
+	filter: brightness(70%) saturate(30%) blur(6px);
+	*/
+	
+	#sidebar, #content {
+		-webkit-transition: all 0.3s ease;
+		-moz-transition: all 0.3s ease;
+		transition: all 0.3s ease;
+		
+		/* hardware acceleration hack (creates poor font rendering) */
+		-webkit-transform: translate3d(0, 0, 0);
+		-moz-transform: translate3d(0, 0, 0); /* unnecessary */
+		-ms-transform: translate3d(0, 0, 0); /* unnecessary */
+		transform: translate3d(0, 0, 0);
+		/* */
+	}
+	
+	div#sidebar{ position: fixed; z-index: 10; }
+	#sidebar #tab{
+		position: absolute;
+		display: block;
+		width: 55px;
+		height: 55px;
+		right: -55px;
+		top: 38px;
+		z-index: 10;
+		
+		cursor: pointer;
+		
+		background: #555;
+		background-image: url(settings.png);
+		background-size: 45px 45px;
+		background-repeat:no-repeat;
+		background-position: center;
+		border-radius: 0 5px 5px 0;
+	}
+	#sidebar.open #tab { right: -56px; }
+	
+	#sidebar.open #overlay{
+		display: block;
+		position: absolute;
+		width: 200%;
+		height: 100%;
+		top: 0;
+		right: -40em;
+		background-color: black;
+		opacity: .5;
+		z-index:9;
+	}
+	/* end push menu */
+	
+	#main.color .info{ display: block; }
+	#info{ display: none; }
+	#hero .inline{ height: auto; }
+	#main.color{ height: 200px; }
+	#controls{margin: 0;}
+	#controls{ text-align: center !important; }
+	
+	.ribbon, #note { display: none; }
+}
+
+@media all and (max-width: 450px){
+	#hero #logo{ font-size: 3.5em; }
+	#sidebar #tab{
+		width: 45px;
+		height: 45px;
+		right: -45px;
+		top: 25px;
+		background-size: 38px 38px;
+	}
+	#sidebar.open #tab { right: -46px; }
+	/*#sidebar.open #overlay{ right: -85%; }
+	
+	div#sidebar{ width: 85%; }
+	div#sidebar.closed{ left: -85%; }
+	.push.open{ left: 85%; } /* */
+}
