@@ -151,7 +151,8 @@ button#set, button#random{ margin: 0; width: 6.2em;}
 	background-color: #F8EEA5;
 	border-bottom: 1px solid #F6C304;
 }
-#note div{ width: 66em; margin: 0 auto;}
+#note{ display: none; }
+#note div{ width: 66em; margin: 0 auto; }
 
 #sidebar .section{ margin-top: 2.5em; } /* #note */
 #sidebar .section ~ .section{ margin-top: 8px; } /* #note */
