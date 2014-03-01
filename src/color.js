@@ -1,7 +1,7 @@
 (function colorjs(global){
-	var fromName = function(val){
+	//var fromName = function(val){
 	
-	};
+	//};
 	
 	//Color constructor
 	var Color = function(rgba){
@@ -581,6 +581,6 @@
 	}
 	
 	//attach to global scope
-	//TODO: test for Node, Require, etc.
-	global.Color = ColorLib;
+	//TODO: RequireJS, AMD, CommonJS, etc.
+    !!(typeof module !== 'undefined' && module.exports) ? module.exports = ColorLib : global.Color = ColorLib;
 })(this);
