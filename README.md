@@ -1,11 +1,20 @@
-ColorJS
-=======
+# ColorJS
 
 So you want to convert and calculate colors in JavaScript? You've come to the right place.
 
 [Click here for the live demo here](http://catdad.github.io/ColorJS).
 
-**This library (and doc) is still a work in progress. Please bear with me, and feel free to make suggestions. As a disclaimer, I may break things for the time being, until the code matures a bit more. If you use it, and later choose to update your library, please read the up-to-date doc.**
+##How to use
+
+In the browser:
+
+    <script src="//catdad.github.io/tiny.cdn/lib/colorjs/latest/color.min.js"></script>
+    
+In Node.js:
+
+    var Color = require('color-js');
+    
+_Note: npm is coming soon._
 
 ##Create
 
@@ -112,7 +121,9 @@ All colors are stored as RGBA values. Some rounding needs to occur for this, esp
 
 ##Thanks
 
-Special thanks to my art school girlfriend, who answered all of my incessant questions about color theory. If you would like to read up on it as well, try this article: [Color Theory, The Color Wheel And Color Schemes](http://www.vanseodesign.com/web-design/color-theory/)
+Special thanks to my art school girlfriend, who answered all of my incessant questions about color theory. If you would like to read up on it as well, try this article: [Color Theory, The Color Wheel And Color Schemes](http://www.vanseodesign.com/web-design/color-theory/).
+
+Also, thanks to the guys at EasyRGB for their helpful [color math and formulas](http://www.easyrgb.com/index.php?X=MATH).
 
 ##License
 
