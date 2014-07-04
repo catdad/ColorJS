@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	
+	<!--meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"/-->
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"/>
+	<!-- Apple web app tags -->
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+	<!-- vendor neutral web app tags -->
+	<meta name="mobile-web-app-capable" content="yes">
+
+	<!--link rel="shortcut icon" href="misc/picker_8704.png" /--> 
+	<!--link rel="shortcut icon" href="favicon.ico" /--> 
+	<link rel="apple-touch-icon" sizes="196x196" href="misc/brush_14813.png">
+	<link rel="icon" type="image/png" href="misc/brush_14813.png" />
+	<link rel="shortcut icon" sizes="196x196" href="misc/brush_14813.png">
+	<!-- favicon attribution
+		Eden Clairicia, from The Noun Project
+		http://thenounproject.com/noun/paint-brush/#icon-No14813
+	-->
+
+	<title>ColorJS</title>
+
+    <link rel="stylesheet" href="misc/test.css">
+    
+	<script src="bower_components/platform/platform.js"></script>
+    
+    <link rel="import" href="bower_components/core-elements/core-elements.html" />
+<!--    <link rel="import" href="bower_components/core-toolbar/core-toolbar.html" />-->
+</head>
+
+<body fullbleed unresolved class='preload'>
+	<a href='https://github.com/catdad/ColorJS' class="ribbon" style='z-index:1;position:fixed;padding:5px 45px;width:123px;background-color:#F6C304;color:#fff;font-size:13px;font-family:sans-serif;text-decoration:none; font-weight:bold;-webkit-backface-visibility:hidden;border:2px dotted #fff;box-shadow:0 0 0 3px #F6C304,0 0 20px -3px rgba(0,0,0,.5);text-shadow:0 0 0 #fff,0 0 5px rgba(0,0,0,.3);top:50px;right:-50px;-ms-transform:rotate(45deg);-moz-transform:rotate(45deg);-webkit-transform:rotate(45deg);transform: rotate(45deg);'>Fork me on GitHub</a>
+	
+    <div class='splash' >
+        <div class='splashContent'>
+            <div><img src="misc/custom.svg" /></div>
+            <div>Loading...</div>
+        </div>
+    </div>
+    
+    <core-scaffold mode="waterfall-tall" style="display: none;" unresolved>
+        <core-header-panel navigation flex>
+            <div class="section"><div class="title">Quick Schemes</div>
+				<button onclick="calc('analog')">Analog</button>
+				<button onclick="calc('triad')">Triad</button>
+				<button onclick="calc('split')">Split</button>
+				<button onclick="calc('complement')">Complement</button>
+			</div>
+			<div class="section"><div class="title">Single-Color Schemes</div>
+				<div class="input">
+					<span>Scale</span>
+					<input id="monochrome" type="number" min="0" max="10" placeholder="count" />
+				</div>
+				<div class="input">
+					<span>Lighter</span>
+					<input id="monochromeLight" type="number" min="0" max="10" placeholder="count" />
+				</div>
+				<div class="input">
+					<span>Darker</span>
+					<input id="monochromeDark" type="number" min="0" max="10" placeholder="count" />
+				</div>
+			</div>
+			
+			<div class="section"><div class="title">Multi-Color Schemes</div>
+				<div class="input">
+					<span>Quadrat</span>
+					<input id="quadrat" type="number" min="-180" max="180" step="10" placeholder="degrees" />
+				</div>
+				<div class="input">
+					<span>Hue Shift</span>
+					<input id="hueShift" type="number" min="0" max="360" placeholder="degrees" />
+				</div>
+				<div class="input">
+					<span>Contrasts</span>
+					<input id="contrasts" type="number" min="0" max="10" placeholder="count" />
+				</div>
+				<div class="input">
+					<span>Diverging</span>
+					<input id="diverging" type="number" min="3" max="10" placeholder="count" />
+				</div>
+			</div>
+        </core-header-panel>
+        
+<!--        <span tool>ColorJS<img class="titleIcon" src="misc/custom.svg"></span>-->
+        <div id="hero" tool>
+            
+            <div id="title">ColorJS<img class="titleIcon" src="misc/custom.svg"></div>
+            <div id="heroColor"></div>
+            
+        </div>
+        
+        <!-- color picker and main content go here -->
+    	<div id="colorPicker" class="inline block cp-normal">
+            <div id="picker" class="inline"></div>
+            <div id="slide" class="inline"></div>    
+        </div>
+        <div class="inline block">
+            <div id="controls">
+                <input type="text" id="hex" placeholder="HEX" /><br/>
+                <button id="set">Set</button>
+                <button id="random">Random</button>
+            </div>
+        </div>
+        
+        <!-- color generation results go here -->
+        <div id="results"></div>
+        
+        
+        <div id="footer">
+            <div>
+                <a href="https://github.com/catdad/ColorJS">ColorJS</a> and 
+                <a href="https://github.com/catdad/colorjs-lib">colorjs-lib</a> are created and 
+                maintained by <a href="https://github.com/catdad">catdad</a>.
+            </div>
+        </div>
+    </core-scaffold>
+    
+    
+    
+    
+    <script>
+        window.addEventListener('polymer-ready', function(ev){
+            console.log(ev);
+            
+            document.body.className = document.body.className.replace('preload', '');
+            var scaffold = document.querySelector('core-scaffold');
+            scaffold.style.display = 'initial';
+        });
+    </script>
+    
+    
+	<script type="text/javascript" src="misc/analytics.js"></script>
+	<script type="text/javascript" src="misc/colorpicker.min.js"></script>
+	<script type="text/javascript" src="colorjs-lib/color.js"></script>
+	<script>
+		var configMethods = ["hueShift", "contrasts", "diverging", "monochrome", "quadrat", "monochromeLight", "monochromeDark"];
+		var activeMethod = {active:false};
+		
+		var main;
+		
+		function O(id){ return document.getElementById(id); }
+		function str(obj){
+			if (typeof obj === "string") return obj;
+			var arr = [];
+			for (i in obj){ arr.push(i + ": " + obj[i]); }
+			return arr.join(', ');
+		}
+		
+		//load from hash
+		function loadHash(){
+			function inside(m){
+				for (var i = configMethods.length-1; i > -1; i--){
+					if (configMethods[i] === m) return true;
+				}
+				return false;
+			}
+			
+			//get hash variables
+			var hash = window.location.hash.split('/');
+			var color = hash[0].replace(/[^0-9a-f]/gi, "");
+			var method = hash[1], number = Number(hash[2]);
+			
+			if (color && (color.length === 3 || color.length === 6)) {
+				//set main color
+				main = Color(color);
+				
+				//set method variables
+				if (method) {
+					calc(method, number);
+					if (inside(method)) O(method).value = number;
+				};
+			}
+			//set to a default value
+			else main = Color("F6C304");
+		}
+		//set location hash
+		function setHash(){
+			window.location.hash = main.HEX() +
+				((activeMethod.name) ? '/' + activeMethod.name : "") +
+				((activeMethod.n) ? '/' + activeMethod.n : "");
+		}
+		//view color info
+		function info(color, trim, isHero){
+			var code = "<div class='colorInfo'>";
+
+            code += "<div>" + str(color.CSS()) + "</div>";
+            code += "<div>" + str(color.RGB()) + "</div>";
+            code += trim ? "" : "<div>" + str(color.CMYK()) + "</div>";
+            code += "<div>" + str(color.HSV()) + "</div>";
+            code += "<div>" + str(color.HSL()) + "</div>";
+
+            code += "</div>";
+			return code;
+		}
+        
+		//view for swatch
+		function swatch(color){
+			var div = document.createElement("div");
+			div.className = "swatch";
+			div.style.backgroundColor = color.CSS();
+			
+			div.innerHTML = info(color, true);
+			return div;
+		}
+		//reset unused number input methods
+		function resetInputs(method){
+			for (var i = 0; i < configMethods.length; i++){
+				if (configMethods[i] !== method) O(configMethods[i]).value = "";
+			}
+		}
+		//calculate color scheme
+		function calc(method, n){ 
+			//set active method
+			activeMethod = { name:method, n:n, active:true };
+			
+            var res = main[method](n);
+			var html = O("results");
+			
+			var title = method;
+			if (method === "hueShift") title = method + " " + n + " degrees";
+			
+			html.innerHTML = (n == 0) ? "" : "<div class='label'>" + title + "</div>";
+			
+			//add each color to DOM
+			for (var i = 0; i < res.length; i++){
+				html.appendChild( swatch(res[i]) );
+			}
+			
+			resetInputs(method);
+			
+			//set location hash
+			setHash();
+		}
+		//change main color
+		function change(color){
+			//set the main color
+            main = color;
+            
+            O("heroColor").innerHTML = info(color, true);
+			
+			//color color swatches
+			O("results").innerHTML = "";
+			
+			//set hash
+			setHash();
+			
+			//set hex input
+			O("hex").value = color.HEX().toUpperCase();
+			
+			//execute active method if set
+            if (activeMethod.active) calc(activeMethod.name, activeMethod.n);
+		}
+		
+		//set listeners
+		for (var i = 0; i < configMethods.length; i++){
+			O(configMethods[i]).oninput = function oninput(){
+				calc(this.id, Number(this.value));
+			};
+		}
+		
+		//events for HEX controls
+		O("set").onclick = function(){
+			var val = O("hex").value;
+			if (cp) cp.setRgb( Color(val).RGBA );
+		}
+		O("random").onclick = function(){
+			//setting color changer will cause 'change()' to execute
+			if (cp) cp.setRgb( Color.random().RGBA )
+		}
+		
+		//color init
+		loadHash();
+		
+		//color picker init
+		var cp = ColorPicker( O('slide'), O('picker'),
+		function(hex, hsv, rgb) {
+			change(Color(rgb));
+		});
+		cp.setRgb( main.RGBA );
+	</script>
+</body>
+</html>

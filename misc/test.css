@@ -1,0 +1,194 @@
+htmp, body{
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
+    color: #555;
+    font-size: .9em;
+}
+.inline { display: inline-block !important; vertical-align: top; }
+
+/** splash CSS **/
+.splash { 
+    display: none;
+    -note: hide by default;
+}
+body[unresolved]{ 
+    opacity: 1; 
+    -note: override Polymer default;
+}
+.preload .splash {
+    display: block;
+    width: 100%;
+    height: 100%;
+    background-color: #e5e5e5;
+}
+
+.preload .splashContent{
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 50%;
+    height: 7em;
+    margin: auto;
+    text-align: center;
+    z-index: 100;
+
+    font-size: 2em;
+    line-height: 1.2em;
+    font-weight: bold;
+
+    transition: all .2ms;
+}
+.preload .splashContent img {
+    width: 5em;
+    height: 5em;
+}
+/*** end splash css ***/
+
+
+/** style the scaffold core-toolbar **/
+core-scaffold /deep/ core-toolbar{
+    background: #bada55;
+    color: inherit;
+}
+core-scaffold /deep/ #dropShadow { display: none; }
+
+.content{ height: 200px; padding: 20px; margin: 50px; background: pink; }
+
+.titleIcon{ 
+    position: relative;
+    width: 1em;
+    height: 1em;
+    top: 1px;
+    margin: 0;
+
+    -webkit-transform: rotate(180deg);
+    -moz-transform: rotate(180deg);
+    -ms-transform: rotate(180deg);
+    -o-transform: rotate(180deg);
+    transform: rotate(180deg);
+
+}
+
+/** color picker CSS **/
+#picker { width: 200px !important; height: 200px !important; }
+#slide { width: 20px !important; height: 200px !important; }
+/*** end color picker CSS ***/
+
+
+
+/** layout **/
+div#footer {
+	position: fixed;
+    display: block;
+	bottom: 0; /* stick to bottom */
+    left: 0;
+    right: 0;
+	font-size: .75em;
+	padding: 2px 0;
+	text-align: center;
+	
+	z-index: 10;
+	background-color: inherit;
+	box-shadow: 0 0 4px 2px #e5e5e5;
+}
+/*** end layout ***/
+
+/** style sidebar inputs **/
+.section{
+	margin: 8px 0 5px;
+	padding: 5px;
+}
+.section .title{
+	font-weight: bold;
+	display: block;
+	margin: 0 1em;
+	border-bottom: 1px solid #898989;
+}
+
+.section span{
+	width: 6em;
+	display: inline-block;
+	text-align: right;
+}
+
+button, input{
+	margin: 5px;
+	background-color: white;
+	border: 1px solid #aaa;
+	padding: 3px 4px;
+	font-size: 1.2em;
+	font-family: inherit;
+	cursor: pointer;
+}
+/*** end style sidebar inputs ***/
+
+input[type="number"]{ width: 5em; cursor: inherit; }
+
+input#hex{ margin: 15px 0 5px; width: 12em; cursor: inherit; }
+button#set, button#random{ margin: 0; width: 6.2em;}
+
+
+/** style colors and results **/
+.colorInfo{
+    color: white;
+	font-weight: bold;
+	position: relative;
+	text-transform: uppercase;
+	text-shadow: 0 0 10px rgba(0,0,0,1), 0 0 10px rgba(0,0,0,.5);
+}
+
+.swatch .colorInfo{ 
+    top: 3.4em;
+    font-size: .9em;
+}
+
+#results{
+	text-align: center;
+	margin: 0 0 20px;
+}
+
+.swatch{
+	position: relative;
+    display: inline-block;
+    vertical-align: top;
+	margin: 8px;
+    width: 160px;
+	height: 160px;
+	border: 3px solid white;
+	border-radius: 150px;
+	z-index: 5;
+}
+
+.label{
+	text-transform: capitalize;
+	font-variant: small-caps;
+	font-style: italic;
+	font-size: 1.2em;
+	margin: 8px 0 10px;
+}
+/*** end style colors and results ***/
+
+#picker { width: 200px !important; height: 200px !important; }
+#slide { width: 20px !important; height: 200px !important; }
+
+
+@media all and (max-width: 900px){
+	
+	
+	#main.color .info{ display: block; }
+	#info{ display: none; }
+	#hero .inline{ height: auto; }
+	#main.color{ height: 200px; }
+	#controls{margin: 0;}
+	#controls{ text-align: center !important; }
+	
+	.ribbon, #note { display: none; }
+}
+
+/** media query used by Polymer **/
+@media all and (max-width: 600px){
+
+}
