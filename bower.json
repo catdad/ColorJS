@@ -18,6 +18,7 @@
   "dependencies": {
     "polymer": "Polymer/polymer#~0.3.3",
     "core-elements": "Polymer/core-elements#~0.3.3",
-    "paper-slider": "Polymer/paper-slider#~0.3.3"
+    "paper-slider": "Polymer/paper-slider#~0.3.3",
+    "paper-tabs": "Polymer/paper-tabs#~0.3.3"
   }
 }
