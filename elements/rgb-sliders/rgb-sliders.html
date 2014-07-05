@@ -1,0 +1,49 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/paper-slider/paper-slider.html">
+
+<polymer-element name="cjs-rgb-sliders" attributes="r g b color">
+    <template>
+        
+        <link rel="stylesheet" href="rgb-sliders.css">
+        
+        <div layout vertical>
+            <div center horizontal layout>
+                <span class='label'>R</span><paper-slider id="r" min="0" max="255" value="{{r}}" 
+                                                          on-change="{{rChange}}" editable flex></paper-slider>
+            </div>
+            <div center horizontal layout>
+                <span class='label'>G</span><paper-slider id="g" min="0" max="255" value="{{g}}" 
+                                                          on-change="{{gChange}}" editable flex></paper-slider>
+            </div>
+            <div center horizontal layout>
+                <span class='label'>B</span><paper-slider id="b" min="0" max="255" value="{{b}}" 
+                                                          on-change="{{bChange}}" editable flex></paper-slider>
+            </div>
+        </div>
+    </template>
+    <script>
+        Polymer('cjs-rgb-sliders', {
+            r: 0,
+            g: 0,
+            b: 0,
+            rChange: function(){ this.sliderChanged(); },
+            gChange: function(){ this.sliderChanged(); },
+            bChange: function(){ this.sliderChanged(); },
+            color: '#bada55',
+            setColor: function(){
+                this.color = 'rgb({{r}}, {{g}}, {{b}})'
+                            .replace(/{{r}}/, this.$.r.value)
+                            .replace(/{{g}}/, this.$.g.value)
+                            .replace(/{{b}}/, this.$.b.value);  
+            },
+            sliderChanged: function(){
+                this.setColor();
+                this.fire('change', {
+                    r: this.$.r.value,
+                    g: this.$.g.value,
+                    b: this.$.b.value
+                } );
+            }
+        });
+    </script>
+</polymer-element>
