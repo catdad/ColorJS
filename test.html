@@ -31,6 +31,7 @@
     <link rel="import" href="bower_components/core-elements/core-elements.html" />
     <link rel="import" href="bower_components/paper-slider/paper-slider.html" />
     <link rel="import" href="elements/rgb-sliders/rgb-sliders.html" />
+    <link rel="import" href="elements/cjs-scaffold/cjs-core-scaffold.html" />
 <!--    <link rel="import" href="bower_components/core-toolbar/core-toolbar.html" />-->
 </head>
 
@@ -44,7 +45,7 @@
         </div>
     </div>
     
-    <core-scaffold mode="waterfall-tall" style="display: none;" unresolved>
+    <cjs-core-scaffold mode="waterfall-tall" style="display: none;" unresolved>
         <core-header-panel navigation flex>
             <div class="section"><div class="title">Quick Schemes</div>
 				<button onclick="calc('analog')">Analog</button>
@@ -107,7 +108,7 @@
                 <button id="random">Random</button>
             </div>
             
-            <cjs-rgb-sliders r="100" g="200" b="50"></cjs-rgb-sliders>
+            <cjs-rgb-sliders></cjs-rgb-sliders>
             
         </div>
         
@@ -122,9 +123,7 @@
                 maintained by <a href="https://github.com/catdad">catdad</a>.
             </div>
         </div>
-    </core-scaffold>
-    
-    
+    </cjs-core-scaffold>
     
     
     <script>
@@ -132,8 +131,11 @@
             console.log(ev);
             
             document.body.className = document.body.className.replace('preload', '');
-            var scaffold = document.querySelector('core-scaffold');
+            scaffold = document.querySelector('cjs-core-scaffold');
             scaffold.style.display = 'initial';
+                
+            //color init
+            locationHash.load();
         });
     </script>
     
@@ -145,7 +147,8 @@
 		var configMethods = ["hueShift", "contrasts", "diverging", "monochrome", "quadrat", "monochromeLight", "monochromeDark"];
 		var activeMethod = {active:false};
 		
-		var main;
+        //set a default for main
+		var main = Color('bada55'); //Color("F6C304")
 		
 		function O(id){ return document.getElementById(id); }
 		function str(obj){
@@ -155,62 +158,65 @@
 			return arr.join(', ');
 		}
 		
-		//load from hash
-		function loadHash(){
-			function inside(m){
-				for (var i = configMethods.length-1; i > -1; i--){
-					if (configMethods[i] === m) return true;
-				}
-				return false;
-			}
-			
-			//get hash variables
-			var hash = window.location.hash.split('/');
-			var color = hash[0].replace(/[^0-9a-f]/gi, "");
-			var method = hash[1], number = Number(hash[2]);
-			
-			if (color && (color.length === 3 || color.length === 6)) {
-				//set main color
-				main = Color(color);
-				
-				//set method variables
-				if (method) {
-					calc(method, number);
-					if (inside(method)) O(method).value = number;
-				};
-			}
-			//set to a default value
-			else main = Color("F6C304");
-		}
-		//set location hash
-		function setHash(){
-			window.location.hash = main.HEX() +
-				((activeMethod.name) ? '/' + activeMethod.name : "") +
-				((activeMethod.n) ? '/' + activeMethod.n : "");
-		}
-		//view color info
-		function info(color, trim, isHero){
-			var code = "<div class='colorInfo'>";
+        var locationHash = {
+            load: function loadHash(){
+                function inside(m){
+                    for (var i = configMethods.length-1; i > -1; i--){
+                        if (configMethods[i] === m) return true;
+                    }
+                    return false;
+                }
 
-            code += "<div>" + str(color.CSS()) + "</div>";
-            code += "<div>" + str(color.RGB()) + "</div>";
-            code += trim ? "" : "<div>" + str(color.CMYK()) + "</div>";
-            code += "<div>" + str(color.HSV()) + "</div>";
-            code += "<div>" + str(color.HSL()) + "</div>";
+                //get hash variables
+                var hash = window.location.hash.split('/');
+                var color = hash[0].replace(/[^0-9a-f]/gi, "");
+                var method = hash[1], number = Number(hash[2]);
 
-            code += "</div>";
-			return code;
-		}
+                if (color && (color.length === 3 || color.length === 6)) {
+                    //set main color
+                    main = Color(color);
+
+                    //set method variables
+                    if (method) {
+                        calc(method, number);
+                        if (inside(method)) O(method).value = number;
+                    };
+                }
+                
+                // trigger a color change
+                colorChangeRouter(main, 'hash');
+            },
+            set: function setHash(color){
+                window.location.hash = color.HEX() +
+                    ((activeMethod.name) ? '/' + activeMethod.name : "") +
+                    ((activeMethod.n) ? '/' + activeMethod.n : "");
+            }
+        }
         
-		//view for swatch
-		function swatch(color){
-			var div = document.createElement("div");
-			div.className = "swatch";
-			div.style.backgroundColor = color.CSS();
-			
-			div.innerHTML = info(color, true);
-			return div;
-		}
+        var views = {
+            swatch: function swatch(color){
+                var div = document.createElement("div");
+                div.className = "swatch";
+                div.style.backgroundColor = color.CSS();
+
+                div.innerHTML = views.info(color, true);
+                return div;
+            },
+            info: function info(color, trim, isHero){
+                var code = "<div class='colorInfo'>";
+
+                code += "<div>" + str(color.CSS()) + "</div>";
+                code += "<div>" + str(color.RGB()) + "</div>";
+                code += trim ? "" : "<div>" + str(color.CMYK()) + "</div>";
+                code += "<div>" + str(color.HSV()) + "</div>";
+                code += "<div>" + str(color.HSL()) + "</div>";
+
+                code += "</div>";
+                return code;
+            }
+        }
+        
+		
 		//reset unused number input methods
 		function resetInputs(method){
 			for (var i = 0; i < configMethods.length; i++){
@@ -223,7 +229,7 @@
 			activeMethod = { name:method, n:n, active:true };
 			
             var res = main[method](n);
-			var html = O("results");
+			var html = nodes.results;
 			
 			var title = method;
 			if (method === "hueShift") title = method + " " + n + " degrees";
@@ -232,32 +238,21 @@
 			
 			//add each color to DOM
 			for (var i = 0; i < res.length; i++){
-				html.appendChild( swatch(res[i]) );
+				html.appendChild( views.swatch(res[i]) );
 			}
 			
 			resetInputs(method);
 			
 			//set location hash
-			setHash();
+			locationHash.set(main);
 		}
+        
+        
 		//change main color
 		function change(color){
-			//set the main color
-            main = color;
+			console.log('main change called');
             
-            O("heroColor").innerHTML = info(color, true);
-			
-			//color color swatches
-			O("results").innerHTML = "";
-			
-			//set hash
-			setHash();
-			
-			//set hex input
-			O("hex").value = color.HEX().toUpperCase();
-			
-			//execute active method if set
-            if (activeMethod.active) calc(activeMethod.name, activeMethod.n);
+            
 		}
 		
 		//set listeners
@@ -277,19 +272,95 @@
 			if (cp) cp.setRgb( Color.random().RGBA )
 		}
 		
-		//color init
-		loadHash();
-		
-		//color picker init
-		var cp = ColorPicker( O('slide'), O('picker'),
-		function(hex, hsv, rgb) {
-			change(Color(rgb));
-		});
-		cp.setRgb( main.RGBA );
+        var nodes = {
+            setButton: O("set"),
+            randomButton: O("random"),
+            hexInput: O("hex"),
+            heroColor: O("heroColor"),
+            results: O("results"),
+            scaffold: document.querySelector("cjs-core-scaffold"),
+            slidersRGB: document.querySelector("cjs-rgb-sliders"),
+            colorPicker: ColorPicker( O('slide'), O('picker'),
+                function(hex, hsv, rgb) {
+                    colorChangeRouter(Color(rgb), 'color-picker');
+                })
+        }
         
-        document.querySelector('cjs-rgb-sliders').addEventListener('change', function(ev){
-            cp.setRgb(ev.detail);
+        var changeSetter = {
+            sliders: function setSliders(color){
+                nodes.slidersRGB.set(color.RGB());
+            },
+            colorPicker: function setColorPicker(color){
+                return; nodes.colorPicker.setRgb(color.RGB());
+            },
+            buttons: function setButtons(color){
+                nodes.hexInput.value = color.HEX().toUpperCase();
+            },
+            hash: function setHash(color){
+                locationHash.set(color);   
+            },
+            UI: function setUI(color){
+                //set the main color
+                main = color;
+
+                nodes.heroColor.innerHTML = views.info(color, true);
+
+                //color color swatches
+                nodes.results.innerHTML = "";
+
+                nodes.scaffold && (nodes.scaffold.fill = color.CSS());
+
+                //execute active method if set
+                if (activeMethod.active) calc(activeMethod.name, activeMethod.n);
+            }
+        }
+        
+        function colorChangeRouter(color, source){
+            if (source !== 'hash' && main.CSS() === color.CSS()) return;
+            
+            console.log('router source', source);
+            
+            function execute(arr){
+                arr.forEach(function(name){
+                    changeSetter[name](color);
+                });
+            }
+            
+            switch (source){
+                case 'color-picker':
+                    execute(['sliders', 'buttons', 'hash', 'UI']);
+                    break;
+                case 'sliders-rgb':
+                    execute(['colorPicker', 'buttons', 'hash', 'UI']);
+                    break;
+                case 'buttons':
+                    execute(['colorPicker', 'sliders', 'hash', 'UI']);
+                    break;
+                case 'hash':
+                    execute(['sliders', 'colorPicker', 'buttons', 'UI']);
+                    break;
+                default:
+                    //do all
+                    execute(['cliders', 'colorPicker', 'buttons', 'hash', 'UI']);
+            }
+        }
+        
+        //add change listeners
+        nodes.slidersRGB.addEventListener('change', function(ev){
+            var color = Color(ev.detail);
+            colorChangeRouter(color, 'sliders-rgb');
         });
+        
+        nodes.setButton.onclick = function(){
+            var color = Color(nodes.hexInput.value);
+            colorChangeRouter(color, 'buttons');
+        }
+        
+        nodes.randomButton.onclick = function(){
+            var color = Color.random();
+            nodes.hexInput.value = color.HEX().toUpperCase();
+            colorChangeRouter(color, 'buttons');
+        }
 	</script>
 </body>
 </html>

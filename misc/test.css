@@ -49,11 +49,6 @@ body[unresolved]{
 
 
 /** style the scaffold core-toolbar **/
-core-scaffold /deep/ core-toolbar{
-    background: #bada55;
-    color: inherit;
-}
-core-scaffold /deep/ #dropShadow { display: none; }
 
 .content{ height: 200px; padding: 20px; margin: 50px; background: pink; }
 
