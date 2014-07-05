@@ -1,0 +1,3 @@
+[submodule "colorjs-lib"]
+	path = colorjs-lib
+	url = git://github.com/catdad/colorjs-lib.git
