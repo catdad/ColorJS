@@ -26,9 +26,10 @@
             r: 0,
             g: 0,
             b: 0,
-            rChange: function(){ this.sliderChanged(); },
-            gChange: function(){ this.sliderChanged(); },
-            bChange: function(){ this.sliderChanged(); },
+            isPrivate: false,
+            rChange: function(){ !this.isPrivate && this.sliderChanged(); },
+            gChange: function(){ !this.isPrivate && this.sliderChanged(); },
+            bChange: function(){ !this.isPrivate && this.sliderChanged(); },
             color: '#bada55',
             setColor: function(){
                 this.color = 'rgb({{r}}, {{g}}, {{b}})'
@@ -43,6 +44,28 @@
                     g: this.$.g.value,
                     b: this.$.b.value
                 } );
+            },
+            publish: {
+                get: function(){
+                    return { r: this.r, g: this.g, b: this.b };  
+                },
+                set: function(rgb){
+                    //set private change to true
+                    this.isPrivate = true;
+                    
+                    this.r = rgb.r;
+                    this.g = rgb.g;
+                    this.b = rgb.b;
+                    
+                    //reset private value on next event loop
+                    this.async(function(){ 
+                        this.isPrivate = false;
+                        //fire event manually
+                        this.sliderChanged();
+                    }, null, 0);
+                    
+                    return this;
+                }   
             }
         });
     </script>
