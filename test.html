@@ -76,7 +76,7 @@
     
     <link rel="import" href="elements/rgb-sliders/rgb-sliders.html" />
     <link rel="import" href="elements/rgb-sliders/hsl-sliders.html" />
-<!--    <link rel="import" href="elements/rgb-sliders/hsv-sliders.html" />-->
+    <link rel="import" href="elements/rgb-sliders/hsv-sliders.html" />
 </head>
 
 <body fullbleed unresolved class="preload">
@@ -150,8 +150,7 @@
                     <cjs-hsl-sliders></cjs-hsl-sliders>
                 </div>
                 <div class="tab" tab3>
-                    hsv sliders go here
-<!--                    <cjs-hsv-sliders></cjs-hsv-sliders>-->
+                    <cjs-hsv-sliders></cjs-hsv-sliders>
                 </div>
 
                 <div class="tab" tab4 flex centered>
@@ -342,7 +341,7 @@
             scaffold: document.querySelector("cjs-core-scaffold"),
             slidersRGB: document.querySelector("cjs-rgb-sliders"),
             slidersHSL: document.querySelector("cjs-hsl-sliders"),
-//            slidersHSV: document.querySelector("cjs-hsv-sliders"),
+            slidersHSV: document.querySelector("cjs-hsv-sliders"),
             colorPicker: ColorPicker( O('slide'), O('picker'),
                 function(hex, hsv, rgb) {
                     colorChangeRouter(Color(rgb), 'color-picker');
@@ -358,8 +357,6 @@
                 nodes.slidersHSL.setColor(color.CSS());
             },
             slidersHSV: function setSlidersHSV(color){
-                return;
-                
                 nodes.slidersHSV.set(color.HSV());
                 nodes.slidersHSV.setColor(color.CSS());
             },
@@ -440,13 +437,16 @@
         nodes.slidersHSL.addEventListener('change', function(ev){
             var color = Color.fromHSL(ev.detail);
             colorChangeRouter(color, 'sliders-hsl');
+            
+//            changeSetter.slidersRGB(color);
         });
         
-//        nodes.slidersHSV.addEventListener('change', function(ev){
-//            var color = Color.fromHSV(ev.detail);
-//            console.log('hsv got', color.CSS());
+        nodes.slidersHSV.addEventListener('change', function(ev){
+            var color = Color.fromHSV(ev.detail);
 //            colorChangeRouter(color, 'sliders-hsv');
-//        });
+            
+//            changeSetter.slidersRGB(color);
+        });
         
         nodes.setButton.onclick = function(){
             var color = Color(nodes.hexInput.value);
