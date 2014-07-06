@@ -6,7 +6,7 @@
 	//Color constructor
 	var Color = function(rgba){
 		this.RGBA = rgba;
-	}
+	};
 	
 	/* converters */
 	Color.prototype.RGB = function(set){
@@ -16,13 +16,13 @@
 			return this;
 		}
 		
-		var newRGB = {}
+		var newRGB = {};
 		newRGB.r = this.RGBA.r;
 		newRGB.g = this.RGBA.g;
 		newRGB.b = this.RGBA.b;
 		
 		return newRGB;
-	}
+	};
 	
 	Color.prototype.HEX = function(set){
 		//create new color
@@ -33,7 +33,7 @@
 		
 		var hex = "";
 		
-		var pad = function(n){ while(n.length < 2) {n = '0'+n;} return n; }
+		var pad = function(n){ while(n.length < 2) {n = '0'+n;} return n; };
 		var toHEX = function(n){ return pad(n.toString(16)); };
 		
 		hex += toHEX(this.RGBA.r);
@@ -41,7 +41,7 @@
 		hex += toHEX(this.RGBA.b);
 		
 		return hex;
-	}
+	};
 	
 	Color.prototype.CSS = function(set){
 		if (set){
@@ -50,7 +50,7 @@
 		}
 		
 		return "#" + this.HEX();
-	}
+	};
 	
 	Color.prototype.HSV = function(set){
 		if (set){
@@ -68,7 +68,7 @@
 
 		var V = var_Max, H, S;
 
-		if ( del_Max == 0 ) //This is a gray, no chroma...
+		if ( del_Max === 0 ) //This is a gray, no chroma...
 		{
 			H = 0; //HSV results from 0 to 1
 			S = 0;
@@ -97,7 +97,7 @@
 		V = Number(V.toFixed(2));
 		
 		return {h: H, s: S, v: V};
-	}
+	};
 	
 	Color.prototype.HSL = function(set){
 		if (set){
@@ -147,7 +147,7 @@
 		L = Number(L.toFixed(2));
 		
 		return {h:H,s:S,l:L};
-	}
+	};
 	
 	Color.prototype.CMYK = function(set){
 		if (set){
@@ -176,17 +176,17 @@
 			Y = (Y - K) / (1 - K);
 		}
 		
-		var round = function(n){ return Number(n.toPrecision(2));}
+		var round = function(n){ return Number(n.toPrecision(2));};
 		
 		return {c:round(C),m:round(M),y:round(Y),k:round(K)};
-	}
+	};
 	
 	Color.prototype.removeAlpha = function(bg){
 		var a = this.RGBA.a;
 		
 		if (!bg) bg = {r: 255, g: 255, b: 255}; //set to white if no background
 		
-		var calc = function(bgC, C){ return Math.round( (1 - a) * bgC + a * C ); }
+		var calc = function(bgC, C){ return Math.round( (1 - a) * bgC + a * C ); };
 		
 		this.RGBA.r = calc(bg.r, this.RGBA.r);
         this.RGBA.g = calc(bg.g, this.RGBA.g);
@@ -194,12 +194,12 @@
 		this.RGBA.a = 1;
 		
 		return this;
-	}
+	};
 	
 	Color.prototype.setAlpha = function(alpha){
 		this.RGBA.a = alpha;
 		return this;
-	}
+	};
 	
 	/* operations */
 	Color.prototype.lighter = function(percent){
@@ -208,7 +208,7 @@
 		
 		if (hsl.l > 1) return ColorLib('fff');
 		else return ColorLib.fromHSL(hsl);
-	}
+	};
 	
 	Color.prototype.darker = function(percent){
 		var hsl = this.HSL();
@@ -216,7 +216,7 @@
 		
 		if (hsl.l > 1) return ColorLib('000');
 		else return ColorLib.fromHSL(hsl);
-	}
+	};
 	
 	/* color schemes */
 	Color.prototype.hueShiftSingle = function(degrees){
@@ -230,33 +230,33 @@
 		shift.l = hsl.l;
 		
 		return new ColorLib.fromHSL(shift);
-	}
+	};
 	
 	Color.prototype.hueShift = function(degrees){
 		// H +/- degrees
 		degrees = Number(degrees);
 		return [this, this.hueShiftSingle(degrees), this.hueShiftSingle(degrees * -1)];
-	}
+	};
 	
 	Color.prototype.triad = function(color){
 		//H +/- 120 degrees
 		return this.hueShift(120);
-	}
+	};
 	
 	Color.prototype.split = function(color){
 		//H +/- 150 degrees
 		return this.hueShift(150);
-	}
+	};
 	
 	Color.prototype.analog = function(color){
 		//H +/- 30 degrees
 		return this.hueShift(30);
-	}
+	};
 	
 	Color.prototype.complement = function(color){
 		//H + 180 degrees
 		return [this, this.hueShiftSingle(180)];
-	}
+	};
 	
 	Color.prototype.quadrat = function(shift){
 		var x = Number(shift) || 40;
@@ -270,7 +270,7 @@
 		colors.push(this.hueShiftSingle(x + y + x));
 		
 		return colors;
-	}
+	};
 	
 	Color.prototype.contrasts = function(count){
 		//return complement if 1
@@ -286,7 +286,7 @@
 		}
 		
 		return colors;
-	}
+	};
 	
 	//return Lightness spectrum -- no black or white
 	Color.prototype.monochrome = function(count){
@@ -308,33 +308,33 @@
 		}
 		
 		return colors;
-	}
+	};
 	
 	//experimental lighter color calculator using alpha chanel
 	Color.prototype.monochromeLight = function(count){
 		return ColorLib.alphaShift(this, count, ColorLib('fff'));
-	}
+	};
 	
 	//experimental darker color calculator using alpha chanel
 	Color.prototype.monochromeDark = function(count){
 		return ColorLib.alphaShift(this, count, ColorLib('000'));
-	}
+	};
 	
 	//two colors, merging in the middle at white
 	Color.prototype.diverging = function(count){
 		var colors = this.complement();
-		
+		var first, second;
 		//even
 		if (count % 2 === 0){
-			var first = colors[0].monochromeLight(count/2);
-			var second = colors[1].monochromeLight(count/2).reverse();
+			first = colors[0].monochromeLight(count/2);
+			second = colors[1].monochromeLight(count/2).reverse();
 			return first.concat(second);
 		}
 		//odd
 		else{
 			var c = parseInt(count/2) + 1;
-			var first = colors[0].monochromeLight(c);
-			var second = colors[1].monochromeLight(c);
+			first = colors[0].monochromeLight(c);
+			second = colors[1].monochromeLight(c);
 			
 			//merge lightest colors together, make gray 6% lighter
 			ColorLib.mix(first[c-1], second[c-1]).lighter(6);
@@ -344,20 +344,25 @@
 			
 			return first.concat( second.reverse() );
 		}
-	}
+	};
+    
+    //add a toString method
+    Color.prototype.toString = function toString(){
+        return this.CSS();
+    };
 	
 	//creator function -- check types
 	var creator = function(val){
 		//check for valid color values (0 - 255)
 		// set to 0 if invalid
 		var rgba = {};
-		rgba["r"] = (val.r && val.r >= 0 && val.r <= 255) ? val.r : 0;
-		rgba["g"] = (val.g && val.g >= 0 && val.g <= 255) ? val.g : 0;
-		rgba["b"] = (val.b && val.b >= 0 && val.b <= 255) ? val.b : 0;
-		rgba["a"] = (val.a && val.a >= 0 && val.a <= 1) ? val.a : 1;
+		rgba.r = (val.r && val.r >= 0 && val.r <= 255) ? val.r : 0;
+		rgba.g = (val.g && val.g >= 0 && val.g <= 255) ? val.g : 0;
+		rgba.b = (val.b && val.b >= 0 && val.b <= 255) ? val.b : 0;
+		rgba.a = (val.a && val.a >= 0 && val.a <= 1) ? val.a : 1;
 		
 		return new Color(rgba);
-	}
+	};
 	
 	// simple creator -- RGB[A] or HEX
 	var ColorLib = function(val){
@@ -366,7 +371,7 @@
 		
 		if (typeof val === "string") return ColorLib.fromHEX(val);
 		else return creator(val);
-	}
+	};
 	
 	// xxxxxx, xxx, #xxx, or #xxxxxx
 	ColorLib.fromHEX = function(val){
@@ -377,14 +382,14 @@
 		
 		var toDecimal = function(str){
 			return parseInt(str,16);
-		}
+		};
 		
 		var r = toDecimal(val.substring(0,2));
 		var g = toDecimal(val.substring(2,4));
 		var b = toDecimal(val.substring(4,6));
 		
 		return creator({r:r,g:g,b:b,a:1});
-	}
+	};
 	
 	// create from RGB or RGBA objects
 	ColorLib.fromRGBA = creator;
@@ -411,39 +416,37 @@
 		rgb.b = Math.round(( 1 - CMYK.y ) * 255);
 		
 		return creator(rgb);
-	}
+	};
 	
 	ColorLib.fromArray = function(val){
 		return creator({r:val[0], g:val[1], b:val[2], a:val[3]});
-	}
+	};
 	
 	ColorLib.fromRaw = function(r,g,b,a){
 		return creator({r:r, g:g, b:b, a:a});
-	}
+	};
 	
 	// RGB from [h,s,v] or {h,s,v}
 	ColorLib.fromHSV = function(val){
 		var h, s, v;
 		if (val instanceof Array){
 			h = val[0]; s = val[1]; v = val[2];
-		}
-		else{
+		} else {
 			h = val.h; s = val.s; v = val.v;
 		}
 		
 		//convert H degrees to decimal for calculation
 		h = h/360; // 0 <= H <= 1
 		
-		var rgb = {};
+		var rgb = {},
+            var_r, var_g, var_b;
 		
 		if ( s === 0 ) //HSV from 0 to 1
 		{
-		   rgb["r"] = v * 255;
-		   rgb["g"] = v * 255;
-		   rgb["b"] = v * 255;
-		}
-		else
-		{
+		   rgb.r = v * 255;
+		   rgb.g = v * 255;
+		   rgb.b = v * 255;
+		} else {
 		   var var_h = h * 6;
 		   if ( var_h === 6 ) var_h = 0; //H must be < 1
 		   var var_i = parseInt( var_h ); //Or ... var_i = floor( var_h )
@@ -451,16 +454,16 @@
 		   var var_2 = v * ( 1 - s * ( var_h - var_i ) );
 		   var var_3 = v * ( 1 - s * ( 1 - ( var_h - var_i ) ) );
 
-		   if      ( var_i == 0 ) { var_r = v     ; var_g = var_3 ; var_b = var_1 }
-		   else if ( var_i == 1 ) { var_r = var_2 ; var_g = v     ; var_b = var_1 }
-		   else if ( var_i == 2 ) { var_r = var_1 ; var_g = v     ; var_b = var_3 }
-		   else if ( var_i == 3 ) { var_r = var_1 ; var_g = var_2 ; var_b = v     }
-		   else if ( var_i == 4 ) { var_r = var_3 ; var_g = var_1 ; var_b = v     }
-		   else                   { var_r = v     ; var_g = var_1 ; var_b = var_2 }
+		   if      ( var_i === 0 ) { var_r = v     ; var_g = var_3 ; var_b = var_1; }
+		   else if ( var_i === 1 ) { var_r = var_2 ; var_g = v     ; var_b = var_1; }
+		   else if ( var_i === 2 ) { var_r = var_1 ; var_g = v     ; var_b = var_3; }
+		   else if ( var_i === 3 ) { var_r = var_1 ; var_g = var_2 ; var_b = v;     }
+		   else if ( var_i === 4 ) { var_r = var_3 ; var_g = var_1 ; var_b = v;     }
+		   else                    { var_r = v     ; var_g = var_1 ; var_b = var_2; }
 
-		   rgb["r"] = Math.round(var_r * 255); //RGB results from 0 to 255
-		   rgb["g"] = Math.round(var_g * 255);
-		   rgb["b"] = Math.round(var_b * 255);
+		   rgb.r = Math.round(var_r * 255); //RGB results from 0 to 255
+		   rgb.g = Math.round(var_g * 255);
+		   rgb.b = Math.round(var_b * 255);
 		}
 		
 		//round values
@@ -469,15 +472,14 @@
 		rgb.b = Math.round(rgb.b);
 		
 		return creator(rgb);
-	}
+	};
 	
 	//RGB from [h,s,l] or {h,s,l}
 	ColorLib.fromHSL = function(val){
 		var H, S, L;
 		if (val instanceof Array){
 			H = val[0]; S = val[1]; L = val[2];
-		}
-		else{
+		} else {
 			H = val.h; S = val.s; L = val.l;
 		}
 		
@@ -493,26 +495,26 @@
 		   if ( ( 2 * vH ) < 1 ) return ( v2 );
 		   if ( ( 3 * vH ) < 2 ) return ( v1 + ( v2 - v1 ) * ( ( 2 / 3 ) - vH ) * 6 );
 		   return v1;
-		}
+		};
 		
-		var var_1, var_2;
+		var var_1, var_2, R, G, B;
 		
 		if ( S === 0 ) //HSL from 0 to 1
 		{
-		   var R = L * 255                      //RGB results from 0 to 255
-		   var G = L * 255
-		   var B = L * 255
+		   R = L * 255; //RGB results from 0 to 255
+		   G = L * 255;
+		   B = L * 255;
 		}
 		else
 		{
-		   if ( L < 0.5 ) var_2 = L * ( 1 + S )
-		   else           var_2 = ( L + S ) - ( S * L )
+		   if ( L < 0.5 ) var_2 = L * ( 1 + S );
+		   else           var_2 = ( L + S ) - ( S * L );
 
-		   var_1 = 2 * L - var_2
+		   var_1 = 2 * L - var_2;
 
-		   R = 255 * hueToRGB( var_1, var_2, H + ( 1 / 3 ) ) 
-		   G = 255 * hueToRGB( var_1, var_2, H )
-		   B = 255 * hueToRGB( var_1, var_2, H - ( 1 / 3 ) )
+		   R = 255 * hueToRGB( var_1, var_2, H + ( 1 / 3 ) );
+		   G = 255 * hueToRGB( var_1, var_2, H );
+		   B = 255 * hueToRGB( var_1, var_2, H - ( 1 / 3 ) );
 		}
 		
 		//round values
@@ -520,22 +522,22 @@
 			r: Math.round(R),
 			g: Math.round(G),
 			b: Math.round(B)
-		}
+		};
 		
 		return creator(rgb);
-	}
+	};
 	
 	//pseudo-random color
 	ColorLib.random = function(){
-		var r = function(){ return Math.floor(Math.random()*256) }
+		var r = function(){ return Math.floor(Math.random()*256); };
 		var rgb = {
 			r: r(),
 			g: r(),
 			b: r()
-		}
+		};
 		
 		return creator(rgb);
-	}
+	};
 	
 	/* lib helpers */
 	ColorLib.min = function(arr){
@@ -544,14 +546,14 @@
 			if (arr[i] < m) m = arr[i];
 		}
 		return m;
-	}
+	};
 	ColorLib.max = function(arr){
 		var m = arr[0];
 		for (var i = 0; i < arr.length; i++){
 			if (arr[i] > m) m = arr[i];
 		}
 		return m;
-	}
+	};
 	ColorLib.circleMotion = function(from, offset){
 		from = Number(from) + Number(offset);
 		
@@ -559,7 +561,7 @@
 		while (from > 360) from = from - 360;
 		
 		return from;
-	}
+	};
 	//creates different colors based on alpha and background color
 	ColorLib.alphaShift = function alphaShift(color, count, background){
 		var n = 1/count;
@@ -572,15 +574,20 @@
 		}
 		
 		return colors;
-	}
+	};
 	//mix two colors evenly
 	ColorLib.mix = function mix(color1, color2){
 		//do not change original colors
 		var newColor = ColorLib(color1.RGBA);
-		return newColor.setAlpha(.5).removeAlpha(color2.RGBA);
-	}
+		return newColor.setAlpha(1/2).removeAlpha(color2.RGBA);
+	};
 	
 	//attach to global scope
 	//TODO: RequireJS, AMD, CommonJS, etc.
-    !!(typeof module !== 'undefined' && module.exports) ? module.exports = ColorLib : global.Color = ColorLib;
+    /* jshint -W030 */
+    !function(){
+        /* global module */
+        !!(typeof module !== 'undefined' && module.exports) ? (module.exports = ColorLib) : (global.Color = ColorLib);
+    }();
+    /* jshint +W030 */
 })(this);

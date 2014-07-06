@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Tiny Request tests</title>
+    
+    <!-- include jasmine -->
+    <script src='//cdnjs.cloudflare.com/ajax/libs/jasmine/2.0.0/jasmine.js'></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jasmine/2.0.0/jasmine-html.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jasmine/2.0.0/boot.js"></script>
+    <link href='//cdnjs.cloudflare.com/ajax/libs/jasmine/2.0.0/jasmine.css' rel='stylesheet' />
+    
+    <style>
+        /* jasmine style fix */
+        html, body{ margin: 0; padding: 0; overflow: auto; }
+    </style>
+</head>
+<body>
+
+<script src="color.min.js"></script>
+<script>
+    // sanity test
+    describe("sanity", function(){
+        it("test", function(){
+            expect(1).toEqual(1);
+        });
+    });
+    
+    // colorjs-lib tests
+    describe("constructor", function(){
+        it ("creates a white color", function () {
+            var c = Color("ffffff");
+            expect(c.RGB()).toEqual({ r: 255, g: 255, b: 255 });
+        });
+    });
+    
+    describe("HSL", function(){
+        it ("can convert to HSL", function(){
+            var c = Color('fff');
+            expect(typeof c.HSL).toEqual('function');
+        });
+        
+        it("can calculate white", function(){
+            var c = Color('fff');
+            expect(c.HSL()).toEqual({ h: 0, s: 0, l: 1 });
+        });
+    });
+    
+    
+    /* */
+</script>
+</body>
+</html>

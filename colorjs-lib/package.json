@@ -1,12 +1,12 @@
 {
-    "name":"color-js",
+    "name":"colorjs-lib",
     "version":"0.1.0",
     "author":"Kiril Vatev <vatev.1@gmail.com>",
     "description":"convert and calculate colors in JavaScript",
-    "main":"./src/color.js",
+    "main":"color.js",
     "repository":{
         "type":"git",
-        "url":"https://github.com/catdad/ColorJS.git"
+        "url":"https://github.com/catdad/colorjs-lib.git"
     },
     "homepage":"http://catdad.github.io/ColorJS",
     "keywords":["color", "convert", "rgb", "cmyk", "hex", "hsl", "hsv"],
