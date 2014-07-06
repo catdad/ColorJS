@@ -1,0 +1,82 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/paper-slider/paper-slider.html">
+
+<polymer-element name="cjs-hsl-sliders" attributes="h s l color">
+    <template>
+        
+        <style>
+            :host{
+                display: block;
+            }
+
+            span.label{
+                font-weight: bold;
+                width: 1em;
+            }
+
+            paper-slider::shadow #sliderKnobInner,
+            paper-slider::shadow #sliderKnobInner::before,
+            paper-slider::shadow #sliderBar::shadow #activeProgress,
+            paper-slider::shadow #sliderBar::shadow #secondaryProgress,
+            paper-slider::shadow paper-input::shadow #underlineHighlight{
+                background-color: {{color}};
+            }
+        </style>
+        
+        <div layout vertical>
+            <div center horizontal layout>
+                <span class='label'>H</span><paper-slider id="h" min="0" max="360" value="{{h}}" 
+                                                          on-change="{{hChange}}" editable flex></paper-slider>
+            </div>
+            <div center horizontal layout>
+                <span class='label'>S</span><paper-slider id="s" min="0" max="100" value="{{s}}" 
+                                                          on-change="{{sChange}}" editable flex></paper-slider>
+            </div>
+            <div center horizontal layout>
+                <span class='label'>L</span><paper-slider id="l" min="0" max="100" value="{{l}}" 
+                                                          on-change="{{lChange}}" editable flex></paper-slider>
+            </div>
+        </div>
+    </template>
+    <script>
+        Polymer('cjs-hsl-sliders', {
+            h: 0,
+            s: 0,
+            l: 0,
+            isPrivate: false,
+            hChange: function(){ !this.isPrivate && this.sliderChanged(); },
+            sChange: function(){ !this.isPrivate && this.sliderChanged(); },
+            lChange: function(){ !this.isPrivate && this.sliderChanged(); },
+            color: '#bada55',
+            sliderChanged: function(){
+                this.fire('change', this.get() );
+            },
+            publish: {
+                get: function(){
+                    return { h: this.h, s: this.s / 100, l: this.l / 100 };  
+                },
+                set: function(hsl){
+                    //set private change to true
+                    this.isPrivate = true;
+                    
+                    this.h = hsl.h;
+                    this.s = hsl.s * 100;
+                    this.l = hsl.l * 100;
+                    
+                    //reset private value on next event loop
+                    this.async(function(){ 
+                        this.isPrivate = false;
+                        //fire event manually
+                        //do not fire until rounding problem is solved
+                        //this.sliderChanged();
+                    }, null, 0);
+                    
+                    return this;
+                },
+                setColor: function(css){
+                    this.color = css;  
+                }
+            }
+        });
+    </script>
+</polymer-element>

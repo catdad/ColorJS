@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	
+	<!--meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"/-->
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"/>
+	<!-- Apple web app tags -->
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+	<!-- vendor neutral web app tags -->
+	<meta name="mobile-web-app-capable" content="yes">
+
+	<!--link rel="shortcut icon" href="misc/picker_8704.png" /--> 
+	<!--link rel="shortcut icon" href="favicon.ico" /--> 
+	<link rel="apple-touch-icon" sizes="196x196" href="misc/brush_14813.png">
+	<link rel="icon" type="image/png" href="misc/brush_14813.png" />
+	<link rel="shortcut icon" sizes="196x196" href="misc/brush_14813.png">
+	<!-- favicon attribution
+		Eden Clairicia, from The Noun Project
+		http://thenounproject.com/noun/paint-brush/#icon-No14813
+	-->
+
+	<title>ColorJS</title>
+    
+    <style>
+        /** splash CSS is inlined into the document **/
+        .splash { 
+            display: none;
+            -note: hide by default;
+        }
+        body.preload[unresolved]{ 
+            opacity: 1; 
+            -note: override Polymer default;
+        }
+        .preload .splash {
+            display: block;
+            width: 100%;
+            height: 100%;
+            background-color: #e5e5e5;
+        }
+
+        .preload .splashContent{
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            width: 50%;
+            height: 7em;
+            margin: auto;
+            text-align: center;
+            z-index: 100;
+
+            font-size: 2em;
+            line-height: 1.2em;
+            font-weight: bold;
+
+            transition: all .2ms;
+        }
+        .preload .splashContent img {
+            width: 5em;
+            height: 5em;
+        }
+    </style>
+
+    <link rel="stylesheet" href="misc/test.css">
+    
+	<script src="bower_components/platform/platform.js"></script>
+    
+    <link rel="import" href="elements/cjs-scaffold/cjs-core-scaffold.html" />
+    <link rel="import" href="bower_components/core-header-panel/core-header-panel.html" />
+<!--    <link rel="import" href="bower_components/core-elements/core-elements.html" />-->
+    <link rel="import" href="bower_components/paper-slider/paper-slider.html" />
+    
+    <link rel="import" href="elements/rgb-sliders/rgb-sliders.html" />
+    <link rel="import" href="elements/rgb-sliders/hsl-sliders.html" />
+    <link rel="import" href="elements/rgb-sliders/hsv-sliders.html" />
+</head>
+
+<body fullbleed unresolved class="preload">
+	<a href='https://github.com/catdad/ColorJS' class="ribbon" style='z-index:1;position:fixed;padding:5px 45px;width:123px;background-color:#F6C304;color:#fff;font-size:13px;font-family:sans-serif;text-decoration:none; font-weight:bold;-webkit-backface-visibility:hidden;border:2px dotted #fff;box-shadow:0 0 0 3px #F6C304,0 0 20px -3px rgba(0,0,0,.5);text-shadow:0 0 0 #fff,0 0 5px rgba(0,0,0,.3);top:50px;right:-50px;-ms-transform:rotate(45deg);-moz-transform:rotate(45deg);-webkit-transform:rotate(45deg);transform: rotate(45deg);'>Fork me on GitHub</a>
+	
+    <div class='splash' >
+        <div class='splashContent'>
+            <div><img src="misc/custom.svg" /></div>
+            <div>Loading...</div>
+        </div>
+    </div>
+    
+    <cjs-core-scaffold mode="waterfall-tall" style="display: none;" unresolved>
+        <core-header-panel navigation flex>
+            <div class="section"><div class="title">Quick Schemes</div>
+				<button onclick="calc('analog')">Analog</button>
+				<button onclick="calc('triad')">Triad</button>
+				<button onclick="calc('split')">Split</button>
+				<button onclick="calc('complement')">Complement</button>
+			</div>
+			<div class="section"><div class="title">Single-Color Schemes</div>
+				<div class="input">
+					<span>Scale</span>
+					<input id="monochrome" type="number" min="0" max="10" placeholder="count" />
+				</div>
+				<div class="input">
+					<span>Lighter</span>
+					<input id="monochromeLight" type="number" min="0" max="10" placeholder="count" />
+				</div>
+				<div class="input">
+					<span>Darker</span>
+					<input id="monochromeDark" type="number" min="0" max="10" placeholder="count" />
+				</div>
+			</div>
+			
+			<div class="section"><div class="title">Multi-Color Schemes</div>
+				<div class="input">
+					<span>Quadrat</span>
+					<input id="quadrat" type="number" min="-180" max="180" step="10" placeholder="degrees" />
+				</div>
+				<div class="input">
+					<span>Hue Shift</span>
+					<input id="hueShift" type="number" min="0" max="360" placeholder="degrees" />
+				</div>
+				<div class="input">
+					<span>Contrasts</span>
+					<input id="contrasts" type="number" min="0" max="10" placeholder="count" />
+				</div>
+				<div class="input">
+					<span>Diverging</span>
+					<input id="diverging" type="number" min="3" max="10" placeholder="count" />
+				</div>
+			</div>
+        </core-header-panel>
+        
+<!--        <span tool>ColorJS<img class="titleIcon" src="misc/custom.svg"></span>-->
+            
+        <div tool layout horizontal class="wide">
+            <div id="title">ColorJS<img class="titleIcon" src="misc/custom.svg"></div>
+            <div id="hexTitle" flex centered></div>
+        </div>
+        
+        <div class="wrapper">
+            <div class="mainContent">
+                <!-- define tab content -->
+                <div class="tab show" tab1>
+                    <cjs-rgb-sliders></cjs-rgb-sliders>
+                </div>
+
+                <div class="tab" tab2>
+                    <cjs-hsl-sliders></cjs-hsl-sliders>
+                </div>
+                <div class="tab" tab3>
+                    <cjs-hsv-sliders></cjs-hsv-sliders>
+                </div>
+
+                <div class="tab" tab4 flex centered>
+                    <div id="colorPicker" class="inline block cp-normal">
+                        <div id="picker" class="inline"></div>
+                        <div id="slide" class="inline"></div>    
+                    </div>
+                </div>
+                
+                <!-- define info area -->
+                <div id="controls">
+                    <div id="heroColor"></div>
+                    <input type="text" id="hex" placeholder="HEX" /><br/>
+                    <button id="set">Set</button>
+                    <button id="random">Random</button>
+                </div>
+
+                <!-- color generation results go here -->
+                <div id="results"></div>
+            </div>
+            
+            <div id="footer">
+                <div>
+                    <a href="https://github.com/catdad/ColorJS">ColorJS</a> and 
+                    <a href="https://github.com/catdad/colorjs-lib">colorjs-lib</a> are created and 
+                    maintained by <a href="https://github.com/catdad">catdad</a>.
+                </div>
+            </div>
+        </div>
+    </cjs-core-scaffold>
+    
+    
+    <script>
+        window.addEventListener('polymer-ready', function(ev){
+            console.log(ev);
+            
+            document.body.className = document.body.className.replace('preload', '');
+            scaffold = document.querySelector('cjs-core-scaffold');
+            scaffold.style.display = 'initial';
+            
+            scaffold.addEventListener('tabChanged', function(ev){
+                [].forEach.call(document.querySelectorAll('.tab'), function(el){
+                    el.classList.remove('show');
+                });
+                
+                document.querySelector('[tab' + ev.detail.tabIndex + ']').classList.add('show');
+                
+                console.log('tab change', ev.detail.tabIndex);
+            });
+            
+            //color init
+            locationHash.load();
+        });
+    </script>
+    
+    
+	<script type="text/javascript" src="misc/analytics.js"></script>
+	<script type="text/javascript" src="misc/colorpicker.min.js"></script>
+	<script type="text/javascript" src="colorjs-lib/color.min.js"></script>
+	<script>
+		var configMethods = ["hueShift", "contrasts", "diverging", "monochrome", "quadrat", "monochromeLight", "monochromeDark"];
+		var activeMethod = {active:false};
+		
+        //set a default for main
+		var main = Color('bada55'); //Color("F6C304")
+		
+		function O(id){ return document.getElementById(id); }
+		function str(obj){
+			if (typeof obj === "string") return obj;
+			var arr = [];
+			for (i in obj){ arr.push(i + ": " + obj[i]); }
+			return arr.join(', ');
+		}
+		
+        var locationHash = {
+            load: function loadHash(){
+                function inside(m){
+                    for (var i = configMethods.length-1; i > -1; i--){
+                        if (configMethods[i] === m) return true;
+                    }
+                    return false;
+                }
+
+                //get hash variables
+                var hash = window.location.hash.split('/');
+                var color = hash[0].replace(/[^0-9a-f]/gi, "");
+                var method = hash[1], number = Number(hash[2]);
+
+                if (color && (color.length === 3 || color.length === 6)) {
+                    //set main color
+                    main = Color(color);
+
+                    //set method variables
+                    if (method) {
+                        calc(method, number);
+                        if (inside(method)) O(method).value = number;
+                    };
+                }
+                
+                // trigger a color change
+                colorChangeRouter(main, 'hash');
+            },
+            set: function setHash(color){
+                window.location.hash = color.HEX() +
+                    ((activeMethod.name) ? '/' + activeMethod.name : "") +
+                    ((activeMethod.n) ? '/' + activeMethod.n : "");
+            }
+        }
+        
+        var views = {
+            swatch: function swatch(color){
+                var div = document.createElement("div");
+                div.className = "swatch";
+                div.style.backgroundColor = color.CSS();
+
+                div.innerHTML = views.info(color, true);
+                return div;
+            },
+            info: function info(color, trim, isHero){
+                var code = "<div class='colorInfo'>";
+
+                code += "<div>" + str(color.CSS()) + "</div>";
+                code += "<div>" + str(color.RGB()) + "</div>";
+                code += trim ? "" : "<div>" + str(color.CMYK()) + "</div>";
+                code += "<div>" + str(color.HSV()) + "</div>";
+                code += "<div>" + str(color.HSL()) + "</div>";
+
+                code += "</div>";
+                return code;
+            }
+        }
+        
+		//reset unused number input methods
+		function resetInputs(method){
+			for (var i = 0; i < configMethods.length; i++){
+				if (configMethods[i] !== method) O(configMethods[i]).value = "";
+			}
+		}
+		//calculate color scheme
+		function calc(method, n){ 
+			//set active method
+			activeMethod = { name:method, n:n, active:true };
+			
+            var res = main[method](n);
+			var html = nodes.results;
+			
+			var title = method;
+			if (method === "hueShift") title = method + " " + n + " degrees";
+			
+			html.innerHTML = (n == 0) ? "" : "<div class='label'>" + title + "</div>";
+			
+			//add each color to DOM
+			for (var i = 0; i < res.length; i++){
+				html.appendChild( views.swatch(res[i]) );
+			}
+			
+			resetInputs(method);
+			
+			//set location hash
+			locationHash.set(main);
+		}
+        
+        
+		//set listeners
+		for (var i = 0; i < configMethods.length; i++){
+			O(configMethods[i]).oninput = function oninput(){
+				calc(this.id, Number(this.value));
+			};
+		}
+		
+		//events for HEX controls
+		O("set").onclick = function(){
+			var val = O("hex").value;
+			if (cp) cp.setRgb( Color(val).RGBA );
+		}
+		O("random").onclick = function(){
+			//setting color changer will cause 'change()' to execute
+			if (cp) cp.setRgb( Color.random().RGBA )
+		}
+		
+        var nodes = {
+            setButton: O("set"),
+            randomButton: O("random"),
+            hexInput: O("hex"),
+            hexTitle: O("hexTitle"),
+            heroColor: O("heroColor"),
+            results: O("results"),
+            scaffold: document.querySelector("cjs-core-scaffold"),
+            slidersRGB: document.querySelector("cjs-rgb-sliders"),
+            slidersHSL: document.querySelector("cjs-hsl-sliders"),
+            slidersHSV: document.querySelector("cjs-hsv-sliders"),
+            colorPicker: ColorPicker( O('slide'), O('picker'),
+                function(hex, hsv, rgb) {
+                    colorChangeRouter(Color(rgb), 'color-picker');
+                })
+        }
+        
+        var changeSetter = {
+            slidersRGB: function setSliders(color){
+                nodes.slidersRGB.set(color.RGB());
+            },
+            slidersHSL: function setSlidersHSL(color){
+                nodes.slidersHSL.set(color.HSL());
+                nodes.slidersHSL.setColor(color.CSS());
+            },
+            slidersHSV: function setSlidersHSV(color){
+                nodes.slidersHSV.set(color.HSV());
+                nodes.slidersHSV.setColor(color.CSS());
+            },
+            colorPicker: function setColorPicker(color){
+                nodes.colorPicker.setRgb(color.RGB());
+            },
+            buttons: function setButtons(color){
+                nodes.hexInput.value = color.HEX().toUpperCase();
+            },
+            hash: function setHash(color){
+                locationHash.set(color);   
+            },
+            UI: function setUI(color){
+                nodes.heroColor.innerHTML = views.info(color, true);
+                nodes.hexTitle.innerHTML = color.CSS();
+
+                //color color swatches
+                nodes.results.innerHTML = "";
+
+                nodes.scaffold && (nodes.scaffold.fill = color.CSS());
+
+                //execute active method if set
+                if (activeMethod.active) calc(activeMethod.name, activeMethod.n);
+            }
+        }
+        
+        function colorChangeRouter(color, source){
+            if (source !== 'hash' && main.CSS() === color.CSS()) { 
+                console.log('change do nothing', source); 
+                return; 
+            }
+            
+            //set the main color
+            main = color;
+            
+            console.log('router source', source, color.CSS());
+            
+            function execute(arr){
+                console.log(arr);
+                arr.forEach(function(name){
+                    changeSetter[name](color);
+                });
+            }
+            
+            var all = ['slidersRGB', 'slidersHSL', 'slidersHSV', 'colorPicker', 'buttons', 'hash', 'UI'];
+            
+            switch (source){
+                case 'color-picker':
+                    execute(['slidersRGB', 'slidersHSL', 'slidersHSV', 'buttons', 'hash', 'UI']);
+                    break;
+                case 'sliders-hls':
+                    execute(['slidersRGB', 'slidersHSV', 'colorPicker', 'buttons', 'hash', 'UI']);
+                    break;
+                case 'sliders-hlv':
+                    execute(['slidersRGB', 'slidersHSL', 'colorPicker', 'buttons', 'hash', 'UI']);
+                    break;
+                case 'sliders-rgb':
+                    execute(['slidersHSL', 'slidersHSV', 'colorPicker', 'buttons', 'hash', 'UI']);
+                    break;
+                case 'buttons':
+                    execute(['slidersRGB', 'slidersHSL', 'slidersHSV', 'colorPicker', 'hash', 'UI']);
+                    break;
+                case 'hash':
+                    execute(['slidersRGB', 'slidersHSL', 'slidersHSV', 'colorPicker', 'buttons', 'UI']);
+                    break;
+                default:
+                    //do all
+                    execute(['slidersRGB', 'slidersHSL', 'slidersHSV', 'colorPicker', 'buttons', 'hash', 'UI']);
+            }
+        }
+        
+        //add change listeners
+        nodes.slidersRGB.addEventListener('change', function(ev){
+            var color = Color(ev.detail);
+            colorChangeRouter(color, 'sliders-rgb');
+        });
+        
+        nodes.slidersHSL.addEventListener('change', function(ev){
+            var color = Color.fromHSL(ev.detail);
+            colorChangeRouter(color, 'sliders-hsl');
+            
+            //alternative setting method
+            //changeSetter.slidersRGB(color);
+        });
+        
+        nodes.slidersHSV.addEventListener('change', function(ev){
+            var color = Color.fromHSV(ev.detail);
+            colorChangeRouter(color, 'sliders-hsv');
+            
+            //alternative setting method
+            //changeSetter.slidersRGB(color);
+        });
+        
+        nodes.setButton.onclick = function(){
+            var color = Color(nodes.hexInput.value);
+            colorChangeRouter(color, 'buttons');
+        }
+        
+        nodes.randomButton.onclick = function(){
+            var color = Color.random();
+            nodes.hexInput.value = color.HEX().toUpperCase();
+            colorChangeRouter(color, 'buttons');
+        }
+	</script>
+</body>
+</html>

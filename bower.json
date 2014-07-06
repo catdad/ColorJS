@@ -1,0 +1,24 @@
+{
+  "name": "ColorJS",
+  "version": "0.1.0",
+  "description": "convert and calculate colors",
+  "main": "index.html",
+  "authors": [
+    "Kiril Vatev <vatev.1@gmail.com>"
+  ],
+  "license": "MIT",
+  "homepage": "http://catdad.github.io/ColorJS",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "polymer": "Polymer/polymer#~0.3.3",
+    "core-elements": "Polymer/core-elements#~0.3.3",
+    "paper-slider": "Polymer/paper-slider#~0.3.3",
+    "paper-tabs": "Polymer/paper-tabs#~0.3.3"
+  }
+}
