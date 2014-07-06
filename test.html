@@ -102,13 +102,12 @@
             <div id="hexTitle" flex centered></div>
         </div>
         
-        <div class="wrapper">
-            <div class="mainContent">
+        <div class="wrapper" layout vertical>
+            <div class="mainContent" flex>
                 <!-- define tab content -->
                 <div class="tab show" tab1>
                     <cjs-rgb-sliders></cjs-rgb-sliders>
                 </div>
-
                 <div class="tab" tab2>
                     <cjs-hsl-sliders></cjs-hsl-sliders>
                 </div>
@@ -189,24 +188,19 @@
 		
         var locationHash = {
             load: function loadHash(){
-                function inside(m){
-                    return nodes.tools.isValidMethod(m);
-                }
-
                 //get hash variables
                 var hash = window.location.hash.split('/');
-                var color = hash[0].replace(/[^0-9a-f]/gi, "");
-                var method = hash[1], number = Number(hash[2]);
+                var color = hash[0].replace(/[^0-9a-f]/gi, ""),
+                    method = hash[1], 
+                    number = Number(hash[2]);
 
                 if (color && (color.length === 3 || color.length === 6)) {
                     //set main color
                     main = Color(color);
 
                     //set method variables
-                    if (method) {
+                    if (method && nodes.tools.isValidMethod(method)) {
                         nodes.tools.setMethod(method, number);
-//                        calc(method, number);
-//                        if (inside(method)) O(method).value = number;
                     };
                 }
                 
