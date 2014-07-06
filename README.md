@@ -8,11 +8,11 @@ So you want to convert and calculate colors in JavaScript? You've come to the ri
 
 In the browser:
 
-    <script src="//catdad.github.io/tiny.cdn/lib/colorjs/latest/color.min.js"></script>
+    <script src="http//catdad.github.io/tiny.cdn/lib/colorjs/latest/color.min.js"></script>
     
 In Node.js:
 
-    var Color = require('color-js');
+    var Color = require('colorjs-lib');
     
 _Note: npm is coming soon._
 
@@ -52,6 +52,8 @@ Once you have created a color, you can convert it to any format you would like, 
     color.HSV(); //{h: 0, s: 1, v: 1}
     color.HSL(); //{h: 0, s: 1, l: 0.5}
     color.CMYK(); //{c: 0, m: 1, y: 1, k: 0}
+    
+    color.toString(); //"#ff0000"
     
 The same functions can be used to set the color of an existing `Color` object by passing the appropriate value.
 
