@@ -133,20 +133,12 @@ button#set, button#random{ margin: 0; width: 6.2em;}
 }
 /*** end style colors and results ***/
 
-#picker { width: 200px !important; height: 200px !important; }
-#slide { width: 20px !important; height: 200px !important; }
-
+#controls{ 
+    margin: 10px 0 20px;
+    text-align: center !important;
+}
 
 @media all and (max-width: 900px){
-	
-	
-	#main.color .info{ display: block; }
-	#info{ display: none; }
-	#hero .inline{ height: auto; }
-	#main.color{ height: 200px; }
-	#controls{margin: 0;}
-	#controls{ text-align: center !important; }
-	
 	.ribbon, #note { display: none; }
 }
 

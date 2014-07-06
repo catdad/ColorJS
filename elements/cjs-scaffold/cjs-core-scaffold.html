@@ -143,9 +143,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             
             this.$.tabs.addEventListener('core-select', function(ev){
                 if (ev.detail.isSelected){
-                    
                     that.fire('tabChanged', { tabIndex: +ev.detail.item.getAttribute('name') });
-                    
                 }
             });
         }
