@@ -1,0 +1,124 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<polymer-element name="cjs-drawer-tools">
+    <template>
+        <style>
+        
+            /** style sidebar inputs **/
+            .section{
+                margin: 8px 0 5px;
+                padding: 5px;
+            }
+            .section .title{
+                font-weight: bold;
+                display: block;
+                margin: 0 1em;
+                border-bottom: 1px solid #898989;
+            }
+
+            .section span{
+                width: 6em;
+                display: inline-block;
+                text-align: right;
+            }
+
+            button, input{
+                margin: 5px;
+                background-color: white;
+                border: 1px solid #aaa;
+                padding: 3px 4px;
+                font-size: 1.2em;
+                font-family: inherit;
+                cursor: pointer;
+            }
+            
+            input[type="number"]{ width: 5em; cursor: inherit; }
+
+            /*** end style sidebar inputs ***/
+        
+        </style>
+        
+        <div class="section"><div class="title">Quick Schemes</div>
+            <button onclick="calc('analog')">Analog</button>
+            <button onclick="calc('triad')">Triad</button>
+            <button onclick="calc('split')">Split</button>
+            <button onclick="calc('complement')">Complement</button>
+        </div>
+        <div class="section"><div class="title">Single-Color Schemes</div>
+            <div class="input">
+                <span>Scale</span>
+                <input id="monochrome" type="number" min="0" max="10" placeholder="count" />
+            </div>
+            <div class="input">
+                <span>Lighter</span>
+                <input id="monochromeLight" type="number" min="0" max="10" placeholder="count" />
+            </div>
+            <div class="input">
+                <span>Darker</span>
+                <input id="monochromeDark" type="number" min="0" max="10" placeholder="count" />
+            </div>
+        </div>
+
+        <div class="section"><div class="title">Multi-Color Schemes</div>
+            <div class="input">
+                <span>Quadrat</span>
+                <input id="quadrat" type="number" min="-180" max="180" step="10" placeholder="degrees" />
+            </div>
+            <div class="input">
+                <span>Hue Shift</span>
+                <input id="hueShift" type="number" min="0" max="360" placeholder="degrees" />
+            </div>
+            <div class="input">
+                <span>Contrasts</span>
+                <input id="contrasts" type="number" min="0" max="10" placeholder="count" />
+            </div>
+            <div class="input">
+                <span>Diverging</span>
+                <input id="diverging" type="number" min="3" max="10" placeholder="count" />
+            </div>
+        </div>
+        
+    </template>
+    <script>
+        Polymer("cjs-drawer-tools", {
+            configMethods: ["hueShift", "contrasts", "diverging", "monochrome", 
+                            "quadrat", "monochromeLight", "monochromeDark"],
+            ready: function(){
+                var that = this;
+                //set listeners
+                for (var i = 0; i < that.configMethods.length; i++){
+                    console.log('set', that.configMethods[i]);
+                    that.$[that.configMethods[i]].oninput = function oninput(){
+                        that.fireChanged(this.id, Number(this.value) );
+                        that.resetInputs(this.id);
+                    };
+                }
+            },
+            fireChanged: function fireChanged(method, n){
+                this.fire("change", { method: method, n: n });
+            },
+            resetInputs: function resetInputs(method){
+                var that = this;
+                for (var i = 0; i < that.configMethods.length; i++){
+                    if (that.configMethods[i] !== method) that.$[that.configMethods[i]].value = "";
+                }
+            },
+            publish: {
+                getMethod: function(){
+                
+                },
+                setMethod: function setMethod(method, n){
+                    this.$[method].value = n;
+                    this.fireChanged(method, n);
+                },
+                isValidMethod: function(method){
+                    for (var i = this.configMethods.length-1; i > -1; i--){
+                        if (this.configMethods[i] === m) return true;
+                    }
+                    return false;
+                }
+            }
+        
+        });
+    </script>
+</polymer-element>
