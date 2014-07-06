@@ -438,14 +438,16 @@
             var color = Color.fromHSL(ev.detail);
             colorChangeRouter(color, 'sliders-hsl');
             
-//            changeSetter.slidersRGB(color);
+            //alternative setting method
+            //changeSetter.slidersRGB(color);
         });
         
         nodes.slidersHSV.addEventListener('change', function(ev){
             var color = Color.fromHSV(ev.detail);
-//            colorChangeRouter(color, 'sliders-hsv');
+            colorChangeRouter(color, 'sliders-hsv');
             
-//            changeSetter.slidersRGB(color);
+            //alternative setting method
+            //changeSetter.slidersRGB(color);
         });
         
         nodes.setButton.onclick = function(){

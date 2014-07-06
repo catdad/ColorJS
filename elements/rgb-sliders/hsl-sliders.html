@@ -66,7 +66,8 @@
                     this.async(function(){ 
                         this.isPrivate = false;
                         //fire event manually
-                        this.sliderChanged();
+                        //do not fire until rounding problem is solved
+                        //this.sliderChanged();
                     }, null, 0);
                     
                     return this;
