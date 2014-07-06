@@ -1,0 +1,80 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/paper-slider/paper-slider.html">
+
+<polymer-element name="cjs-hsv-sliders" attributes="h s v color">
+    <template>
+        
+        <style>
+            :host{
+                display: block;
+            }
+
+            span.label{
+                font-weight: bold;
+                width: 1em;
+            }
+
+            paper-slider::shadow #sliderKnobInner,
+            paper-slider::shadow #sliderKnobInner::before,
+            paper-slider::shadow #sliderBar::shadow #activeProgress,
+            paper-slider::shadow #sliderBar::shadow #secondaryProgress{
+                background-color: {{color}};
+            }
+        </style>
+        
+        <div layout vertical>
+            <div center horizontal layout>
+                <span class='label'>H</span><paper-slider id="h" min="0" max="360" value="{{h}}" 
+                                                          on-change="{{hChange}}" editable flex></paper-slider>
+            </div>
+            <div center horizontal layout>
+                <span class='label'>S</span><paper-slider id="s" min="0" max="100" value="{{s}}" 
+                                                          on-change="{{sChange}}" editable flex></paper-slider>
+            </div>
+            <div center horizontal layout>
+                <span class='label'>V</span><paper-slider id="v" min="0" max="100" value="{{v}}" 
+                                                          on-change="{{vChange}}" editable flex></paper-slider>
+            </div>
+        </div>
+    </template>
+    <script>
+        Polymer('cjs-hsv-sliders', {
+            h: 0,
+            s: 0,
+            v: 0,
+            isPrivate: false,
+            hChange: function(){ !this.isPrivate && this.sliderChanged(); },
+            sChange: function(){ !this.isPrivate && this.sliderChanged(); },
+            vChange: function(){ !this.isPrivate && this.sliderChanged(); },
+            color: '#bada55',
+            sliderChanged: function(){
+                this.fire('change', this.get() );
+            },
+            publish: {
+                get: function(){
+                    return { h: this.h, s: this.s / 100, v: this.v / 100 };  
+                },
+                set: function(hsv){
+                    //set private change to true
+                    this.isPrivate = true;
+                    
+                    this.h = hsv.h;
+                    this.s = hsv.s * 100;
+                    this.v = hsv.v * 100;
+                    
+                    //reset private value on next event loop
+                    this.async(function(){ 
+                        this.isPrivate = false;
+                        //fire event manually
+                        this.sliderChanged();
+                    }, null, 0);
+                    
+                    return this;
+                },
+                setColor: function(css){
+                    this.color = css;  
+                }
+            }
+        });
+    </script>
+</polymer-element>
