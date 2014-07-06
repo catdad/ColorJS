@@ -56,37 +56,6 @@ div#footer {
 #slide { width: 20px !important; height: 200px !important; }
 /*** end color picker CSS ***/
 
-/** style sidebar inputs **/
-.section{
-	margin: 8px 0 5px;
-	padding: 5px;
-}
-.section .title{
-	font-weight: bold;
-	display: block;
-	margin: 0 1em;
-	border-bottom: 1px solid #898989;
-}
-
-.section span{
-	width: 6em;
-	display: inline-block;
-	text-align: right;
-}
-
-button, input{
-	margin: 5px;
-	background-color: white;
-	border: 1px solid #aaa;
-	padding: 3px 4px;
-	font-size: 1.2em;
-	font-family: inherit;
-	cursor: pointer;
-}
-/*** end style sidebar inputs ***/
-
-input[type="number"]{ width: 5em; cursor: inherit; }
-
 input#hex{ margin: 15px 0 5px; width: 12em; cursor: inherit; }
 button#set, button#random{ margin: 0; width: 6.2em;}
 

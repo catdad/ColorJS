@@ -74,6 +74,7 @@
 <!--    <link rel="import" href="bower_components/core-elements/core-elements.html" />-->
     <link rel="import" href="bower_components/paper-slider/paper-slider.html" />
     
+    <link rel="import" href="elements/cjs-drawer-tools/cjs-drawer-tools.html" />
     <link rel="import" href="elements/rgb-sliders/rgb-sliders.html" />
     <link rel="import" href="elements/rgb-sliders/hsl-sliders.html" />
     <link rel="import" href="elements/rgb-sliders/hsv-sliders.html" />
@@ -91,45 +92,7 @@
     
     <cjs-core-scaffold mode="waterfall-tall" style="display: none;" unresolved>
         <core-header-panel navigation flex>
-            <div class="section"><div class="title">Quick Schemes</div>
-				<button onclick="calc('analog')">Analog</button>
-				<button onclick="calc('triad')">Triad</button>
-				<button onclick="calc('split')">Split</button>
-				<button onclick="calc('complement')">Complement</button>
-			</div>
-			<div class="section"><div class="title">Single-Color Schemes</div>
-				<div class="input">
-					<span>Scale</span>
-					<input id="monochrome" type="number" min="0" max="10" placeholder="count" />
-				</div>
-				<div class="input">
-					<span>Lighter</span>
-					<input id="monochromeLight" type="number" min="0" max="10" placeholder="count" />
-				</div>
-				<div class="input">
-					<span>Darker</span>
-					<input id="monochromeDark" type="number" min="0" max="10" placeholder="count" />
-				</div>
-			</div>
-			
-			<div class="section"><div class="title">Multi-Color Schemes</div>
-				<div class="input">
-					<span>Quadrat</span>
-					<input id="quadrat" type="number" min="-180" max="180" step="10" placeholder="degrees" />
-				</div>
-				<div class="input">
-					<span>Hue Shift</span>
-					<input id="hueShift" type="number" min="0" max="360" placeholder="degrees" />
-				</div>
-				<div class="input">
-					<span>Contrasts</span>
-					<input id="contrasts" type="number" min="0" max="10" placeholder="count" />
-				</div>
-				<div class="input">
-					<span>Diverging</span>
-					<input id="diverging" type="number" min="3" max="10" placeholder="count" />
-				</div>
-			</div>
+            <cjs-drawer-tools></cjs-drawer-tools>
         </core-header-panel>
         
 <!--        <span tool>ColorJS<img class="titleIcon" src="misc/custom.svg"></span>-->
@@ -211,7 +174,6 @@
 	<script type="text/javascript" src="misc/colorpicker.min.js"></script>
 	<script type="text/javascript" src="colorjs-lib/color.min.js"></script>
 	<script>
-		var configMethods = ["hueShift", "contrasts", "diverging", "monochrome", "quadrat", "monochromeLight", "monochromeDark"];
 		var activeMethod = {active:false};
 		
         //set a default for main
@@ -228,10 +190,7 @@
         var locationHash = {
             load: function loadHash(){
                 function inside(m){
-                    for (var i = configMethods.length-1; i > -1; i--){
-                        if (configMethods[i] === m) return true;
-                    }
-                    return false;
+                    return nodes.tools.isValidMethod(m);
                 }
 
                 //get hash variables
@@ -245,8 +204,9 @@
 
                     //set method variables
                     if (method) {
-                        calc(method, number);
-                        if (inside(method)) O(method).value = number;
+                        nodes.tools.setMethod(method, number);
+//                        calc(method, number);
+//                        if (inside(method)) O(method).value = number;
                     };
                 }
                 
@@ -283,12 +243,6 @@
             }
         }
         
-		//reset unused number input methods
-		function resetInputs(method){
-			for (var i = 0; i < configMethods.length; i++){
-				if (configMethods[i] !== method) O(configMethods[i]).value = "";
-			}
-		}
 		//calculate color scheme
 		function calc(method, n){ 
 			//set active method
@@ -307,19 +261,10 @@
 				html.appendChild( views.swatch(res[i]) );
 			}
 			
-			resetInputs(method);
-			
 			//set location hash
 			locationHash.set(main);
 		}
-        
-        
-		//set listeners
-		for (var i = 0; i < configMethods.length; i++){
-			O(configMethods[i]).oninput = function oninput(){
-				calc(this.id, Number(this.value));
-			};
-		}
+
 		
 		//events for HEX controls
 		O("set").onclick = function(){
@@ -338,6 +283,7 @@
             hexTitle: O("hexTitle"),
             heroColor: O("heroColor"),
             results: O("results"),
+            tools: document.querySelector("cjs-drawer-tools"),
             scaffold: document.querySelector("cjs-core-scaffold"),
             slidersRGB: document.querySelector("cjs-rgb-sliders"),
             slidersHSL: document.querySelector("cjs-hsl-sliders"),
@@ -385,17 +331,13 @@
         
         function colorChangeRouter(color, source){
             if (source !== 'hash' && main.CSS() === color.CSS()) { 
-                console.log('change do nothing', source); 
                 return; 
             }
             
             //set the main color
             main = color;
             
-            console.log('router source', source, color.CSS());
-            
             function execute(arr){
-                console.log(arr);
                 arr.forEach(function(name){
                     changeSetter[name](color);
                 });
@@ -448,6 +390,11 @@
             
             //alternative setting method
             //changeSetter.slidersRGB(color);
+        });
+        
+        nodes.tools.addEventListener('change', function(ev){
+            console.log('tool changed event', ev.detail);
+            calc(ev.detail.method, ev.detail.n); 
         });
         
         nodes.setButton.onclick = function(){
