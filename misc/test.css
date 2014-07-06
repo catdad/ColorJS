@@ -5,52 +5,36 @@ htmp, body{
     color: #555;
     font-size: .9em;
 }
-.inline { display: inline-block !important; vertical-align: top; }
 
-/** splash CSS **/
-.splash { 
-    display: none;
-    -note: hide by default;
+/** layout **/
+.wrapper{
+    min-height: 100%;
+    position: relative;
 }
-body[unresolved]{ 
-    opacity: 1; 
-    -note: override Polymer default;
+.mainContent {
+    padding-bottom: .2em;
 }
-.preload .splash {
+
+div#footer {
+	position: absolute;
     display: block;
+	bottom: 0; /* stick to bottom */
     width: 100%;
-    height: 100%;
-    background-color: #e5e5e5;
+	font-size: .75em;
+	padding: 2px 0;
+	text-align: center;
 }
+/*** end layout ***/
 
-.preload .splashContent{
-    position: fixed;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    width: 50%;
-    height: 7em;
-    margin: auto;
-    text-align: center;
-    z-index: 100;
+.inline { display: inline-block !important; vertical-align: top; }
+.wide{ width: 100%; }
+[flex][centered]{ text-align: center; }
 
-    font-size: 2em;
-    line-height: 1.2em;
-    font-weight: bold;
-
-    transition: all .2ms;
+.tab{ 
+    display: none;
+    padding: 10px;
 }
-.preload .splashContent img {
-    width: 5em;
-    height: 5em;
-}
-/*** end splash css ***/
-
-
-/** style the scaffold core-toolbar **/
-
-.content{ height: 200px; padding: 20px; margin: 50px; background: pink; }
+.tab.show{ display: block; }
 
 .titleIcon{ 
     position: relative;
@@ -71,25 +55,6 @@ body[unresolved]{
 #picker { width: 200px !important; height: 200px !important; }
 #slide { width: 20px !important; height: 200px !important; }
 /*** end color picker CSS ***/
-
-
-
-/** layout **/
-div#footer {
-	position: fixed;
-    display: block;
-	bottom: 0; /* stick to bottom */
-    left: 0;
-    right: 0;
-	font-size: .75em;
-	padding: 2px 0;
-	text-align: center;
-	
-	z-index: 10;
-	background-color: inherit;
-	box-shadow: 0 0 4px 2px #e5e5e5;
-}
-/*** end layout ***/
 
 /** style sidebar inputs **/
 .section{
@@ -127,17 +92,20 @@ button#set, button#random{ margin: 0; width: 6.2em;}
 
 
 /** style colors and results **/
-.colorInfo{
-    color: white;
-	font-weight: bold;
-	position: relative;
-	text-transform: uppercase;
-	text-shadow: 0 0 10px rgba(0,0,0,1), 0 0 10px rgba(0,0,0,.5);
+[tool], cjs-core-scaffold /deep/ paper-tabs{
+    text-shadow: 0 0 10px rgba(0,0,0,1), 0 0 10px rgba(0,0,0,.5);
 }
 
+.colorInfo{
+    font-weight: bold;
+	position: relative;
+	text-transform: uppercase;
+}
 .swatch .colorInfo{ 
-    top: 3.4em;
+    color: white;
+	top: 3.4em;
     font-size: .9em;
+	text-shadow: 0 0 10px rgba(0,0,0,1), 0 0 10px rgba(0,0,0,.5);
 }
 
 #results{
@@ -154,7 +122,6 @@ button#set, button#random{ margin: 0; width: 6.2em;}
 	height: 160px;
 	border: 3px solid white;
 	border-radius: 150px;
-	z-index: 5;
 }
 
 .label{

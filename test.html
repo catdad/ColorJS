@@ -23,6 +23,47 @@
 	-->
 
 	<title>ColorJS</title>
+    
+    <style>
+        /** splash CSS is inlined into the document **/
+        .splash { 
+            display: none;
+            -note: hide by default;
+        }
+        body.preload[unresolved]{ 
+            opacity: 1; 
+            -note: override Polymer default;
+        }
+        .preload .splash {
+            display: block;
+            width: 100%;
+            height: 100%;
+            background-color: #e5e5e5;
+        }
+
+        .preload .splashContent{
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            width: 50%;
+            height: 7em;
+            margin: auto;
+            text-align: center;
+            z-index: 100;
+
+            font-size: 2em;
+            line-height: 1.2em;
+            font-weight: bold;
+
+            transition: all .2ms;
+        }
+        .preload .splashContent img {
+            width: 5em;
+            height: 5em;
+        }
+    </style>
 
     <link rel="stylesheet" href="misc/test.css">
     
@@ -35,7 +76,7 @@
 <!--    <link rel="import" href="bower_components/core-toolbar/core-toolbar.html" />-->
 </head>
 
-<body fullbleed unresolved class='preload'>
+<body fullbleed unresolved class="preload">
 	<a href='https://github.com/catdad/ColorJS' class="ribbon" style='z-index:1;position:fixed;padding:5px 45px;width:123px;background-color:#F6C304;color:#fff;font-size:13px;font-family:sans-serif;text-decoration:none; font-weight:bold;-webkit-backface-visibility:hidden;border:2px dotted #fff;box-shadow:0 0 0 3px #F6C304,0 0 20px -3px rgba(0,0,0,.5);text-shadow:0 0 0 #fff,0 0 5px rgba(0,0,0,.3);top:50px;right:-50px;-ms-transform:rotate(45deg);-moz-transform:rotate(45deg);-webkit-transform:rotate(45deg);transform: rotate(45deg);'>Fork me on GitHub</a>
 	
     <div class='splash' >
@@ -89,38 +130,46 @@
         </core-header-panel>
         
 <!--        <span tool>ColorJS<img class="titleIcon" src="misc/custom.svg"></span>-->
-        <div id="hero" tool>
             
+        <div tool layout horizontal class="wide">
             <div id="title">ColorJS<img class="titleIcon" src="misc/custom.svg"></div>
-            <div id="heroColor"></div>
-            
+            <div id="hexTitle" flex centered></div>
         </div>
         
-        <!-- color picker and main content go here -->
-    	<div id="colorPicker" class="inline block cp-normal">
-            <div id="picker" class="inline"></div>
-            <div id="slide" class="inline"></div>    
-        </div>
-        <div>
-            <div id="controls">
-                <input type="text" id="hex" placeholder="HEX" /><br/>
-                <button id="set">Set</button>
-                <button id="random">Random</button>
+        <div class="wrapper">
+            <div class="mainContent">
+
+                <div class="tab" tab4 flex centered>
+                    <div id="colorPicker" class="inline block cp-normal">
+                        <div id="picker" class="inline"></div>
+                        <div id="slide" class="inline"></div>    
+                    </div>
+                </div>
+
+                <div class="tab show" tab1>
+                    <cjs-rgb-sliders></cjs-rgb-sliders>
+                </div>
+
+                <div class="tab" tab2>more sliders</div>
+                <div class="tab" tab4=3>hey, this is sliders too</div>
+
+                <div id="controls">
+                    <div id="heroColor"></div>
+                    <input type="text" id="hex" placeholder="HEX" /><br/>
+                    <button id="set">Set</button>
+                    <button id="random">Random</button>
+                </div>
+
+                <!-- color generation results go here -->
+                <div id="results"></div>
             </div>
             
-            <cjs-rgb-sliders></cjs-rgb-sliders>
-            
-        </div>
-        
-        <!-- color generation results go here -->
-        <div id="results"></div>
-        
-        
-        <div id="footer">
-            <div>
-                <a href="https://github.com/catdad/ColorJS">ColorJS</a> and 
-                <a href="https://github.com/catdad/colorjs-lib">colorjs-lib</a> are created and 
-                maintained by <a href="https://github.com/catdad">catdad</a>.
+            <div id="footer">
+                <div>
+                    <a href="https://github.com/catdad/ColorJS">ColorJS</a> and 
+                    <a href="https://github.com/catdad/colorjs-lib">colorjs-lib</a> are created and 
+                    maintained by <a href="https://github.com/catdad">catdad</a>.
+                </div>
             </div>
         </div>
     </cjs-core-scaffold>
@@ -133,7 +182,17 @@
             document.body.className = document.body.className.replace('preload', '');
             scaffold = document.querySelector('cjs-core-scaffold');
             scaffold.style.display = 'initial';
+            
+            scaffold.addEventListener('tabChanged', function(ev){
+                [].forEach.call(document.querySelectorAll('.tab'), function(el){
+                    el.classList.remove('show');
+                });
                 
+                document.querySelector('[tab' + ev.detail.tabIndex + ']').classList.add('show');
+                
+                console.log('tab change', ev.detail.tabIndex);
+            });
+            
             //color init
             locationHash.load();
         });
@@ -216,7 +275,6 @@
             }
         }
         
-		
 		//reset unused number input methods
 		function resetInputs(method){
 			for (var i = 0; i < configMethods.length; i++){
@@ -248,13 +306,6 @@
 		}
         
         
-		//change main color
-		function change(color){
-			console.log('main change called');
-            
-            
-		}
-		
 		//set listeners
 		for (var i = 0; i < configMethods.length; i++){
 			O(configMethods[i]).oninput = function oninput(){
@@ -276,6 +327,7 @@
             setButton: O("set"),
             randomButton: O("random"),
             hexInput: O("hex"),
+            hexTitle: O("hexTitle"),
             heroColor: O("heroColor"),
             results: O("results"),
             scaffold: document.querySelector("cjs-core-scaffold"),
@@ -291,7 +343,7 @@
                 nodes.slidersRGB.set(color.RGB());
             },
             colorPicker: function setColorPicker(color){
-                return; nodes.colorPicker.setRgb(color.RGB());
+                nodes.colorPicker.setRgb(color.RGB());
             },
             buttons: function setButtons(color){
                 nodes.hexInput.value = color.HEX().toUpperCase();
@@ -304,6 +356,7 @@
                 main = color;
 
                 nodes.heroColor.innerHTML = views.info(color, true);
+                nodes.hexTitle.innerHTML = color.CSS();
 
                 //color color swatches
                 nodes.results.innerHTML = "";
