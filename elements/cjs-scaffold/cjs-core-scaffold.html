@@ -12,113 +12,143 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../../bower_components/core-header-panel/core-header-panel.html">
 <link rel="import" href="../../bower_components/core-icon-button/core-icon-button.html">
 
+<link rel="import" href="../../bower_components/paper-tabs/paper-tabs.html">
+
 <polymer-element name="cjs-core-scaffold" attributes="responsiveWidth mode color fill">
 <template>
 
-  <style>
-    
-    :host {
-      display: block;
-    }
-    
-    [drawer] {
-      background-color: #fff;
-      box-shadow: 1px 0 1px rgba(0, 0, 0, 0.1);
-    }
-    
-    [main] {
-      height: 100%;
-      background-color: #eee;
-    }
-    
-    core-toolbar {
-      background-color: {{fill}};
-      color: {{color}};
-    }
-    
-    #drawerPanel:not([narrow]) #menuButton {
-      display: none;
-    }
-    
-  </style>
+    <style>
+        :h ost {
+            display: block;
+        }
 
-  <core-drawer-panel id="drawerPanel" narrow="{{narrow}}" responsiveWidth="{{responsiveWidth}}">
+        [drawer] {
+            background-color: #fff;
+            box-shadow: 1px 0 1px rgba(0, 0, 0, 0.1);
+        }
 
-    <div vertical layout drawer>
+        [main] {
+            height: 100%;
+            background-color: #eee;
+        }
 
-      <content select="[navigation], nav"></content>
+        core-toolbar {
+            background-color: {{fill}};
+            color: {{color}};
+        }
 
-    </div>
-    
-    <core-header-panel main mode="{{mode}}">
+        #drawerPanel:not([narrow]) #menuButton {
+            display: none;
+        }
 
-      <core-toolbar>
-        <core-icon-button id="menuButton" icon="menu" on-tap="{{togglePanel}}"></core-icon-button>
-        <content select="[tool]"></content>
-      </core-toolbar>
-      
-      <content select="*"></content>
-      
-    </core-header-panel>
+        paper-tabs{
+            background-color: {{fill}};
+            cursor: pointer;
+            color: {{color}};
+            font-weight: bold;
+        }
+        paper-tabs::shadow #selectionBar {
+            background-color: {{color}};
+            height: 5px;
+        }
+        paper-tab::shadow #ink {
+            color: {{color}};
+            opacity: .3;
+        }
 
-  </core-drawer-panel>
+    </style>
+
+    <core-drawer-panel id="drawerPanel" narrow="{{narrow}}" responsiveWidth="{{responsiveWidth}}">
+
+        <div vertical layout drawer>
+            <content select="[navigation], nav"></content>
+        </div>
+
+        <core-header-panel main mode="{{mode}}">
+
+            <core-toolbar>
+                <core-icon-button id="menuButton" icon="menu" on-tap="{{togglePanel}}"></core-icon-button>
+                <content select="[tool]"></content>
+            </core-toolbar>
+
+            <paper-tabs id="tabs" selected="0" valueattr="name" self-end>
+                <paper-tab name="1">RGB</paper-tab>
+                <paper-tab name="2">HSL</paper-tab>
+                <paper-tab name="3">HSV</paper-tab>
+                <paper-tab name="4">Color Picker</paper-tab>
+            </paper-tabs>
+            
+            <content select="*"></content>
+
+        </core-header-panel>
+
+    </core-drawer-panel>
 
 </template>
 <script>
 
-  Polymer('cjs-core-scaffold', {
-    
-    fill: '#bada55',
-    color: '#fff',
-      
-      
-    /**
-     * When the browser window size is smaller than the `responsiveWidth`, 
-     * `core-drawer-panel` changes to a narrow layout. In narrow layout, 
-     * the drawer will be stacked on top of the main panel.
-     *
-     * @attribute responsiveWidth
-     * @type string
-     */    
-    responsiveWidth: '600px',
+    Polymer('cjs-core-scaffold', {
 
-    /**
-     * Used to control the header and scrolling behaviour of `core-header-panel`
-     *
-     * @attribute mode
-     * @type string
-     */     
-    mode: 'seamed',
+        fill: '#bada55',
+        color: '#fff',
+        
+        /**
+         * When the browser window size is smaller than the `responsiveWidth`, 
+         * `core-drawer-panel` changes to a narrow layout. In narrow layout, 
+         * the drawer will be stacked on top of the main panel.
+         *
+         * @attribute responsiveWidth
+         * @type string
+         */    
+        responsiveWidth: '600px',
 
-    /**
-      * Toggle the drawer panel
-      * @method togglePanel
-      */    
-    togglePanel: function() {
-      this.$.drawerPanel.togglePanel();
-    },
+        /**
+         * Used to control the header and scrolling behaviour of `core-header-panel`
+         *
+         * @attribute mode
+         * @type string
+         */     
+        mode: 'seamed',
 
-    /**
-      * Open the drawer panel
-      * @method openDrawer
-      */      
-    openDrawer: function() {
-      this.$.drawerPanel.openDrawer();
-    },
+        /**
+          * Toggle the drawer panel
+          * @method togglePanel
+          */    
+        togglePanel: function() {
+          this.$.drawerPanel.togglePanel();
+        },
 
-    /**
-      * Close the drawer panel
-      * @method closeDrawer
-      */     
-    closeDrawer: function() {
-      this.$.drawerPanel.closeDrawer();
-    },
-      
-    publish: {
-        setFill: function(str){ this.fill = str; }
-    }
-    
-  });
+        /**
+          * Open the drawer panel
+          * @method openDrawer
+          */      
+        openDrawer: function() {
+          this.$.drawerPanel.openDrawer();
+        },
 
+        /**
+          * Close the drawer panel
+          * @method closeDrawer
+          */     
+        closeDrawer: function() {
+          this.$.drawerPanel.closeDrawer();
+        },
+
+        publish: {
+            setFill: function(str){ this.fill = str; }
+        },
+        
+        ready: function(){
+            var that = this;
+            
+            this.$.tabs.addEventListener('core-select', function(ev){
+                if (ev.detail.isSelected){
+                    
+                    that.fire('tabChanged', { tabIndex: +ev.detail.item.getAttribute('name') });
+                    
+                }
+            });
+        }
+    });
 </script>
 </polymer-element>

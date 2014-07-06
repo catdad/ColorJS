@@ -4,7 +4,23 @@
 <polymer-element name="cjs-rgb-sliders" attributes="r g b color">
     <template>
         
-        <link rel="stylesheet" href="rgb-sliders.css">
+        <style>
+            :host{
+                display: block;
+            }
+
+            span.label{
+                font-weight: bold;
+                width: 1em;
+            }
+
+            paper-slider::shadow #sliderKnobInner,
+            paper-slider::shadow #sliderKnobInner::before,
+            paper-slider::shadow #sliderBar::shadow #activeProgress,
+            paper-slider::shadow #sliderBar::shadow #secondaryProgress{
+                background-color: {{color}};
+            }
+        </style>
         
         <div layout vertical>
             <div center horizontal layout>
