@@ -37,156 +37,169 @@
         
         <div class="section title">Quick Schemes</div>
         <core-selector id="quickSchemes" layout vertical class="expanding">
-            <paper-button value="analog">Analog</paper-button>
-            <paper-button value="triad">Triad</paper-button>
-            <paper-button value="split">Split</paper-button>
-            <paper-button value="complement">Complement</paper-button>
+            <paper-button id="analog">Analog</paper-button>
+            <paper-button id="triad">Triad</paper-button>
+            <paper-button id="split">Split</paper-button>
+            <paper-button id="complement">Complement</paper-button>
         </core-selector>
         
         <div class="section title">Single-Color Schemes</div>
         <core-selector id="singleSchemes" layout vertical>
-            <div id="monochrome" class="expanding" layout vertical>
+            <div id="monochromeSelector" class="expanding" layout vertical>
                 <paper-button>Scale</paper-button>
-                <paper-slider min="2" max="10" value="2" name="monochrome" editable wide></paper-slider>
+                <paper-slider id="monochrome" min="2" max="10" value="2" editable wide></paper-slider>
             </div>
-            <div id="monochromeLight" class="expanding" layout vertical>
+            <div id="monochromeLightSelector" class="expanding" layout vertical>
                 <paper-button>Lighter</paper-button>
-                <paper-slider min="2" max="10" value="2" name="monochromeLight" editable wide></paper-slider>
+                <paper-slider id="monochrome" min="2" max="10" value="2" editable wide></paper-slider>
             </div>
-            <div id="monochromeDark" class="expanding" layout vertical>
+            <div id="monochromeDarkSelector" class="expanding" layout vertical>
                 <paper-button>Darker</paper-button>
-                <paper-slider min="2" max="10" value="2" name="monochromeDark" editable wide></paper-slider>
+                <paper-slider id="monochromeDark" min="2" max="10" value="2" editable wide></paper-slider>
             </div>
         </core-selector>
         
         <div class="section title">Multi-Color Schemes</div>
         <core-selector id="multiSchemes" layout vertical>
-            <div id="quadrat" class="expanding" layout vertical>
+            <div id="quadratSelector" class="expanding" layout vertical>
                 <paper-button>Quadrat</paper-button>
-                <paper-slider min="-180" max="180" value="0" step="10" name="quadrat" snap editable wide></paper-slider>
+                <paper-slider id="quadrat" min="-180" max="180" value="0" step="10" snap editable wide></paper-slider>
             </div>
-            <div id="hueShift" class="expanding" layout vertical>
+            <div id="hueShiftSelector" class="expanding" layout vertical>
                 <paper-button>Hue Shift</paper-button>
-                <paper-slider min="0" max="360" value="0" name="hueShift" editable wide></paper-slider>
+                <paper-slider id="hueShift" min="0" max="360" value="0" editable wide></paper-slider>
             </div>
-            <div id="contrasts" class="expanding" layout vertical>
+            <div id="contrastsSelector" class="expanding" layout vertical>
                 <paper-button>Contrasts</paper-button>
-                <paper-slider min="2" max="10" value="2" name="contrasts" editable wide></paper-slider>
+                <paper-slider id="contrasts" min="2" max="10" value="2" editable wide></paper-slider>
             </div>
-            <div id="diverging" class="expanding" layout vertical>
+            <div id="divergingSelector" class="expanding" layout vertical>
                 <paper-button>Diverging</paper-button>
-                <paper-slider min="3" max="10" value="3" name="diverging" editable wide></paper-slider>
+                <paper-slider id="diverging" min="3" max="10" value="3" editable wide></paper-slider>
             </div>
         </core-selector>
         
     </template>
     <script>
-        Polymer("cjs-drawer-tools", {
-            configMethods: ["hueShift", "contrasts", "diverging", "monochrome", "quadrat", "monochromeLight", "monochromeDark"],
-            isReady: false,
-            ready: function(){
-                var that = this;
-                //set listeners
-                for (var i = 0; i < that.configMethods.length; i++){
-                    that.$[that.configMethods[i]].oninput = function oninput(){
-                        that.fireChanged(this.id, Number(this.value) );
-                        that.resetInputs(this.id);
-                    };
-                }
-                
-                //Than listen to scheme type change
-                this.$.quickSchemes.addEventListener("core-activate", function(ev){
-                    that.sliderChangeRouter(ev, 'quickSchemes');
-                    that.fireChanged(ev.detail.item.getAttribute('value'));
-                });
-                this.$.singleSchemes.addEventListener("core-activate", function(ev){
-                    that.sliderChangeRouter(ev, 'singleSchemes');
-                });
-                this.$.multiSchemes.addEventListener("core-activate", function(ev){
-                    that.sliderChangeRouter(ev, 'multiSchemes');
-                });
-                
-                // listen to slider changes
-                [].forEach.call(this.$.singleSchemes.querySelectorAll('paper-slider'), function(el){
-                    el.addEventListener("change", function(ev){
-                        that.isReady && that.fireChanged(el.getAttribute('name'), el.value);
+        (function(){
+            var complexMethods = ["hueShift", "contrasts", "diverging", "monochrome", "quadrat", "monochromeLight", "monochromeDark"];
+            var simpleMethods = ["analog", "triad", "split", "complement"];
+            
+            Polymer("cjs-drawer-tools", {
+                isReady: false,
+                ready: function(){
+                    var that = this;
+
+                    //Than listen to scheme type change
+                    this.$.quickSchemes.addEventListener("core-activate", function(ev){
+                        that.sliderChangeRouter(ev, 'quickSchemes');
                     });
-                });
-                
-                [].forEach.call(this.$.multiSchemes.querySelectorAll('paper-slider'), function(el){
-                    el.addEventListener("change", function(ev){
-                        that.isReady && that.fireChanged(el.getAttribute('name'), el.value);
+                    this.$.singleSchemes.addEventListener("core-activate", function(ev){
+                        that.sliderChangeRouter(ev, 'singleSchemes');
                     });
-                });
-                
-                // set library to ready
-                this.async(function(){ that.isReady = true; }, 0);
-            },
-            resetQuickSchemes: function(){
-                this.$.quickSchemes.selected = undefined;
-            },
-            resetSingleSchemes: function(){
-                this.$.singleSchemes.selected = undefined;
-            },
-            resetMultiSchemes: function(){
-                this.$.multiSchemes.selected = undefined;
-            },
-            sliderChangeRouter: function sliderChangeRouter(ev, source){
-                //only handle routes if ready
-                if (!this.isReady) return;
-                
-                var that = this;
-                
-                function execute(arr){
-                    arr.forEach(function(name){
-                        that[name]();
+                    this.$.multiSchemes.addEventListener("core-activate", function(ev){
+                        that.sliderChangeRouter(ev, 'multiSchemes');
                     });
-                }
-                
-                switch (source) {
-                    case 'quickSchemes':
-                        execute(['resetSingleSchemes', 'resetMultiSchemes']);
-                        break;
-                    case 'singleSchemes':
-                        execute(['resetQuickSchemes', 'resetMultiSchemes']);
-                        var slider = ev.detail.item.querySelector('paper-slider')
-                        console.log(slider.getAttribute('name'), slider.value);
-                        that.fireChanged(slider.getAttribute('name'), slider.value);
-                        break;
-                    case 'multiSchemes':
-                        execute(['resetQuickSchemes', 'resetSingleSchemes']);
-                        var slider = ev.detail.item.querySelector('paper-slider')
-                        that.fireChanged(slider.getAttribute('name'), slider.value);
-                        break;
-                }
-            },
-            fireChanged: function fireChanged(method, n){
-                this.fire("change", { method: method, n: n });
-            },
-            resetInputs: function resetInputs(method){
-                var that = this;
-                for (var i = 0; i < that.configMethods.length; i++){
-                    if (that.configMethods[i] !== method) that.$[that.configMethods[i]].value = "";
-                }
-                
-                this.$.quickSchemes.selected = undefined;
-            },
-            publish: {
-                getMethod: function(){
-                
+
+                    // listen to slider changes
+                    [].forEach.call(this.$.singleSchemes.querySelectorAll('paper-slider'), function(el){
+                        el.addEventListener("change", function(ev){
+                            that.isReady && that.fireChanged(el.id, el.value);
+                        });
+                    });
+
+                    [].forEach.call(this.$.multiSchemes.querySelectorAll('paper-slider'), function(el){
+                        el.addEventListener("change", function(ev){
+                            that.isReady && that.fireChanged(el.id, el.value);
+                        });
+                    });
+
+                    // set library to ready
+                    this.async(function(){ that.isReady = true; }, 0);
                 },
-                setMethod: function setMethod(method, n){
-                    this.$[method].value = n;
-                    this.fireChanged(method, n);
+                resetQuickSchemes: function(){
+                    this.$.quickSchemes.selected = undefined;
                 },
-                isValidMethod: function(method){
-                    for (var i = this.configMethods.length-1; i > -1; i--){
-                        if (this.configMethods[i] === method) return true;
+                resetSingleSchemes: function(){
+                    this.$.singleSchemes.selected = undefined;
+                },
+                resetMultiSchemes: function(){
+                    this.$.multiSchemes.selected = undefined;
+                },
+                sliderChangeRouter: function sliderChangeRouter(ev, source){
+                    //only handle routes if ready
+                    if (!this.isReady) return;
+
+                    var that = this;
+
+                    function execute(arr){
+                        arr.forEach(function(name){
+                            that[name]();
+                        });
                     }
-                    return false;
+
+                    switch (source) {
+                        case 'quickSchemes':
+                            execute(['resetSingleSchemes', 'resetMultiSchemes']);
+                            that.fireChanged(ev.detail.item.id);
+                            break;
+                        case 'singleSchemes':
+                            execute(['resetQuickSchemes', 'resetMultiSchemes']);
+                            var slider = ev.detail.item.querySelector('paper-slider');
+                            that.fireChanged(slider.id, slider.value);
+                            break;
+                        case 'multiSchemes':
+                            execute(['resetQuickSchemes', 'resetSingleSchemes']);
+                            var slider = ev.detail.item.querySelector('paper-slider');
+                            that.fireChanged(slider.id, slider.value);
+                            break;
+                    }
+                },
+                fireChanged: function fireChanged(method, n){
+                    this.fire("change", { method: method, n: n });
+                },
+                publish: {
+                    setQuick: function(n){ this.$.quickSchemes.selected = n; },
+                    getMethod: function(){
+
+                    },
+                    setMethod: function setMethod(method, n){
+                        var that = this;
+
+                        if (this.isValidComplexMethod(method)){
+                            this.$[method+'Selector'].classList.add('selected');
+                            this.$[method].value = n;
+                            return;
+                        } else if (this.isValidSimpleMethod(method)){
+                            [].forEach.call(this.$.quickSchemes.querySelectorAll('paper-button'), function(el, i){
+                                if (el.getAttribute('value') === method) {
+                                    that.$.quickSchemes.selected = i;
+                                    that.fireChanged(method);
+                                }
+                            });
+                        }
+                    },
+                    isValidComplexMethod: function(method){
+                        for (var i = complexMethods.length-1; i > -1; i--){
+                            if (complexMethods[i] === method) return true;
+                        }
+                        return false;
+                    },
+                    isValidSimpleMethod: function(method){
+                        for (var i = simpleMethods.length-1; i > -1; i--){
+                            if (simpleMethods[i] === method) return true;
+                        }
+                        return false;
+                    },
+                    isValidMethod: function(method){
+                        var a = this.isValidComplexMethod(method) || this.isValidSimpleMethod(method);
+                        return a;
+                    }
                 }
-            }
+
+            });
         
-        });
+        })();
+        
     </script>
 </polymer-element>
