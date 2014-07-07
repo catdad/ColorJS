@@ -6,8 +6,6 @@
 <polymer-element name="cjs-drawer-tools">
     <template>
         <style>
-        
-            /** style sidebar inputs **/
             .section.title {
                 font-weight: bold;
                 display: block;
@@ -15,27 +13,7 @@
                 padding: 5px;
                 border-bottom: 1px solid #898989;
             }
-
-            .section span{
-                width: 6em;
-                display: inline-block;
-                text-align: right;
-            }
-
-            input{
-                margin: 5px;
-                background-color: white;
-                border: 1px solid #aaa;
-                padding: 3px 4px;
-                font-size: 1.2em;
-                font-family: inherit;
-                cursor: pointer;
-            }
             
-            input[type="number"]{ width: 5em; cursor: inherit; }
-
-            /*** end style sidebar inputs ***/
-        
             core-selector{
                 padding: 5px 10px;
             }
@@ -64,15 +42,6 @@
             <paper-button value="split">Split</paper-button>
             <paper-button value="complement">Complement</paper-button>
         </core-selector>
-        
-<!--
-        <div class="section"><div class="title">Quick Schemes</div>
-            <button onclick="calc('analog')">Analog</button>
-            <button onclick="calc('triad')">Triad</button>
-            <button onclick="calc('split')">Split</button>
-            <button onclick="calc('complement')">Complement</button>
-        </div>
--->
         
         <div class="section title">Single-Color Schemes</div>
         <core-selector id="singleSchemes" layout vertical>
@@ -109,43 +78,6 @@
                 <paper-slider min="3" max="10" value="3" name="diverging" editable wide></paper-slider>
             </div>
         </core-selector>
-        
-        
-<!--
-        <div class="section"><div class="title">Single-Color Schemes</div>
-            <div class="input">
-                <span>Scale</span>
-                <input id="monochrome" type="number" min="0" max="10" placeholder="count" />
-            </div>
-            <div class="input">
-                <span>Lighter</span>
-                <input id="monochromeLight" type="number" min="0" max="10" placeholder="count" />
-            </div>
-            <div class="input">
-                <span>Darker</span>
-                <input id="monochromeDark" type="number" min="0" max="10" placeholder="count" />
-            </div>
-        </div>
-
-        <div class="section"><div class="title">Multi-Color Schemes</div>
-            <div class="input">
-                <span>Quadrat</span>
-                <input id="quadrat" type="number" min="-180" max="180" step="10" placeholder="degrees" />
-            </div>
-            <div class="input">
-                <span>Hue Shift</span>
-                <input id="hueShift" type="number" min="0" max="360" placeholder="degrees" />
-            </div>
-            <div class="input">
-                <span>Contrasts</span>
-                <input id="contrasts" type="number" min="0" max="10" placeholder="count" />
-            </div>
-            <div class="input">
-                <span>Diverging</span>
-                <input id="diverging" type="number" min="3" max="10" placeholder="count" />
-            </div>
-        </div>
--->
         
     </template>
     <script>

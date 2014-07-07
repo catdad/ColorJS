@@ -24,6 +24,16 @@ div#footer {
 }
 .tab.show { display: block; }
 
+input, button{
+    margin: 5px;
+    background-color: white;
+    border: 1px solid #aaa;
+    padding: 3px 4px;
+    font-size: 1.2em;
+    font-family: inherit;
+    cursor: pointer;
+}
+
 .titleIcon { 
     position: relative;
     width: 1em;
@@ -54,6 +64,7 @@ cjs-hsv-sliders::shadow paper-slider::shadow #sliderKnobInner {
 
 
 /** style colors and results **/
+[tool] { font-size: 1.2em; }
 [tool], cjs-core-scaffold /deep/ paper-tabs {
     text-shadow: 0 0 10px rgba(0,0,0,1), 0 0 10px rgba(0,0,0,.5);
 }
@@ -63,6 +74,7 @@ cjs-hsv-sliders::shadow paper-slider::shadow #sliderKnobInner {
 	position: relative;
 	text-transform: uppercase;
 }
+#heroColor .colorInfo { font-size: 1.5em; }
 .swatch .colorInfo { 
     color: white;
 	top: 3.4em;
