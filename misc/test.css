@@ -1,4 +1,4 @@
-htmp, body{
+html, body{
     margin: 0;
     padding: 0;
     font-family: sans-serif;
@@ -6,37 +6,35 @@ htmp, body{
     font-size: .9em;
 }
 
-/** layout **/
-.wrapper{
-    min-height: 100%;
-    position: relative;
-}
-.mainContent {
-    padding-bottom: .2em;
-}
-
 div#footer {
-	position: absolute;
-    display: block;
-	bottom: 0; /* stick to bottom */
-    width: 100%;
-	font-size: .75em;
+	display: block;
+	width: 100%;
+	font-size: .9em;
 	padding: 2px 0;
 	text-align: center;
 }
-/*** end layout ***/
 
 .inline { display: inline-block !important; vertical-align: top; }
-.wide{ width: 100%; }
-[flex][centered]{ text-align: center; }
+.wide { width: 100%; }
+[flex][centered] { text-align: center; }
 
-.tab{ 
+.tab {
     display: none;
     padding: 10px;
 }
-.tab.show{ display: block; }
+.tab.show { display: block; }
 
-.titleIcon{ 
+input, button{
+    margin: 5px;
+    background-color: white;
+    border: 1px solid #aaa;
+    padding: 3px 4px;
+    font-size: 1.2em;
+    font-family: inherit;
+    cursor: pointer;
+}
+
+.titleIcon { 
     position: relative;
     width: 1em;
     height: 1em;
@@ -48,7 +46,6 @@ div#footer {
     -ms-transform: rotate(180deg);
     -o-transform: rotate(180deg);
     transform: rotate(180deg);
-
 }
 
 /** color picker CSS **/
@@ -56,64 +53,40 @@ div#footer {
 #slide { width: 20px !important; height: 200px !important; }
 /*** end color picker CSS ***/
 
-/** style sidebar inputs **/
-.section{
-	margin: 8px 0 5px;
-	padding: 5px;
-}
-.section .title{
-	font-weight: bold;
-	display: block;
-	margin: 0 1em;
-	border-bottom: 1px solid #898989;
-}
+input#hex { margin: 15px 0 5px; width: 12em; cursor: inherit; }
+button#set, button#random { margin: 0; width: 6.2em;}
 
-.section span{
-	width: 6em;
-	display: inline-block;
-	text-align: right;
+cjs-rgb-sliders::shadow paper-slider,
+cjs-hsl-sliders::shadow paper-slider,
+cjs-hsv-sliders::shadow paper-slider::shadow #sliderKnobInner {
+    cursor: pointer; 
 }
-
-button, input{
-	margin: 5px;
-	background-color: white;
-	border: 1px solid #aaa;
-	padding: 3px 4px;
-	font-size: 1.2em;
-	font-family: inherit;
-	cursor: pointer;
-}
-/*** end style sidebar inputs ***/
-
-input[type="number"]{ width: 5em; cursor: inherit; }
-
-input#hex{ margin: 15px 0 5px; width: 12em; cursor: inherit; }
-button#set, button#random{ margin: 0; width: 6.2em;}
 
 
 /** style colors and results **/
-[tool], cjs-core-scaffold /deep/ paper-tabs{
+[tool] { font-size: 1.2em; }
+[tool], cjs-core-scaffold /deep/ paper-tabs {
     text-shadow: 0 0 10px rgba(0,0,0,1), 0 0 10px rgba(0,0,0,.5);
 }
 
-.colorInfo{
+.colorInfo {
     font-weight: bold;
 	position: relative;
 	text-transform: uppercase;
 }
-.swatch .colorInfo{ 
+#heroColor .colorInfo { font-size: 1.5em; }
+.swatch .colorInfo { 
     color: white;
 	top: 3.4em;
-    font-size: .9em;
-	text-shadow: 0 0 10px rgba(0,0,0,1), 0 0 10px rgba(0,0,0,.5);
+    text-shadow: 0 0 10px rgba(0,0,0,1), 0 0 10px rgba(0,0,0,.5);
 }
 
-#results{
+#results {
 	text-align: center;
 	margin: 0 0 20px;
 }
 
-.swatch{
+.swatch {
 	position: relative;
     display: inline-block;
     vertical-align: top;
@@ -124,7 +97,7 @@ button#set, button#random{ margin: 0; width: 6.2em;}
 	border-radius: 150px;
 }
 
-.label{
+.label {
 	text-transform: capitalize;
 	font-variant: small-caps;
 	font-style: italic;
@@ -133,16 +106,16 @@ button#set, button#random{ margin: 0; width: 6.2em;}
 }
 /*** end style colors and results ***/
 
-#controls{ 
+#controls { 
     margin: 10px 0 20px;
     text-align: center !important;
 }
 
-@media all and (max-width: 900px){
+@media all and (max-width: 900px) {
 	.ribbon, #note { display: none; }
 }
 
 /** media query used by Polymer **/
-@media all and (max-width: 600px){
+@media all and (max-width: 600px) {
 
 }
