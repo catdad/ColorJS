@@ -1,7 +1,7 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../bower_components/paper-slider/paper-slider.html">
 
-<polymer-element name="cjs-hsl-sliders" attributes="h s l color">
+<polymer-element name="cjs-sliders-hsv" attributes="h s v color">
     <template>
         
         <style>
@@ -33,35 +33,35 @@
                                                           on-change="{{sChange}}" editable flex></paper-slider>
             </div>
             <div center horizontal layout>
-                <span class='label'>L</span><paper-slider id="l" min="0" max="100" value="{{l}}" 
-                                                          on-change="{{lChange}}" editable flex></paper-slider>
+                <span class='label'>V</span><paper-slider id="v" min="0" max="100" value="{{v}}" 
+                                                          on-change="{{vChange}}" editable flex></paper-slider>
             </div>
         </div>
     </template>
     <script>
-        Polymer('cjs-hsl-sliders', {
+        Polymer('cjs-sliders-hsv', {
             h: 0,
             s: 0,
-            l: 0,
+            v: 0,
             isPrivate: false,
             hChange: function(){ !this.isPrivate && this.sliderChanged(); },
             sChange: function(){ !this.isPrivate && this.sliderChanged(); },
-            lChange: function(){ !this.isPrivate && this.sliderChanged(); },
+            vChange: function(){ !this.isPrivate && this.sliderChanged(); },
             color: '#bada55',
             sliderChanged: function(){
                 this.fire('change', this.get() );
             },
             publish: {
                 get: function(){
-                    return { h: this.h, s: this.s / 100, l: this.l / 100 };  
+                    return { h: this.h, s: this.s / 100, v: this.v / 100 };  
                 },
-                set: function(hsl){
+                set: function(hsv){
                     //set private change to true
                     this.isPrivate = true;
                     
-                    this.h = hsl.h;
-                    this.s = hsl.s * 100;
-                    this.l = hsl.l * 100;
+                    this.h = hsv.h;
+                    this.s = hsv.s * 100;
+                    this.v = hsv.v * 100;
                     
                     //reset private value on next event loop
                     this.async(function(){ 
