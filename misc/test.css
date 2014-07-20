@@ -76,9 +76,13 @@ cjs-hsv-sliders::shadow paper-slider::shadow #sliderKnobInner {
 }
 #heroColor .colorInfo { font-size: 1.5em; }
 .swatch .colorInfo { 
-    color: white;
-	top: 3.4em;
-    text-shadow: 0 0 10px rgba(0,0,0,1), 0 0 10px rgba(0,0,0,.5);
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    padding: 8px 0;
+    background: white;
+    text-align: center;
+    border-radius: 0 0 6px 6px;
 }
 
 #results {
@@ -93,8 +97,9 @@ cjs-hsv-sliders::shadow paper-slider::shadow #sliderKnobInner {
 	margin: 8px;
     width: 160px;
 	height: 160px;
-	border: 3px solid white;
-	border-radius: 150px;
+	border-radius: 6px;
+    
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26), 0 2px 10px 0 rgba(0, 0, 0, 0.16);
 }
 
 .label {
