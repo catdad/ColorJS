@@ -75,9 +75,9 @@
     <link rel="import" href="bower_components/paper-slider/paper-slider.html" />
     
     <link rel="import" href="elements/cjs-drawer-tools/cjs-drawer-tools.html" />
-    <link rel="import" href="elements/rgb-sliders/rgb-sliders.html" />
-    <link rel="import" href="elements/rgb-sliders/hsl-sliders.html" />
-    <link rel="import" href="elements/rgb-sliders/hsv-sliders.html" />
+    <link rel="import" href="elements/cjs-sliders/cjs-sliders-rgb.html" />
+    <link rel="import" href="elements/cjs-sliders/cjs-sliders-hsl.html" />
+    <link rel="import" href="elements/cjs-sliders/cjs-sliders-hsv.html" />
 </head>
 
 <body fullbleed unresolved class="preload">
@@ -106,13 +106,13 @@
             <div class="mainContent" flex>
                 <!-- define tab content -->
                 <div class="tab show" tab1>
-                    <cjs-rgb-sliders></cjs-rgb-sliders>
+                    <cjs-sliders-rgb></cjs-sliders-rgb>
                 </div>
                 <div class="tab" tab2>
-                    <cjs-hsl-sliders></cjs-hsl-sliders>
+                    <cjs-sliders-hsl></cjs-sliders-hsl>
                 </div>
                 <div class="tab" tab3>
-                    <cjs-hsv-sliders></cjs-hsv-sliders>
+                    <cjs-sliders-hsv></cjs-sliders-hsv>
                 </div>
 
                 <div class="tab" tab4 flex centered>
@@ -219,6 +219,7 @@
                 div.style.backgroundColor = color.CSS();
 
                 div.innerHTML = views.info(color, true);
+                
                 return div;
             },
             info: function info(color, trim, isHero){
@@ -277,9 +278,9 @@
             results: O("results"),
             tools: document.querySelector("cjs-drawer-tools"),
             scaffold: document.querySelector("cjs-core-scaffold"),
-            slidersRGB: document.querySelector("cjs-rgb-sliders"),
-            slidersHSL: document.querySelector("cjs-hsl-sliders"),
-            slidersHSV: document.querySelector("cjs-hsv-sliders"),
+            slidersRGB: document.querySelector("cjs-sliders-rgb"),
+            slidersHSL: document.querySelector("cjs-sliders-hsl"),
+            slidersHSV: document.querySelector("cjs-sliders-hsv"),
             colorPicker: ColorPicker( O('slide'), O('picker'),
                 function(hex, hsv, rgb) {
                     colorChangeRouter(Color(rgb), 'color-picker');
