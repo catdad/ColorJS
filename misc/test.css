@@ -6,7 +6,12 @@ html, body{
     font-size: .9em;
 }
 
-div#footer {
+
+.wrapper{ position: relative; }
+.mainContent{ margin-bottom: 15px; }
+#footer{
+    position: absolute;
+    bottom: 0;
 	display: block;
 	width: 100%;
 	font-size: .9em;
@@ -99,7 +104,7 @@ cjs-hsv-sliders::shadow paper-slider::shadow #sliderKnobInner {
 	height: 160px;
 	border-radius: 6px;
     
-    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26), 0 2px 10px 0 rgba(0, 0, 0, 0.16);
+    box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.36), 0 2px 15px 0 rgba(0, 0, 0, 0.06);
 }
 
 .label {
